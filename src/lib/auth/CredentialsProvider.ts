@@ -14,6 +14,7 @@ export default CredentialsProvider({
     email: { label: "Email", type: "text" },
     username: { label: "Userame", type: "text", optional: true },
     password: { label: "Password", type: "password" },
+    avatarUrl: { label: "AvatarUrl", type: "string" },
   },
   async authorize(credentials) {
     let validatedCredentials: {
@@ -21,15 +22,21 @@ export default CredentialsProvider({
       email: string;
       username?: string;
       password: string;
+      avatarUrl: string;
     };
 
     try {
+      if( typeof credentials.isCoach === "string" )
+      {
+        credentials.isCoach = credentials.isCoach?.toLowerCase() === "true";
+      }
       validatedCredentials = authSchema.parse(credentials);
     } catch (error) {
+      console.log(error);
       console.log("Wrong credentials. Try again.");
       return null;
     }
-    const { isCoach, email, username, password } = validatedCredentials;
+    const { isCoach, email, username, password, avatarUrl } = validatedCredentials;
 
     const [existedUser] = await db
       .select({
@@ -39,6 +46,7 @@ export default CredentialsProvider({
         email: usersTable.email,
         provider: usersTable.provider,
         hashedPassword: usersTable.hashedPassword,
+        avatarUrl: usersTable.avatarUrl,
       })
       .from(usersTable)
       .where(eq(usersTable.email, validatedCredentials.email.toLowerCase()))
@@ -47,6 +55,10 @@ export default CredentialsProvider({
       // Sign up
       if (!username) {
         console.log("Name is required.");
+        return null;
+      }
+      if (!avatarUrl) {
+        console.log("no avatar");
         return null;
       }
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -58,12 +70,14 @@ export default CredentialsProvider({
           email: email.toLowerCase(),
           hashedPassword,
           provider: "credentials",
+          avatarUrl: avatarUrl,
         })
         .returning();
       return {
         email: createdUser.email,
         name: createdUser.username,
         id: createdUser.displayId,
+        avatarUrl: createdUser.avatarUrl,
       };
     }
 
@@ -86,6 +100,7 @@ export default CredentialsProvider({
       email: existedUser.email,
       name: existedUser.username,
       id: existedUser.id,
+      avartarUrl: existedUser.avatarUrl,
     };
   },
 });

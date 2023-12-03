@@ -1,8 +1,10 @@
-function DocsPage() {
+import Test from "./_components/test"
+function MainPage() {
   return (
     <div>
-      <h1>Docs</h1>
+      <h1>Main</h1>
+      <Test/>
     </div>
   );
 }
-export default DocsPage;
+export default MainPage;

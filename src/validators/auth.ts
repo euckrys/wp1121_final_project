@@ -7,4 +7,5 @@ export const authSchema = z.object({
   email: z.string().email(),
   // Passwords must be at least 8 characters long.
   password: z.string().min(8),
+  avatarUrl: z.string(),
 });

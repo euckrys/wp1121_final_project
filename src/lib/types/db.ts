@@ -4,4 +4,5 @@ export type User = {
   username: string;
   email: string;
   provider: "github" | "credentials";
+  avartarUrl: string;
 };
