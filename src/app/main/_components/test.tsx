@@ -3,6 +3,9 @@ import { auth } from "@/lib/auth";
 import { publicEnv } from "@/lib/env/public";
 
 import UserAvatar from "./UserAvatar";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 
 async function Test() {
   const session = await auth();
@@ -20,6 +23,15 @@ async function Test() {
       <div> username: {username}</div>
       <div> isCoach: {isCoach.toString()}</div>
       <div> email: {email}</div>
+      <Link href={`/auth/signout`}>
+        <Button
+          variant={"ghost"}
+          type={"submit"}
+          className="hover:bg-slate-200"
+        >
+          <p className="text-lg underline">Sign Out</p>
+        </Button>
+      </Link>
     </div>
   )
 }
