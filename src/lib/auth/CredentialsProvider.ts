@@ -15,6 +15,12 @@ export default CredentialsProvider({
     username: { label: "Userame", type: "text", optional: true },
     password: { label: "Password", type: "password" },
     avatarUrl: { label: "AvatarUrl", type: "string" },
+    sportType: { label: "SportType", type: "string", optional: true },
+    age: { label: "Age", type: "string", optional: true },
+    height: { label: "Height", type: "string", optional: true },
+    weight: { label: "Weight", type: "string", optional: true },
+    place: { label: "Place", type: "string", optional: true },
+    license: { label: "License", type: "string", optional: true },
   },
   async authorize(credentials) {
     let validatedCredentials: {
@@ -23,6 +29,12 @@ export default CredentialsProvider({
       username?: string;
       password: string;
       avatarUrl: string;
+      sportType?: string;
+      age?: string;
+      height?: string;
+      weight?: string;
+      place?: string;
+      license?: string;
     };
 
     try {
@@ -36,7 +48,7 @@ export default CredentialsProvider({
       console.log("Wrong credentials. Try again.");
       return null;
     }
-    const { isCoach, email, username, password, avatarUrl } = validatedCredentials;
+    const { isCoach, email, username, password, avatarUrl, sportType, age, height, weight, place, license } = validatedCredentials;
 
     const [existedUser] = await db
       .select({
@@ -47,6 +59,12 @@ export default CredentialsProvider({
         provider: usersTable.provider,
         hashedPassword: usersTable.hashedPassword,
         avatarUrl: usersTable.avatarUrl,
+        sportType: usersTable.sportType,
+        age: usersTable.age,
+        height: usersTable.height,
+        weight: usersTable.weight,
+        place: usersTable.place,
+        license: usersTable.license,
       })
       .from(usersTable)
       .where(eq(usersTable.email, validatedCredentials.email.toLowerCase()))
@@ -71,6 +89,12 @@ export default CredentialsProvider({
           hashedPassword,
           provider: "credentials",
           avatarUrl: avatarUrl,
+          sportType: sportType,
+          age: age,
+          height: height,
+          weight: weight,
+          place: place,
+          license: license,
         })
         .returning();
       return {

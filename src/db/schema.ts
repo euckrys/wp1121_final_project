@@ -1,4 +1,4 @@
-import { index, pgTable, serial, uuid, varchar, boolean } from "drizzle-orm/pg-core";
+import { index, pgTable, serial, uuid, varchar, boolean, integer, real } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable(
   "users",
@@ -16,9 +16,16 @@ export const usersTable = pgTable(
     })
       .notNull()
       .default("credentials"),
+    sportType: varchar("sportType"),
+    age: varchar("age"),
+    height: varchar("height"),
+    weight: varchar("weight"),
+    place: varchar("place"),
+    license: varchar("license"),
   },
   (table) => ({
     displayIdIndex: index("display_id_index").on(table.displayId),
     emailIndex: index("email_index").on(table.email),
   }),
 );
+
