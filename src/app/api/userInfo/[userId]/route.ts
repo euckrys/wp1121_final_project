@@ -13,12 +13,13 @@ import { profileInfoSchema } from "@/validators/profileInfo";
 type ProfileRequest = z.infer<typeof profileInfoSchema>;
 
 export async function GET(
+    req: NextRequest,
     {
-        params,
+      params,
     }: {
-        params: {
-            userId: string;
-        };
+      params: {
+        userId: string;
+      };
     },
 ) {
     try {
@@ -26,7 +27,7 @@ export async function GET(
         if (!session || !session?.user?.id || !session?.user?.username) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401});
         }
-        console.log(params.userId);
+
         const [userInfo] = await db
             .select({
                 userId: profileInfoTable.userId,
@@ -42,6 +43,7 @@ export async function GET(
             .where(eq(profileInfoTable.userId, params.userId))
             .execute();
 
+        console.log(userInfo);
         return NextResponse.json({ userInfo }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
