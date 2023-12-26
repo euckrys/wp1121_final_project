@@ -49,7 +49,7 @@ const handleImg = async (e:React.ChangeEvent<HTMLInputElement>) => {
   try {
     if(e.target.files === null) return;
     const file = e.target.files[0];
-    const image = await resizeFile(file);      
+    const image = await resizeFile(file);
     setAvatarUrl(typeof image === 'string' ? image : "");
     console.log(image);
   } catch (err) {
@@ -96,15 +96,8 @@ const resizeFile = (file: Blob) =>
       email,
       username,
       password,
-      callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
-      signUp: isSignUp,
       avatarUrl,
-      sportType,
-      age,
-      height,
-      weight,
-      place, 
-      license,
+      callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
     });
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -217,7 +210,7 @@ const resizeFile = (file: Blob) =>
             />
           )}
           {isCoach && (
-            <AuthInput 
+            <AuthInput
               label = "證照資訊"
               type = "text"
               value={license}

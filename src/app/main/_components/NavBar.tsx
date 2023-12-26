@@ -49,13 +49,22 @@ export default function NavBar() {
             </div>
             <div className="grid col-span-2 items-center justify-center">
                 <Link href={'/auth/signout'}>
+                    <Button
+                        variant={"ghost"}
+                        type={"submit"}
+                        className="hover:bg-slate-200"
+                    >
+                        <p className="text-lg underline">Sign Out</p>
+                    </Button>
+                </Link>
+                <Link href={'/userInfo'}>
                 <Button
-                    variant={"ghost"}
-                    type={"submit"}
-                    className="hover:bg-slate-200"
-                >
-                    <p className="text-lg underline">Sign Out</p>
-                </Button>
+                        variant={"ghost"}
+                        type={"submit"}
+                        className="hover:bg-slate-200"
+                    >
+                        <p className="text-lg underline">User</p>
+                    </Button>
                 </Link>
             </div>
         </div>

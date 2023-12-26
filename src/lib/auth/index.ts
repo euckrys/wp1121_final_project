@@ -30,6 +30,8 @@ export const {
         .where(eq(usersTable.email, email.toLowerCase()))
         .execute();
 
+      console.log(user);
+
       return {
         ...session,
         user: {

@@ -6,3 +6,13 @@ export type User = {
   provider: "github" | "credentials";
   avartarUrl: string;
 };
+
+export type UserInfo = {
+  displayName: string,
+  sportType: string,
+  age: string,
+  height: string,
+  weight: string,
+  place?: string,
+  license?: string,
+};

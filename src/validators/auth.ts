@@ -1,4 +1,3 @@
-import { integer } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
 export const authSchema = z.object({
@@ -14,5 +13,5 @@ export const authSchema = z.object({
   height: z.string().optional(),
   weight: z.string().optional(),
   place: z.string().optional(),
-  license: z.string().optional(),
+  license: z.string().optional()
 });
