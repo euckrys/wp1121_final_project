@@ -5,9 +5,9 @@ export const authSchema = z.object({
   isCoach: z.boolean(),
   username: z.string().optional(),
   email: z.string().email(),
-  // Passwords must be at least 8 characters long.
   password: z.string().min(8),
   avatarUrl: z.string(),
+  hasProfile: z.boolean().optional(),
   sportType: z.string().optional(),
   age: z.string().optional(),
   height: z.string().optional(),

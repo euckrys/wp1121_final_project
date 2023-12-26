@@ -5,6 +5,7 @@ export type User = {
   email: string;
   provider: "github" | "credentials";
   avartarUrl: string;
+  hasProfile: boolean;
 };
 
 export type UserInfo = {

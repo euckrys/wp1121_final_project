@@ -5,6 +5,7 @@ export default function useUser() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+
     const getUserInfo = async () => {
         if (loading) return;
         setLoading(true);
@@ -24,6 +25,65 @@ export default function useUser() {
         router.refresh();
         setLoading(false);
         return userInfo;
+    }
+
+    const postUserInfo = async ({
+        displayName,
+        sportType,
+        age,
+        height,
+        weight,
+        place,
+        license,
+    }: {
+        displayName: string,
+        sportType: string,
+        age: string,
+        height: string,
+        weight: string,
+        place: string,
+        license: string,
+    }) => {
+        if (loading) return;
+        setLoading(true);
+
+        const res = await fetch("api/userInfo", {
+            method: "POST",
+            body: JSON.stringify({
+                displayName,
+                sportType,
+                age,
+                height,
+                weight,
+                place,
+                license,
+            }),
+        });
+
+        if(!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error);
+        }
+
+        router.refresh();
+        setLoading(false);
+    }
+
+    const updateUser = async () => {
+        if (loading) return;
+        setLoading(true);
+
+        const res = await fetch("/api/users", {
+            method: "PUT",
+        });
+
+        if(!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error);
+        }
+
+        router.refresh();
+        setLoading(false);
     }
 
     const updateUserInfo = async ({
@@ -70,6 +130,8 @@ export default function useUser() {
 
     return {
         getUserInfo,
+        postUserInfo,
+        updateUser,
         updateUserInfo,
         loading,
     }

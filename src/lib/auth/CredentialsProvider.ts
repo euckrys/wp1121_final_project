@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { profileInfoTable, usersTable } from "@/db/schema";
+import { usersTable } from "@/db/schema";
 import { authSchema } from "@/validators/auth";
 
 export default CredentialsProvider({
@@ -15,6 +15,7 @@ export default CredentialsProvider({
     username: { label: "Userame", type: "text", optional: true },
     password: { label: "Password", type: "password" },
     avatarUrl: { label: "AvatarUrl", type: "string" },
+    hasProfile: { label: "HasProfile", type: "boolean", optional: true},
   },
   async authorize(credentials) {
     let validatedCredentials: {
@@ -23,6 +24,7 @@ export default CredentialsProvider({
       username?: string;
       password: string;
       avatarUrl: string;
+      hasProfile?: boolean;
     };
 
     try {
@@ -71,6 +73,7 @@ export default CredentialsProvider({
             hashedPassword,
             provider: "credentials",
             avatarUrl: avatarUrl,
+            hasProfile: false,
           })
           .returning();
 

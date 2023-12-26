@@ -25,6 +25,7 @@ export const {
           username: usersTable.username,
           provider: usersTable.provider,
           email: usersTable.email,
+          hasProfile: usersTable.hasProfile,
         })
         .from(usersTable)
         .where(eq(usersTable.email, email.toLowerCase()))
@@ -41,6 +42,7 @@ export const {
           username: user.username,
           provider: user.provider,
           email: user.email,
+          hasProfile: user.hasProfile,
         },
       };
     },
@@ -69,6 +71,7 @@ export const {
         email: email.toLowerCase(),
         provider,
         avatarUrl: "",
+        hasProfile: false,
       });
 
       return token;
