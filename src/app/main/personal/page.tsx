@@ -1,7 +1,7 @@
 "use client"
 
 import useUserInfo from "@/hooks/useUserInfo";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import type { UserInfo } from "@/lib/types/db"
 
@@ -24,7 +24,7 @@ export default function HomePage() {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchUserInfo();
   }, [dialogOpen])
 
