@@ -17,6 +17,7 @@ export const usersTable = pgTable(
     })
       .notNull()
       .default("credentials"),
+    hasProfile: boolean("has_profile").notNull(),
   },
   (table) => ({
     isCoachIndex: index("is_coach_index").on(table.isCoach),

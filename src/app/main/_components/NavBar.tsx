@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 
 export default function NavBar() {
 
-
-
     return (
         <div className="bg-pink-300 grid grid-cols-12 h-24">
             <div className="grid col-span-3 items-center justify-center">
@@ -57,7 +55,7 @@ export default function NavBar() {
                         <p className="text-lg underline">Sign Out</p>
                     </Button>
                 </Link>
-                <Link href={'/userInfo'}>
+                <Link href={'/main/personal'}>
                 <Button
                         variant={"ghost"}
                         type={"submit"}

@@ -43,6 +43,46 @@ export async function GET() {
     }
 }
 
+export async function POST(request: NextRequest) {
+    const data = await request.json();
+
+    try {
+        profileInfoSchema.parse(data);
+    } catch (error) {
+        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+
+    const { displayName, sportType, age, height, weight, place, license} = data as ProfileRequest;
+
+    try {
+        const session = await auth();
+        const userId = session?.user?.id ? session.user.id : "";
+
+        const result = await db
+            .insert(profileInfoTable)
+            .values({
+                userId,
+                displayName,
+                sportType,
+                age,
+                height,
+                weight,
+                place,
+                license,
+            })
+            .execute();
+
+        console.log(result);
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Something went wrong" },
+            { status: 500 },
+        );
+    }
+
+    return new NextResponse("OK", { status: 200 });
+}
+
 export async function PUT(request: NextRequest) {
     const data = await request.json();
 
