@@ -43,7 +43,6 @@ export async function GET(
             .where(eq(profileInfoTable.userId, params.userId))
             .execute();
 
-        console.log(userInfo);
         return NextResponse.json({ userInfo }, { status: 200 });
     } catch (error) {
         return NextResponse.json(

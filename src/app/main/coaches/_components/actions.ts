@@ -7,6 +7,9 @@ export const getCoachs = async () => {
   
     const coachs = await db.query.usersTable.findMany({
       where: eq(usersTable.isCoach, true),
+      with: {
+        profileInfo:true,
+      }
     });
     return coachs;
 };

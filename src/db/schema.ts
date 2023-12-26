@@ -26,7 +26,10 @@ export const usersTable = pgTable(
 );
 
 export const userRelations = relations(usersTable, ({ one }) => ({
-  profileInfo: one(profileInfoTable),
+  profileInfo: one(profileInfoTable, {
+    fields: [usersTable.displayId],
+    references: [profileInfoTable.userId],
+  }),
 }))
 
 export const profileInfoTable = pgTable(
