@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 import { db } from "@/db";
-import { profileInfoTable } from "@/db/schema";
+import { profileInfoTable, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 import type { z } from "zod";
@@ -58,21 +58,28 @@ export async function POST(request: NextRequest) {
         const session = await auth();
         const userId = session?.user?.id ? session.user.id : "";
 
-        const result = await db
-            .insert(profileInfoTable)
-            .values({
-                userId,
-                displayName,
-                sportType,
-                age,
-                height,
-                weight,
-                place,
-                license,
-            })
-            .execute();
+        await db.transaction(async (tx) => {
+            const result = await db
+                .insert(profileInfoTable)
+                .values({
+                    userId,
+                    displayName,
+                    sportType,
+                    age,
+                    height,
+                    weight,
+                    place,
+                    license,
+                })
+                .execute();
 
-        console.log(result);
+            await tx
+                .update(usersTable)
+                .set({username: displayName})
+                .execute();
+
+            console.log(result);
+        })
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },
@@ -98,21 +105,28 @@ export async function PUT(request: NextRequest) {
         const session = await auth();
         const userId = session?.user?.id? session.user.id : "";
 
-        const [result] = await db
-            .update(profileInfoTable)
-            .set({
-                displayName,
-                sportType,
-                age,
-                height,
-                weight,
-                place,
-                license,
-            })
-            .where(eq(profileInfoTable.userId, userId))
-            .returning();
+        await db.transaction(async (tx) => {
+            const [result] = await tx
+                .update(profileInfoTable)
+                .set({
+                    displayName,
+                    sportType,
+                    age,
+                    height,
+                    weight,
+                    place,
+                    license,
+                })
+                .where(eq(profileInfoTable.userId, userId))
+                .returning();
 
-        console.log(result);
+            await tx
+                .update(usersTable)
+                .set({username: displayName})
+                .execute();
+
+            console.log(result);
+        })
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },
