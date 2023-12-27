@@ -5,7 +5,6 @@ export default function useUser() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-
     const getUserInfo = async () => {
         if (loading) return;
         setLoading(true);

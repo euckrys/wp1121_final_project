@@ -63,7 +63,7 @@ export default function UpdateProfileDialog({
             })
         } catch (error) {
             console.log(error);
-            alert("Error updating profile")
+            alert("Error updating profile");
         }
 
         onclose();

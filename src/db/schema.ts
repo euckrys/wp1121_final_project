@@ -58,9 +58,10 @@ export const postsTable = pgTable(
       .notNull()
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     author: varchar("author").notNull(),
-    sportType: varchar("sport_type"),
+    authorIsCoach: boolean("author_is_coach").notNull(),
+    sportType: varchar("sport_type").notNull(),
     description: varchar("description").notNull(),
-    updatedAt: timestamp("update_at").default(sql`now()`),
+    updatedAt: timestamp("update_at").default(sql`now()`).notNull(),
   },
   (table) => ({
     postIdIndex: index("post_id_index").on(table.postId),
@@ -83,7 +84,7 @@ export const repliesTable = pgTable(
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     author: varchar("author").notNull(),
     content: varchar("content").notNull(),
-    createdAt: timestamp("update_at").default(sql`now()`),
+    createdAt: timestamp("update_at").default(sql`now()`).notNull(),
   },
   (table) => ({
     toPostIdIndex: index("to_post_id_index").on(table.toPostId),

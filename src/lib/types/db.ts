@@ -17,3 +17,21 @@ export type UserInfo = {
   place?: string,
   license?: string,
 };
+
+export type PostWithReplies = {
+  id: string,
+  postId: string,
+  authorId: string,
+  author: string,
+  sportType: string,
+  description: string,
+  updatedAt: Date,
+  replies: {
+    author: string;
+    id: number;
+    content: string;
+    authorId: string;
+    toPostId: string;
+    createdAt: Date;
+  }[];
+};

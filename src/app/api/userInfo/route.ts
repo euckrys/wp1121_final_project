@@ -16,7 +16,7 @@ export async function GET() {
     try {
         const session = await auth();
         if (!session || !session?.user?.id || !session?.user?.username) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401});
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const [userInfo] = await db
