@@ -10,17 +10,19 @@ export default function usePost() {
         sportType,
         isMine,
         isCoach,
+        targetCoach,
     }: {
         postId: string,
         sportType: string,
         isMine: boolean,
         isCoach: boolean,
+        targetCoach?: string,
     }) => {
         if (loading) return;
         setLoading(true);
 
         const res = await fetch(
-            `/api/posts?postId=${postId}&sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}`,
+            `/api/posts?postId=${postId}&sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}&targetCoach=${targetCoach}`,
             {
                 method: "GET",
             }

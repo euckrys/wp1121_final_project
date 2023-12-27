@@ -20,10 +20,18 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-
+import PostsSearchBar from "./_components/PostsSearchBar";
 import CreatePostDialog from "./_components/CreatePostDialog";
 
-export default function PostPage() {
+type PostPageProps = {
+  searchParams: {
+    search?: string;
+  };
+};
+
+export default function PostPage({
+  searchParams: { search },
+}: PostPageProps) {
   const { data: session } = useSession();
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -47,6 +55,7 @@ export default function PostPage() {
         sportType,
         isMine,
         isCoach,
+        targetCoach: search,
       })
       if (!posts) return;
       setPosts(posts);
@@ -57,7 +66,7 @@ export default function PostPage() {
 
   useEffect (() => {
     fetchPosts();
-  }, [sportType, isMine, isCoach])
+  }, [sportType, isMine, isCoach, search])
 
   return (
     <div>
@@ -96,6 +105,8 @@ export default function PostPage() {
           </Link>
         ))}
       </div>
+
+      <PostsSearchBar isCoach={isCoach}/>
 
       <div className="flex items-center space-x-2">
         <Checkbox id="isMine" onCheckedChange={(value) => setIsMine(Boolean(value))}/>

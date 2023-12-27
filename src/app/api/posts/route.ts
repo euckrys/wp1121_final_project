@@ -22,19 +22,25 @@ export async function GET(request: NextRequest) {
         const sportType = url.searchParams.get("sportType");
         const isMineString = url.searchParams.get("isMine");
         const isCoachString = url.searchParams.get("isCoach");
+        const targetCoachString = url.searchParams.get("targetCoach");
 
         const isMine = isMineString?.toLowerCase() == "true" ? true: false;
         const isCoach = isCoachString?.toLowerCase() == "true" ? true : false;
 
         const userId = isMine ? `${session.user.id}` : "00000000-0000-0000-0000-000000000000";
 
+        const targetCoach = isCoach ? targetCoachString : "%%";
+
+        console.log(postId, "and", sportType, "and", isMine, "and", isCoach, "and", targetCoach);
+
         const posts = await db.query.postsTable.findMany({
             where: (postsTable, { and, like, eq, ne }) => {
                 return and(
                     postId ? eq(postsTable.postId, postId) : ne(postsTable.postId, "00000000-0000-0000-0000-000000000000"),
-                    like(postsTable.sportType, sportType? `%${sportType}%` : "%%"),
-                    isMine ? eq(postsTable.authorId, userId) : ne(postsTable.authorId, "00000000-0000-0000-0000-000000000000"),
+                    like(postsTable.sportType, sportType ? `%${sportType}%` : "%%"),
+                    isMine ? eq(postsTable.authorId, userId) : ne(postsTable.authorId, userId),
                     eq(postsTable.authorIsCoach, isCoach),
+                    like(postsTable.author, targetCoach ? `%${targetCoach}%` : "%%"),
                 )
             },
             orderBy: (postsTable, { desc }) => [desc(postsTable.updatedAt)],
