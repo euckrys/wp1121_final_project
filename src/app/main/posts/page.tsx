@@ -22,6 +22,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import PostsSearchBar from "./_components/PostsSearchBar";
 import CreatePostDialog from "./_components/CreatePostDialog";
+import { pusherClient } from "@/lib/pusher/client";
 
 type PostPageProps = {
   searchParams: {
@@ -64,8 +65,22 @@ export default function PostPage({
     }
   }
 
+  useEffect(() => {
+    const channel = pusherClient.subscribe("private-all-posts");
+
+    channel.bind("post:update", async() => {
+      console.log("Post update event received");
+      fetchPosts();
+    })
+
+    return () => {
+      channel.unbind();
+    };
+  }, [sportType, isMine, isCoach, search])
+
   useEffect (() => {
     fetchPosts();
+    console.log(username);
   }, [sportType, isMine, isCoach, search])
 
   return (
@@ -79,7 +94,6 @@ export default function PostPage({
         onValueChange={(value) => {
           if (value == "true")  setIsCoach(true);
           else if (value == "false")  setIsCoach(false);
-          console.log(isCoach);
         }
       }>
         <TabsList>

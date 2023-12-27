@@ -1,9 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { and, eq } from "drizzle-orm";
-
-import { db } from "@/db";
-
 import { auth } from "@/lib/auth";
 import { pusherServer } from "@/lib/pusher/server";
 
@@ -18,8 +14,8 @@ export async function POST(request: NextRequest) {
         const socketId = data.get("socket_id") as string;
         const channel = data.get("channel_name") as string
 
-        const docId = channel.slice(8);
-        if (!docId) {
+        const channelName = channel.slice(8);
+        if (!channelName) {
             return NextResponse.json(
                 { error: "Invalid channel name" }, { status: 400 },
             );

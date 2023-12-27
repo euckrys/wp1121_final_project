@@ -5,8 +5,11 @@ import type { z } from "zod";
 
 import { db } from "@/db";
 import { postsTable } from "@/db/schema";
-
 import { postSchema } from "@/validators/posts";
+
+import Pusher from "pusher";
+import { privateEnv } from "@/lib/env/private";
+import { publicEnv } from "@/lib/env/public";
 
 type PostRequest = z.infer<typeof postSchema>
 
@@ -30,8 +33,6 @@ export async function GET(request: NextRequest) {
         const userId = isMine ? `${session.user.id}` : "00000000-0000-0000-0000-000000000000";
 
         const targetCoach = isCoach ? targetCoachString : "%%";
-
-        console.log(postId, "and", sportType, "and", isMine, "and", isCoach, "and", targetCoach);
 
         const posts = await db.query.postsTable.findMany({
             where: (postsTable, { and, like, eq, ne }) => {
@@ -81,8 +82,6 @@ export async function POST(request: NextRequest) {
         const userId = session?.user?.id ? session.user.id : "";
         const isCoach = session?.user ? session.user.isCoach : false;
 
-        console.log(isCoach);
-
         const result = await db
             .insert(postsTable)
             .values({
@@ -95,7 +94,20 @@ export async function POST(request: NextRequest) {
             .execute();
 
         console.log(result);
+
+        const pusher = new Pusher({
+            appId: privateEnv.PUSHER_ID,
+            key: publicEnv.NEXT_PUBLIC_PUSHER_KEY,
+            secret: privateEnv.PUSHER_SECRET,
+            cluster: publicEnv.NEXT_PUBLIC_PUSHER_CLUSTER,
+            useTLS: true,
+        });
+
+        await pusher.trigger(`private-all-posts`, "post:update", {
+            senderId: userId,
+        })
     } catch (error) {
+        console.log(error);
         return NextResponse.json(
             { error: "Something went wrong" },
             { status: 500 },

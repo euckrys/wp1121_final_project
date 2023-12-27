@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
         const userId = session?.user?.id ? session.user.id : "";
 
         await db.transaction(async (tx) => {
-            const result = await db
+            const result = await tx
                 .insert(profileInfoTable)
                 .values({
                     userId,
@@ -123,6 +123,7 @@ export async function PUT(request: NextRequest) {
             await tx
                 .update(usersTable)
                 .set({username: displayName})
+                .where(eq(usersTable.displayId, userId))
                 .execute();
 
             console.log(result);
