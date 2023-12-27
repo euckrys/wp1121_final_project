@@ -19,3 +19,29 @@ export type UserInfo = {
   availableTime?: Array<boolean>,
   appointment?: Array<string>,
 };
+
+export type PostWithReplies = {
+  id: string,
+  postId: string,
+  authorId: string,
+  author: string,
+  sportType: string,
+  description: string,
+  updatedAt: Date,
+  replies: {
+    author: string;
+    id: number;
+    content: string;
+    authorId: string;
+    toPostId: string;
+    createdAt: Date;
+  }[];
+};
+
+
+export type Reply = {
+  toPostId: string,
+  authorId: string,
+  author: string,
+  content: string,
+}

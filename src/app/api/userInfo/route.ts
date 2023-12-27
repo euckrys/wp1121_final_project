@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 import { db } from "@/db";
-import { profileInfoTable } from "@/db/schema";
+import { postsTable, profileInfoTable, repliesTable, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 import type { z } from "zod";
@@ -16,7 +16,7 @@ export async function GET() {
     try {
         const session = await auth();
         if (!session || !session?.user?.id || !session?.user?.username) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401});
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const [userInfo] = await db
@@ -60,23 +60,31 @@ export async function POST(request: NextRequest) {
         const session = await auth();
         const userId = session?.user?.id ? session.user.id : "";
 
-        const result = await db
-            .insert(profileInfoTable)
-            .values({
-                userId,
-                displayName,
-                sportType,
-                age,
-                height,
-                weight,
-                place,
-                license,
-                availableTime,
-                appointment,
-            })
-            .execute();
+        await db.transaction(async (tx) => {
+            const result = await tx
+                .insert(profileInfoTable)
+                .values({
+                    userId,
+                    displayName,
+                    sportType,
+                    age,
+                    height,
+                    weight,
+                    place,
+                    license,
+                    availableTime,
+                    appointment,
+                })
+                .execute();
 
-        console.log(result);
+            await tx
+                .update(usersTable)
+                .set({username: displayName})
+                .where(eq(usersTable.displayId, userId))
+                .execute();
+
+            console.log(result);
+        })
     } catch (error) {
         console.log(error);
         return NextResponse.json(
@@ -103,21 +111,41 @@ export async function PUT(request: NextRequest) {
         const session = await auth();
         const userId = session?.user?.id? session.user.id : "";
 
-        const [result] = await db
-            .update(profileInfoTable)
-            .set({
-                displayName,
-                sportType,
-                age,
-                height,
-                weight,
-                place,
-                license,
-            })
-            .where(eq(profileInfoTable.userId, userId))
-            .returning();
+        await db.transaction(async (tx) => {
+            const [result] = await tx
+                .update(profileInfoTable)
+                .set({
+                    displayName,
+                    sportType,
+                    age,
+                    height,
+                    weight,
+                    place,
+                    license,
+                })
+                .where(eq(profileInfoTable.userId, userId))
+                .returning();
 
-        console.log(result);
+            await tx
+                .update(usersTable)
+                .set({username: displayName})
+                .where(eq(usersTable.displayId, userId))
+                .execute();
+
+            await tx
+                .update(postsTable)
+                .set({author: displayName})
+                .where(eq(postsTable.authorId, userId))
+                .execute();
+
+            await tx
+                .update(repliesTable)
+                .set({author: displayName})
+                .where(eq(repliesTable.authorId, userId))
+                .execute();
+
+            console.log(result);
+        })
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },

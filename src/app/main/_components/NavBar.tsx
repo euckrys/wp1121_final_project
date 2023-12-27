@@ -28,7 +28,7 @@ export default function NavBar() {
                             <p>Coach</p>
                         </Button>
                     </Link>
-                    <Link href={`/main/posts`}>
+                    <Link href={`/main/posts?search=`}>
                         <Button
                             type={"button"}
                             className=""
