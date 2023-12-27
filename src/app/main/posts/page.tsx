@@ -17,6 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 
 import CreatePostDialog from "./_components/CreatePostDialog";
 
@@ -24,9 +27,12 @@ export default function PostPage() {
   const { data: session } = useSession();
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [sportType, setSportType] = useState<string>("");
+  const [isMine, setIsMine] = useState<boolean>(false);
+  const [isCoach, setIsCoach] = useState<boolean>(false);
+
   const { getPosts, loading } = usePosts();
   const [posts, setPosts] = useState<PostWithReplies[]>([]);
-  const [sportType, setSportType] = useState<string>("");
 
   const username = session?.user?.username ? session.user.username : "";
 
@@ -39,8 +45,8 @@ export default function PostPage() {
       const posts = await getPosts({
         postId: "",
         sportType,
-        isMine: false,
-        isCoach: false,
+        isMine,
+        isCoach,
       })
       if (!posts) return;
       setPosts(posts);
@@ -51,12 +57,28 @@ export default function PostPage() {
 
   useEffect (() => {
     fetchPosts();
-  }, [sportType])
+  }, [sportType, isMine, isCoach])
 
   return (
     <div>
       <NavBar/>
       <h1>Posts</h1>
+
+      <Tabs
+        defaultValue="false"
+        className="w-[400px]"
+        onValueChange={(value) => {
+          if (value == "true")  setIsCoach(true);
+          else if (value == "false")  setIsCoach(false);
+          console.log(isCoach);
+        }
+      }>
+        <TabsList>
+          <TabsTrigger value="false">Posted by Users</TabsTrigger>
+          <TabsTrigger value="true">Posted by Coaches</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
       <Button
         onClick={() => {setDialogOpen(true)}}
         disabled={loading}
@@ -64,6 +86,7 @@ export default function PostPage() {
       >
         新增貼文
       </Button>
+
       <div>
         {posts.map((post) => (
           <Link href={`/main/posts/${post.postId}`} key={post.postId}>
@@ -73,7 +96,19 @@ export default function PostPage() {
           </Link>
         ))}
       </div>
-      <Select onValueChange={(value) => {
+
+      <div className="flex items-center space-x-2">
+        <Checkbox id="isMine" onCheckedChange={(value) => setIsMine(Boolean(value))}/>
+        <label
+          htmlFor="isMine"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Only show my posts and replies
+        </label>
+      </div>
+
+      <Select
+        onValueChange={(value) => {
           if (value == "%") setSportType("");
           else setSportType(value);
         }}
@@ -88,6 +123,7 @@ export default function PostPage() {
           <SelectItem value="others">其他</SelectItem>
         </SelectContent>
       </Select>
+
       {dialogOpen && (
         <>
           <CreatePostDialog
