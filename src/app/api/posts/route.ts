@@ -20,9 +20,10 @@ export async function GET(request: NextRequest) {
         const url = new URL(request.url);
         const postId = url.searchParams.get("postId");
         const sportType = url.searchParams.get("sportType");
-        const isMine = url.searchParams.get("isMine");
+        const isMineString = url.searchParams.get("isMine");
         const isCoachString = url.searchParams.get("isCoach");
 
+        const isMine = isMineString?.toLowerCase() == "true" ? true: false;
         const isCoach = isCoachString?.toLowerCase() == "true" ? true : false;
 
         const userId = isMine ? `${session.user.id}` : "00000000-0000-0000-0000-000000000000";
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest) {
                 return and(
                     postId ? eq(postsTable.postId, postId) : ne(postsTable.postId, "00000000-0000-0000-0000-000000000000"),
                     like(postsTable.sportType, sportType? `%${sportType}%` : "%%"),
-                    isMine ? eq(postsTable.authorId, userId) : ne(postsTable.authorId, userId),
+                    isMine ? eq(postsTable.authorId, userId) : ne(postsTable.authorId, "00000000-0000-0000-0000-000000000000"),
                     eq(postsTable.authorIsCoach, isCoach),
                 )
             },
@@ -73,6 +74,8 @@ export async function POST(request: NextRequest) {
         const session = await auth();
         const userId = session?.user?.id ? session.user.id : "";
         const isCoach = session?.user ? session.user.isCoach : false;
+
+        console.log(isCoach);
 
         const result = await db
             .insert(postsTable)

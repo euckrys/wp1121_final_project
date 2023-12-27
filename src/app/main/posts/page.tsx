@@ -10,6 +10,13 @@ import type { PostWithReplies } from "@/lib/types/db"
 import Link from "next/link";
 import NavBar from "../_components/NavBar";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import CreatePostDialog from "./_components/CreatePostDialog";
 
@@ -19,6 +26,7 @@ export default function PostPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { getPosts, loading } = usePosts();
   const [posts, setPosts] = useState<PostWithReplies[]>([]);
+  const [sportType, setSportType] = useState<string>("");
 
   const username = session?.user?.username ? session.user.username : "";
 
@@ -30,9 +38,9 @@ export default function PostPage() {
     try {
       const posts = await getPosts({
         postId: "",
-        sportType: "",
+        sportType,
         isMine: false,
-        isCoach: true,
+        isCoach: false,
       })
       if (!posts) return;
       setPosts(posts);
@@ -43,7 +51,7 @@ export default function PostPage() {
 
   useEffect (() => {
     fetchPosts();
-  }, [])
+  }, [sportType])
 
   return (
     <div>
@@ -65,6 +73,21 @@ export default function PostPage() {
           </Link>
         ))}
       </div>
+      <Select onValueChange={(value) => {
+          if (value == "%") setSportType("");
+          else setSportType(value);
+        }}
+      >
+        <SelectTrigger className="w-[180px]" disabled={loading}>
+          <SelectValue placeholder="SportType" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="%">ALL</SelectItem>
+          <SelectItem value="fitness">健身</SelectItem>
+          <SelectItem value="swimming">游泳</SelectItem>
+          <SelectItem value="others">其他</SelectItem>
+        </SelectContent>
+      </Select>
       {dialogOpen && (
         <>
           <CreatePostDialog
