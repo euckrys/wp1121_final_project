@@ -1,11 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { auth } from "@/lib/auth";
+
 import type { z } from "zod";
 
-import { replySchema } from "@/validators/replies";
-import { auth } from "@/lib/auth";
 import { db } from "@/db";
-import { repliesTable } from "@/db/schema";
+import { postsTable, repliesTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { replySchema } from "@/validators/replies";
 
 import Pusher from "pusher";
 import { privateEnv } from "@/lib/env/private";
@@ -28,17 +30,25 @@ export async function POST(request: NextRequest) {
         const session = await auth();
         const userId = session?.user?.id ? session.user.id : "";
 
-        const result = await db
-            .insert(repliesTable)
-            .values({
-                toPostId,
-                authorId: userId,
-                author,
-                content,
-            })
-            .execute();
+        await db.transaction(async (tx) => {
+            const [result] = await tx
+                .insert(repliesTable)
+                .values({
+                    toPostId,
+                    authorId: userId,
+                    author,
+                    content,
+                })
+                .returning();
 
-        console.log(result);
+                await tx
+                    .update(postsTable)
+                    .set({updatedAt: new Date()})
+                    .where(eq(postsTable.postId, toPostId))
+                    .execute();
+
+            console.log(result);
+        })
 
         const pusher = new Pusher({
             appId: privateEnv.PUSHER_ID,
