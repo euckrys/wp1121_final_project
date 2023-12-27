@@ -39,6 +39,10 @@ export default function Schedule({
     const { updateAvailableTime, loading } = useUserInfo();
 
 
+    const handleOpenDialog = () => {
+      setAvailableTime(_availableTime);
+      setDialogOpen(true);
+  }
     const handleCloseDialog = () => {
         setDialogOpen(false);
         setAvailableTime(_availableTime);
@@ -114,7 +118,7 @@ export default function Schedule({
         <CarouselNext />
       </Carousel>
 
-      <Button onClick = {() => {setDialogOpen(true)}}>編輯時程表</Button>
+      <Button onClick = {() => {handleOpenDialog()}}>編輯時程表</Button>
       {dialogOpen && (
         <Dialog open={dialogOpen} onOpenChange={handleCloseDialog} >
             <DialogContent>
