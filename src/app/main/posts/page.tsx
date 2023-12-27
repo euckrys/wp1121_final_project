@@ -29,6 +29,7 @@ export default function PostPage() {
   const fetchPosts = async () => {
     try {
       const posts = await getPosts({
+        postId: "",
         sportType: "",
         isMine: false,
         isCoach: true,

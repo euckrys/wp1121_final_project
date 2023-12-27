@@ -18,18 +18,19 @@ export async function GET(request: NextRequest) {
         }
 
         const url = new URL(request.url);
+        const postId = url.searchParams.get("postId");
         const sportType = url.searchParams.get("sportType");
         const isMine = url.searchParams.get("isMine");
         const isCoachString = url.searchParams.get("isCoach");
 
         const isCoach = isCoachString?.toLowerCase() == "true" ? true : false;
-        console.log(isCoach);
 
-        const userId = isMine ? `${session.user.id}` : `%%`;
+        const userId = isMine ? `${session.user.id}` : "00000000-0000-0000-0000-000000000000";
 
         const posts = await db.query.postsTable.findMany({
             where: (postsTable, { and, like, eq, ne }) => {
                 return and(
+                    postId ? eq(postsTable.postId, postId) : ne(postsTable.postId, "00000000-0000-0000-0000-000000000000"),
                     like(postsTable.sportType, sportType? `%${sportType}%` : "%%"),
                     isMine ? eq(postsTable.authorId, userId) : ne(postsTable.authorId, userId),
                     eq(postsTable.authorIsCoach, isCoach),
@@ -46,8 +47,6 @@ export async function GET(request: NextRequest) {
                 }
             }
         });
-
-        console.log("hi", posts);
 
         return NextResponse.json({ posts }, { status: 200 });
     } catch (error) {

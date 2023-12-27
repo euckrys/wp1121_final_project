@@ -6,10 +6,12 @@ export default function usePost() {
     const router = useRouter();
 
     const getPosts = async ({
+        postId,
         sportType,
         isMine,
         isCoach,
     }: {
+        postId: string,
         sportType: string,
         isMine: boolean,
         isCoach: boolean,
@@ -17,9 +19,12 @@ export default function usePost() {
         if (loading) return;
         setLoading(true);
 
-        const res = await fetch(`/api/posts?sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}`, {
-            method: "GET",
-        });
+        const res = await fetch(
+            `/api/posts?postId=${postId}&sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}`,
+            {
+                method: "GET",
+            }
+        );
 
         if (!res.ok) {
             const body = await res.json();
