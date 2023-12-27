@@ -8,36 +8,26 @@ import { eq } from "drizzle-orm";
 
 import type { z } from "zod";
 
-import { profileInfoSchema } from "@/validators/profileInfo";
+import { availableTimeSchema } from "@/validators/profileInfo";
 
-type ProfileRequest = z.infer<typeof profileInfoSchema>;
+type AvailableTimeRequest = z.infer<typeof availableTimeSchema>;
 
-export async function GET(
-    req: NextRequest,
+export async function GET(req: NextRequest,
     {
       params,
     }: {
       params: {
         userId: string;
       };
-    },
-) {
+    },) {
     try {
         const session = await auth();
         if (!session || !session?.user?.id || !session?.user?.username) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401});
         }
 
-        const [userInfo] = await db
+        const [availableTime] = await db
             .select({
-                userId: profileInfoTable.userId,
-                displayName: profileInfoTable.displayName,
-                sportType: profileInfoTable.sportType,
-                age: profileInfoTable.age,
-                height: profileInfoTable.height,
-                weight: profileInfoTable.weight,
-                place: profileInfoTable.place,
-                license: profileInfoTable.license,
                 availableTime: profileInfoTable.availableTime,
                 appointment: profileInfoTable.appointment,
             })
@@ -45,7 +35,7 @@ export async function GET(
             .where(eq(profileInfoTable.userId, params.userId))
             .execute();
 
-        return NextResponse.json({ userInfo }, { status: 200 });
+        return NextResponse.json({ availableTime }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },
@@ -54,31 +44,31 @@ export async function GET(
     }
 }
 
-export async function PUT(request: NextRequest, {params}: {params: {userId: string;};}) {
+export async function PUT(
+    request: NextRequest,
+    {
+      params,
+    }: {
+      params: {
+        userId: string;
+      };
+    },) {
     const data = await request.json();
 
     try {
-        profileInfoSchema.parse(data);
+        availableTimeSchema.parse(data);
     } catch (error) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { displayName, sportType, age, height, weight, place, license} = data as ProfileRequest;
+    const { availableTime, appointment } = data as AvailableTimeRequest;
 
     try {
-        // const session = await auth();
-        // const userId = session?.user?.id? session.user.id : "";
-
         const [result] = await db
             .update(profileInfoTable)
             .set({
-                displayName,
-                sportType,
-                age,
-                height,
-                weight,
-                place,
-                license,
+                availableTime,
+                appointment,
             })
             .where(eq(profileInfoTable.userId, params.userId))
             .returning();

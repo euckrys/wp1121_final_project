@@ -24,21 +24,43 @@ export default function ProfileForm() {
     const [weight, setWeight] = useState<string>("");
     const [place, setPlace] = useState<string>("");
     const [license, setLicense] = useState<string>("");
+    const [availableTime] = useState<Array<boolean>>(Array(70).fill(true));
+    const [coachAvailableTime] = useState<Array<boolean>>(Array(70).fill(false));
+    const [appointment] = useState<Array<string>>(Array(35).fill("/"));
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!sportType || !age || !height || !weight) return;
         try {
             await updateUser();
-            await postUserInfo({
-                displayName,
-                sportType,
-                age,
-                height,
-                weight,
-                place,
-                license,
-            });
+            if(session?.user?.isCoach)
+            {
+                await postUserInfo({
+                    displayName,
+                    sportType,
+                    age,
+                    height,
+                    weight,
+                    place,
+                    license,
+                    availableTime: coachAvailableTime,
+                    appointment,
+                });
+            }
+            else
+            {
+                await postUserInfo({
+                    displayName,
+                    sportType,
+                    age,
+                    height,
+                    weight,
+                    place,
+                    license,
+                    availableTime,
+                    appointment,
+                });
+            }
         } catch (error) {
             console.log(error);
             alert("Error update user profile");

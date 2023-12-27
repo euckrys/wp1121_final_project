@@ -47,6 +47,8 @@ export const profileInfoTable = pgTable(
     weight: varchar("weight"),
     place: varchar("place"),
     license: varchar("license"),
+    availableTime: boolean("availableTime").array(70),
+    appointment: varchar("appointment").array(35),
   },
   (table) => ({
     userIdIndex: index("display_id_index").on(table.userId),

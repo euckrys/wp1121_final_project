@@ -1,23 +1,31 @@
 "use client"
-
-import useUserInfo from "@/hooks/useUserInfo";
 import { useEffect, useState } from "react";
+import * as React from "react"
+import { useSession } from "next-auth/react";
 
-import type { UserInfo } from "@/lib/types/db"
+
 
 import { Button } from "@/components/ui/button";
+
+import type { UserInfo } from "@/lib/types/db"
+import useUserInfo from "@/hooks/useUserInfo";
 import UpdateProfileDialog from "./_components/UpdateProfileDialog";
+import Schedule from "./_components/Schedule"
 
 export default function HomePage() {
+  const { data: session } = useSession();
   const { getUserInfo, loading } = useUserInfo();
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
 
   const fetchUserInfo = async () => {
     try {
       const targetUserInfo = await getUserInfo();
+      console.log("targetUserInfo: ", targetUserInfo);
       setUserInfo(targetUserInfo);
+      console.log("userInfo: ",userInfo);
     } catch (error) {
       console.log(error);
       alert("Error getting userinfo");
@@ -27,6 +35,11 @@ export default function HomePage() {
   useEffect(() => {
     fetchUserInfo();
   }, [dialogOpen])
+
+  useEffect(() => {
+    fetchUserInfo();
+    console.log(scheduleDialogOpen)
+  }, [scheduleDialogOpen])
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
@@ -59,6 +72,8 @@ export default function HomePage() {
           onclose={handleCloseDialog}
         />
       )}
+
+      {session?.user?.isCoach && userInfo?.availableTime && userInfo?.appointment && <Schedule _availableTime={userInfo?.availableTime} _appointment={userInfo.appointment} dialogOpen={scheduleDialogOpen} setDialogOpen={setScheduleDialogOpen}/>}
     </div>
   );
 }

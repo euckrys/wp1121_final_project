@@ -1,3 +1,4 @@
+'use server'
 import { and, eq, ne, desc } from "drizzle-orm";
 import { db } from "@/db";
 import { usersTable, profileInfoTable } from "@/db/schema";

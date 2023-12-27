@@ -35,6 +35,8 @@ export default function useUser() {
         weight,
         place,
         license,
+        availableTime,
+        appointment,
     }: {
         displayName: string,
         sportType: string,
@@ -43,6 +45,8 @@ export default function useUser() {
         weight: string,
         place: string,
         license: string,
+        availableTime: Array<boolean>,
+        appointment: Array<string>
     }) => {
         if (loading) return;
         setLoading(true);
@@ -57,6 +61,8 @@ export default function useUser() {
                 weight,
                 place,
                 license,
+                availableTime,
+                appointment,
             }),
         });
 
@@ -128,11 +134,38 @@ export default function useUser() {
         setLoading(false);
     }
 
+    const updateAvailableTime = async({
+        availableTime,
+        appointment
+    }:{
+        availableTime: Array<boolean>,
+        appointment?:Array<string>,
+    }) => {
+        if (loading) return;
+        setLoading(true);
+
+        const res = await fetch("/api/availableTime", {
+            method: "PUT",
+            body: JSON.stringify({
+                availableTime,
+                appointment,
+            }),
+        });
+
+        if (!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error);
+        }
+
+        router.refresh();
+        setLoading(false);
+    }
     return {
         getUserInfo,
         postUserInfo,
         updateUser,
         updateUserInfo,
+        updateAvailableTime,
         loading,
     }
 }
