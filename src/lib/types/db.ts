@@ -35,3 +35,11 @@ export type PostWithReplies = {
     createdAt: Date;
   }[];
 };
+
+
+export type Reply = {
+  toPostId: string,
+  authorId: string,
+  author: string,
+  content: string,
+}

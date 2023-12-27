@@ -84,7 +84,7 @@ export const repliesTable = pgTable(
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     author: varchar("author").notNull(),
     content: varchar("content").notNull(),
-    createdAt: timestamp("update_at").default(sql`now()`).notNull(),
+    createdAt: timestamp("create_at").default(sql`now()`).notNull(),
   },
   (table) => ({
     toPostIdIndex: index("to_post_id_index").on(table.toPostId),

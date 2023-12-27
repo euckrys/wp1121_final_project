@@ -7,12 +7,13 @@ import usePosts from "@/hooks/usePosts"
 
 import type { PostWithReplies } from "@/lib/types/db"
 
+import Link from "next/link";
 import NavBar from "../_components/NavBar";
 import { Button } from "@/components/ui/button";
 
 import CreatePostDialog from "./_components/CreatePostDialog";
 
-export default function HomePage() {
+export default function PostPage() {
   const { data: session } = useSession();
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -56,11 +57,11 @@ export default function HomePage() {
       </Button>
       <div>
         {posts.map((post) => (
-          <div key={post.postId}>
+          <Link href={`/main/posts/${post.postId}`} key={post.postId}>
             <p>{post.author}</p>
             <p>{post.description}</p>
             <p>{`reply: ${post.replies[0]?.content}`}</p>
-          </div>
+          </Link>
         ))}
       </div>
       {dialogOpen && (

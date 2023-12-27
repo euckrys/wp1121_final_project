@@ -1,14 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
+import type { z } from "zod";
+
 import { db } from "@/db";
 import { postsTable } from "@/db/schema";
-// import { eq } from "drizzle-orm";
 
-import { postSchema } from "@/validators/posts"
-// import { and, eq } from "drizzle-orm";
+import { postSchema } from "@/validators/posts";
 
-type PostRequest = Zod.infer<typeof postSchema>
+type PostRequest = z.infer<typeof postSchema>
 
 export async function GET(request: NextRequest) {
     try {
