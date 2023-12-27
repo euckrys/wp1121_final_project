@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 import { db } from "@/db";
-import { profileInfoTable, usersTable } from "@/db/schema";
+import { postsTable, profileInfoTable, repliesTable, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 import type { z } from "zod";
@@ -125,6 +125,18 @@ export async function PUT(request: NextRequest) {
                 .update(usersTable)
                 .set({username: displayName})
                 .where(eq(usersTable.displayId, userId))
+                .execute();
+
+            await tx
+                .update(postsTable)
+                .set({author: displayName})
+                .where(eq(postsTable.authorId, userId))
+                .execute();
+
+            await tx
+                .update(repliesTable)
+                .set({author: displayName})
+                .where(eq(repliesTable.authorId, userId))
                 .execute();
 
             console.log(result);
