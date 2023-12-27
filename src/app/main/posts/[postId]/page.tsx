@@ -8,6 +8,7 @@ import type { PostWithReplies } from "@/lib/types/db"
 
 import Reply from "./_components/Reply";
 import ReplyInput from "./_components/ReplyInput"
+import { pusherClient } from "@/lib/pusher/client";
 
 type PostDetailsPageProps = {
     params: {
@@ -19,31 +20,40 @@ export default function PostDetailsPage({
     params: { postId },
 }: PostDetailsPageProps) {
 
-    const { getPosts } = usePosts();
+    const { getPost } = usePosts();
     const [post, setPost] = useState<PostWithReplies>();
 
-    const fetchPosts = async () => {
+    const fetchPost = async () => {
         try {
-          const posts = await getPosts({
-            postId,
-            sportType: "",
-            isMine: false,
-            isCoach: true,
-          })
-          if (!posts) return;
-          setPost(posts[0]);
+          const post = await getPost();
+          console.log(post);
+          if (!post) return;
+          setPost(post);
         } catch (error) {
-          console.log("Error fetchingPosts:", error);
+          console.log("Error fetching Posts:", error);
         }
       }
 
+    useEffect(() => {
+        const channel = pusherClient.subscribe(`private-${postId}`);
+
+        channel.bind("reply:update", async() => {
+            console.log("Reply update event received");
+            fetchPost();
+        });
+
+        return () => {
+            channel.unbind();
+        }
+    }, [post, postId])
+
     useEffect (() => {
-        fetchPosts();
+        fetchPost();
     }, [])
 
     return (
         <>
-            <h1>{`Post Details: ${postId}`}</h1>
+            {/* <h1>{`Post Details: ${postId}`}</h1> */}
             <h1>{post?.postId}</h1>
             <h1>{post?.description}</h1>
             <div>

@@ -40,7 +40,7 @@ export default function PostPage({
   const [isMine, setIsMine] = useState<boolean>(false);
   const [isCoach, setIsCoach] = useState<boolean>(false);
 
-  const { getPosts, loading } = usePosts();
+  const { getAllPosts, loading } = usePosts();
   const [posts, setPosts] = useState<PostWithReplies[]>([]);
 
   const username = session?.user?.username ? session.user.username : "";
@@ -51,7 +51,7 @@ export default function PostPage({
 
   const fetchPosts = async () => {
     try {
-      const posts = await getPosts({
+      const posts = await getAllPosts({
         postId: "",
         sportType,
         isMine,
@@ -80,7 +80,6 @@ export default function PostPage({
 
   useEffect (() => {
     fetchPosts();
-    console.log(username);
   }, [sportType, isMine, isCoach, search])
 
   return (

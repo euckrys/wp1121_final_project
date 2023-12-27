@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
             await tx
                 .update(usersTable)
                 .set({username: displayName})
+                .where(eq(usersTable.displayId, userId))
                 .execute();
 
             console.log(result);

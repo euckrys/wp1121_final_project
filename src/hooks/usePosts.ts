@@ -1,11 +1,12 @@
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function usePost() {
+    const { postId } = useParams();
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const getPosts = async ({
+    const getAllPosts = async ({
         postId,
         sportType,
         isMine,
@@ -21,8 +22,7 @@ export default function usePost() {
         if (loading) return;
         setLoading(true);
 
-        const res = await fetch(
-            `/api/posts?postId=${postId}&sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}&targetCoach=${targetCoach}`,
+        const res = await fetch(`/api/posts?postId=${postId}&sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}&targetCoach=${targetCoach}`,
             {
                 method: "GET",
             }
@@ -39,6 +39,27 @@ export default function usePost() {
         router.refresh();
         setLoading(false);
         return posts;
+    }
+
+    const getPost = async () => {
+        if (loading) return;
+        setLoading(true);
+
+        const res = await fetch(`/api/posts/${postId}`, {
+            method: "GET",
+        });
+
+        if (!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error);
+        }
+
+        const data = await res.json();
+        const post = data.post;
+
+        router.refresh();
+        setLoading(false);
+        return post;
     }
 
     const createPost = async ({
@@ -72,7 +93,8 @@ export default function usePost() {
     }
 
     return {
-        getPosts,
+        getAllPosts,
+        getPost,
         createPost,
         loading,
     }
