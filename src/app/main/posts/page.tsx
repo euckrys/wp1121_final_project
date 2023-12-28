@@ -61,7 +61,7 @@ export default function PostPage({
       if (!posts) return;
       setPosts(posts);
     } catch (error) {
-      console.log("Error fetchingPosts:", error);
+      console.log("Error fetching posts:", error);
     }
   }
 

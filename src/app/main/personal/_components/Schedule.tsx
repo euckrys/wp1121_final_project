@@ -1,6 +1,6 @@
 "use client"
 import * as React from "react"
- 
+
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
@@ -68,7 +68,7 @@ export default function Schedule({
               return a;
             }
           });
-        
+
         setAvailableTime(newAvailableTime);
     }
     return (

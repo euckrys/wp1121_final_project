@@ -13,11 +13,15 @@ export async function GET() {
         const userId = session.user.id;
 
         const charts = await db.query.chartsTable.findMany({
+            columns: {
+                id: false,
+            },
             where: (chartsTable, { eq }) => eq(chartsTable.ownerId, userId),
             orderBy: (chartsTable, { asc }) => [asc(chartsTable.month)],
             with: {
                 records: {
                     columns: {
+                        id: true,
                         month: true,
                         date: true,
                         sportType: true,

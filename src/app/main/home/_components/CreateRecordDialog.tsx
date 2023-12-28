@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react";
-import usePosts from "@/hooks/usePosts"
 
-import { Button } from "@/components/ui/button"
+import useRecords from "@/hooks/useRecords";
+
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import Input from "@/app/_components/AuthInput"
 import {
     Dialog,
     DialogContent,
@@ -13,42 +15,48 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import Input from "@/app/_components/AuthInput"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
 
-type CreatePostDialogProps = {
-    username: string,
+
+type CreateRecordDialog = {
+    toChartId: string,
+    month: number,
+    date: number,
+    totalTime: number[],
     showDialog: boolean,
     onclose: () => void,
 }
 
-export default function CreatePostDialog({
-    username,
+export default function CreateRecordDialog({
+    toChartId,
+    month,
+    date,
+    totalTime,
     showDialog,
     onclose
-}: CreatePostDialogProps) {
-    const { createPost, loading } = usePosts();
+}: CreateRecordDialog) {
+    const { createRecord, loading } = useRecords();
+
     const [sportType, setSportType] = useState<string>("");
-    const [expectedTime, setExpectedTime] = useState<string[]>([]);
+    const [time, setTime] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
-    const handleCreate = async () => {
+    const handelCreate = async () => {
+        const updatedTotalTime = [...totalTime];
+        updatedTotalTime[date-1]  = updatedTotalTime[date-1] + 1;
+
         try {
-            await createPost({
-                author: username,
+            await createRecord({
+                toChartId,
+                month,
+                date,
                 sportType,
-                expectedTime,
+                time,
                 description,
+                totalTime: updatedTotalTime,
             })
         } catch (error) {
             console.log(error);
-            alert("Error creating Post");
+            alert("Error creating Record");
         }
 
         onclose();
@@ -59,7 +67,7 @@ export default function CreatePostDialog({
             <Dialog open={showDialog} onOpenChange={onclose}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>新增貼文</DialogTitle>
+                        <DialogTitle>新增紀錄</DialogTitle>
                         <DialogDescription>輸入內容</DialogDescription>
                     </DialogHeader>
                         <div>
@@ -71,20 +79,17 @@ export default function CreatePostDialog({
                                 setValue={setSportType}
                             />
                         </div>
-                        <Select>
-                            <SelectTrigger className="w-[180px]" disabled={loading}>
-                                <SelectValue placeholder="SportType" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="0">09:00-11:00</SelectItem>
-                                <SelectItem value="1">11:00-13:00</SelectItem>
-                                <SelectItem value="2">13:00-15:00</SelectItem>
-                                <SelectItem value="3">15:00-17:00</SelectItem>
-                                <SelectItem value="4">17:00-19:00</SelectItem>
-                            </SelectContent>
-                        </Select>
                         <div>
-                            <Label>簡介</Label>
+                            <Label>時間</Label>
+                            <Input
+                                label=""
+                                type="text"
+                                value={time}
+                                setValue={setTime}
+                            />
+                        </div>
+                        <div>
+                            <Label>敘述</Label>
                             <Input
                                 label=""
                                 type="text"
@@ -95,7 +100,7 @@ export default function CreatePostDialog({
                     <DialogFooter>
                         <Button
                             type="submit"
-                            onClick={handleCreate}
+                            onClick={handelCreate}
                             disabled={loading}
                         >
                             新增
@@ -105,5 +110,5 @@ export default function CreatePostDialog({
                 </DialogContent>
             </Dialog>
         </>
-    );
+    )
 }

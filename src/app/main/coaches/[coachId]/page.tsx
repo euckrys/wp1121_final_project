@@ -47,7 +47,7 @@ export default function HomePage() {
       <NavBar/>
       <div>
         <Image
-          src={coachInfo?.avatarUrl ? coachInfo.avatarUrl : ""}
+          src={coachInfo?.avatarUrl ? coachInfo.avatarUrl : "123"}
           width={20}
           height={20}
           alt=""
@@ -60,9 +60,9 @@ export default function HomePage() {
       </div>
 
       {coachInfo?.availableTime && coachInfo.appointment && userInfo?.availableTime && userInfo.appointment && session?.user?.isCoach !== undefined &&
-      <Schedule _coach_availableTime={coachInfo?.availableTime} 
-                _coach_appointment={coachInfo.appointment} 
-                _availableTime={userInfo?.availableTime} 
+      <Schedule _coach_availableTime={coachInfo?.availableTime}
+                _coach_appointment={coachInfo.appointment}
+                _availableTime={userInfo?.availableTime}
                 _appointment={userInfo?.appointment}
                 coachname={coachInfo.displayName}
                 username={userInfo.displayName}

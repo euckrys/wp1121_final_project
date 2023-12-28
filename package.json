@@ -39,7 +39,8 @@
     "react-image-file-resizer": "^0.4.8",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "type": "^2.7.2"
+    "type": "^2.7.2",
+    "vaul": "^0.8.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

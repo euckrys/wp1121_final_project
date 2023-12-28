@@ -63,3 +63,18 @@ export type Reply = {
   author: string,
   content: string,
 }
+
+export type Chart = {
+  chartId: string,
+  ownerId: string,
+  month: number,
+  totalTime: number[],
+  records: {
+    id: string,
+    month: number,
+    date: number,
+    sportType: string,
+    time: string,
+    description: string,
+  }[],
+}

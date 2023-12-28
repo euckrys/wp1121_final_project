@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default function NavBar() {
     const { data: session } = useSession();
-    const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
+    // const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
     console.log(session);
 
     return (
@@ -61,13 +61,13 @@ export default function NavBar() {
                             type={"submit"}
                             className="hover:bg-slate-200"
                         >
-                            <Image
+                            {/* <Image
                                 src={avatarUrl}
                                 width={20}
                                 height={20}
                                 className="w-12 h-12 rounded-full mr-1 mt-0.5"
                                 alt={"image"}
-                            />
+                            /> */}
                         </Button>
                     </Link>
                     <Link href={'/auth/signout'}>

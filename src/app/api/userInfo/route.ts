@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
 
     const { displayName, sportType, age, height, weight, place, license, availableTime, appointment} = data as ProfileRequest;
 
+
     try {
         const session = await auth();
         const userId = session?.user?.id ? session.user.id : "";
@@ -88,13 +89,14 @@ export async function POST(request: NextRequest) {
                 .where(eq(usersTable.displayId, userId))
                 .execute();
 
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 const month = (10+i) > 12 ? (i-2) : (10+i);
                 await tx
                     .insert(chartsTable)
                     .values({
                         ownerId: userId,
                         month,
+                        totalTime: Array(31).fill(0),
                     })
                     .execute();
             }
