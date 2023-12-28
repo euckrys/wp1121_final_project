@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const profileInfoSchema = z.object({
+    isCoach: z.boolean().optional(),
     displayName: z.string().optional(),
     sportType: z.string().optional(),
     age: z.string().optional(),

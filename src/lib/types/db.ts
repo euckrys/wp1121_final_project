@@ -8,7 +8,9 @@ export type User = {
   hasProfile: boolean;
 };
 
+
 export type UserInfo = {
+  isCoach: boolean,
   displayName: string,
   sportType: string,
   age: string,
@@ -18,6 +20,28 @@ export type UserInfo = {
   license?: string,
   availableTime?: Array<boolean>,
   appointment?: Array<string>,
+};
+
+export type Coach = {
+  userId: string,
+  isCoach: boolean,
+  displayName: string,
+  sportType: string,
+  age: string,
+  height: string,
+  weight: string,
+  place?: string,
+  license?: string,
+  availableTime?: Array<boolean>,
+  appointment?: Array<string>,
+};
+export type coach = {
+  displayId: string;
+  email: string;
+  isCoach: boolean;
+  avartarUrl: string;
+  username: string;
+  profileInfo: UserInfo;
 };
 
 export type PostWithReplies = {

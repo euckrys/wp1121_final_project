@@ -15,7 +15,6 @@ export default function HomePage() {
   const [ coachInfo, setCoachInfo ] = useState<UserInfo>();
   const [ scheduleDialogOpen, setScheduleDialogOpen ] = useState<boolean>(false);
   const [ cancelDialogOpen, setCancelDialogOpen ] = useState<boolean>(false);
-  const [ test, setTest ] = useState<boolean>(false);
 
   const fetchUserInfo = async () => {
     try {
@@ -41,7 +40,7 @@ export default function HomePage() {
   useEffect(() => {
     fetchUserInfo();
     fetchCoachInfo();
-  }, [scheduleDialogOpen, cancelDialogOpen, test])
+  }, [scheduleDialogOpen, cancelDialogOpen])
   return (
     <div>
       <NavBar/>
@@ -64,7 +63,6 @@ export default function HomePage() {
                 cancelDialogOpen={cancelDialogOpen}
                 setCancelDialogOpen={setCancelDialogOpen}
                 isCoach={session?.user?.isCoach}
-                setTest={setTest}
       />}
 
     </div>
