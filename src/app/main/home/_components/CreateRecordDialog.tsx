@@ -22,6 +22,7 @@ type CreateRecordDialog = {
     month: number,
     date: number,
     totalTime: number[],
+    setTotalTime: React.Dispatch<React.SetStateAction<number[]>>,
     showDialog: boolean,
     onclose: () => void,
 }
@@ -31,6 +32,7 @@ export default function CreateRecordDialog({
     month,
     date,
     totalTime,
+    setTotalTime,
     showDialog,
     onclose
 }: CreateRecordDialog) {
@@ -57,6 +59,8 @@ export default function CreateRecordDialog({
         } catch (error) {
             console.log(error);
             alert("Error creating Record");
+        } finally {
+            setTotalTime(updatedTotalTime);
         }
 
         onclose();
