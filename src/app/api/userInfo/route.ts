@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 import { db } from "@/db";
-import { chartsTable, postsTable, profileInfoTable, repliesTable, usersTable } from "@/db/schema";
+import { chartsTable, postsTable, profileInfoTable, repliesTable, reviewsTable, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 import type { z } from "zod";
@@ -123,7 +123,7 @@ export async function PUT(request: NextRequest) {
 
     try {
         const session = await auth();
-        const userId = session?.user?.id? session.user.id : "";
+        const userId = session?.user?.id ? session.user.id : "";
 
         await db.transaction(async (tx) => {
             const [result] = await tx
@@ -157,6 +157,12 @@ export async function PUT(request: NextRequest) {
                 .update(repliesTable)
                 .set({author: displayName})
                 .where(eq(repliesTable.authorId, userId))
+                .execute();
+
+            await tx
+                .update(reviewsTable)
+                .set({author: displayName})
+                .where(eq(reviewsTable.authorId, userId))
                 .execute();
 
             console.log(result);

@@ -1,13 +1,41 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
-import type { z } from "zod";
-
 import { db } from "@/db";
-import { chartsTable } from "@/db/schema";
 
-export async function GET(request: NextRequest) {
-    
+export async function GET() {
+    try {
+        const session = await auth();
+        if (!session || !session?.user?.id || !session?.user?.username) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const userId = session.user.id;
+
+        const charts = await db.query.chartsTable.findMany({
+            where: (chartsTable, { eq }) => eq(chartsTable.ownerId, userId),
+            orderBy: (chartsTable, { asc }) => [asc(chartsTable.month)],
+            with: {
+                records: {
+                    columns: {
+                        month: true,
+                        date: true,
+                        sportType: true,
+                        time: true,
+                        description: true,
+                    },
+                }
+            }
+        });
+
+        return NextResponse.json({ charts }, { status: 200 });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json(
+            { error: "Something went wrong" },
+            { status: 500 },
+        )
+    }
 }
 
 

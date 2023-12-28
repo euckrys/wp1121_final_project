@@ -1,7 +1,7 @@
 import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 
-export default function usePost() {
+export default function usePosts() {
     const { postId } = useParams();
     const [loading, setLoading] = useState(false);
     const router = useRouter();
