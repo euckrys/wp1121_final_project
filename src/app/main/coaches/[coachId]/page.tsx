@@ -29,6 +29,7 @@ export default function HomePage() {
   const [ isAnonymous, setIsAnonymous ] = useState<boolean>(true);
   const [ totalStar, setTotalStar ] = useState<number>();
   const [ totalReview, setTotalReview ] = useState<number>();
+  const [ averageStar, setAverageStar ] = useState<number>();
 
   const userId = session?.user?.id ? session.user.id : "";
   const username = session?.user?.username ? session.user.username : "";
@@ -61,6 +62,7 @@ export default function HomePage() {
       setReviews(targetReview?.review);
       setTotalStar(targetReview?.totalStar);
       setTotalReview(targetReview?.totalReview);
+      totalStar && totalReview && setAverageStar((totalStar/totalReview));
     } catch (error) {
       console.log(error);
       alert("Error geting Review");
@@ -120,6 +122,7 @@ export default function HomePage() {
         <h1>{coachInfo?.height}</h1>
         <h1>{coachInfo?.weight}</h1>
         <h1>avarage star: {totalStar && totalReview && (totalStar/totalReview)} totalReview: {totalReview}</h1>
+        <Rating name="half-rating" precision={0.1} readOnly defaultValue={averageStar}/>
       </div>
       
       {coachInfo?.availableTime && coachInfo.appointment && userInfo?.availableTime && userInfo.appointment && session?.user?.isCoach !== undefined &&
