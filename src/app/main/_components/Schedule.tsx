@@ -1,6 +1,5 @@
 "use client"
 import * as React from "react"
-import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card"
 
 import { Button } from "@/components/ui/button";
@@ -36,11 +35,11 @@ export default function Schedule({
     _coach_appointment,
     _availableTime,
     _appointment,
-    coachname, 
+    coachname,
     username,
     dialogOpen,
     setDialogOpen,
-    cancelDialogOpen, 
+    cancelDialogOpen,
     setCancelDialogOpen,
     isCoach,
 }: UpdateProfileDialogProps) {
@@ -51,7 +50,7 @@ export default function Schedule({
     const [appointmentIndex, setAppointmentIndex] = useState<number>(0);
     const { updateAvailableTime, loading } = useUserInfo();
     const { updateOtherAvailableTime, loading:loading2 } = useOtherUserInfo();
-    
+
     const handleOpenDialog = (index: number) => {
       setDialogOpen(true);
       setAppointmentIndex(index);
@@ -64,7 +63,7 @@ export default function Schedule({
             return a;
           }
         });
-        setAvailableTime(newAvailableTime); 
+        setAvailableTime(newAvailableTime);
         const newAppointment = appointment.map((a, i) => {
           if (i === index) {
             return coachname;
@@ -80,7 +79,7 @@ export default function Schedule({
             return a;
           }
         });
-        setCoach_AvailableTime(newCoach_AvailableTime); 
+        setCoach_AvailableTime(newCoach_AvailableTime);
         const newCoach_Appointment = coach_appointment.map((a, i) => {
           if (i === index) {
             return username;
@@ -89,7 +88,7 @@ export default function Schedule({
           }
         });
         setCoach_Appointment(newCoach_Appointment);
-        
+
       }
       else
       {
@@ -139,7 +138,7 @@ export default function Schedule({
             return a;
           }
         });
-        setAvailableTime(newAvailableTime); 
+        setAvailableTime(newAvailableTime);
         const newAppointment = appointment.map((a, i) => {
           if (i === index) {
             return "/";
@@ -155,7 +154,7 @@ export default function Schedule({
             return a;
           }
         });
-        setCoach_AvailableTime(newCoach_AvailableTime); 
+        setCoach_AvailableTime(newCoach_AvailableTime);
         const newCoach_Appointment = coach_appointment.map((a, i) => {
           if (i === index) {
             return "/";
@@ -164,7 +163,7 @@ export default function Schedule({
           }
         });
         setCoach_Appointment(newCoach_Appointment);
-        
+
       }
       else
       {
@@ -183,7 +182,7 @@ export default function Schedule({
             <div className="grid grid-rows-5 grid-flow-col gap-4">
               {_coach_availableTime.map((available, i) => (
                 i <= 34 && (
-                available && _appointment[i] =="/" ?(  
+                available && _appointment[i] =="/" ?(
                   <Button key={i} className="bg-pink-700" onClick={() => handleOpenDialog(i)}>
                     {9+(i%5)*2}:00 ~ {11+(i%5)*2}:00
                   </Button>
@@ -204,7 +203,7 @@ export default function Schedule({
             <div className="grid grid-rows-5 grid-flow-col gap-4">
               {_coach_availableTime.map((available, i) => (
                 i <= 34 && (
-                available?(  
+                available?(
                   <Button disabled key={i} className="bg-pink-700">
                     {9+(i%5)*2}:00 ~ {11+(i%5)*2}:00
                   </Button>
@@ -258,7 +257,7 @@ export default function Schedule({
           </Dialog>
         )}
       </div>
-    
+
     </>
     )
 }

@@ -35,7 +35,7 @@ export default function CreatePostDialog({
 }: CreatePostDialogProps) {
     const { createPost, loading } = usePosts();
     const [sportType, setSportType] = useState<string>("");
-    const [expectedTime, setExpectedTime] = useState<string[]>([]);
+    const [expectedTime] = useState<string[]>([]);
     const [description, setDescription] = useState<string>("");
 
     const handleCreate = async () => {

@@ -54,7 +54,7 @@ export async function PUT() {
             .where(eq(usersTable.displayId, userId))
             .returning();
 
-        // console.log(user);
+        console.log(user);
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },
