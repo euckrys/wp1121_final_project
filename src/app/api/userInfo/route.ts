@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
                     .execute();
             }
 
-            console.log(result);
+            // console.log(result);
         })
     } catch (error) {
         console.log(error);
@@ -167,7 +167,7 @@ export async function PUT(request: NextRequest) {
                 .where(eq(reviewsTable.authorId, userId))
                 .execute();
 
-            console.log(result);
+            // console.log(result);
         })
     } catch (error) {
         return NextResponse.json(

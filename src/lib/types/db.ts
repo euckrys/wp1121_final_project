@@ -63,3 +63,13 @@ export type Reply = {
   author: string,
   content: string,
 }
+
+
+export type Review = {
+  authorId: string,
+  author: string,
+  isAnonymous: boolean,
+  content: string,
+  star: number,
+  createdAt: string,
+}

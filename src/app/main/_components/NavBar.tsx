@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function NavBar() {
     const { data: session } = useSession();
     const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
-    console.log(session);
+    // console.log(session);
 
     return (
         <div className="bg-pink-300 grid grid-cols-12 h-24">

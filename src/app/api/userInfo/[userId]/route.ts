@@ -84,7 +84,7 @@ export async function PUT(request: NextRequest, {params}: {params: {userId: stri
             .where(eq(profileInfoTable.userId, params.userId))
             .returning();
 
-        console.log(result);
+        // console.log(result);
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },

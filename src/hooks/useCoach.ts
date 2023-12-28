@@ -14,8 +14,7 @@ export default function useCoach() {
     }) => {
         if (loading) return;
         setLoading(true);
-        
-        console.log(search)
+           
         const res = await fetch(`/api/users?sportType=${sportType}&targetCoach=${search}`, {
             method: "GET",
         });

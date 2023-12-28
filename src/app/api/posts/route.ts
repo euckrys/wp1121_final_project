@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
         const url = new URL(request.url);
         const postId = url.searchParams.get("postId");
         const sportType = url.searchParams.get("sportType");
-        // const expectedTime = url.searchParams.get("expectedTime");
         const isMineString = url.searchParams.get("isMine");
         const isCoachString = url.searchParams.get("isCoach");
         const targetCoachString = url.searchParams.get("targetCoach");
@@ -76,7 +75,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { author, sportType, expectedTime, description } = data as PostRequest;
+    const { author, sportType, description } = data as PostRequest;
 
     try {
         const session = await auth();
@@ -90,7 +89,6 @@ export async function POST(request: NextRequest) {
                 author,
                 authorIsCoach: isCoach,
                 sportType,
-                expectedTime,
                 description,
             })
             .execute();

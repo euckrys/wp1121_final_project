@@ -1,4 +1,4 @@
-import { index, pgTable, serial, uuid, varchar, boolean, timestamp, unique, integer } from "drizzle-orm/pg-core";
+import { index, pgTable, serial, uuid, varchar, boolean, timestamp, unique, integer, real} from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
 
 export const usersTable = pgTable(
@@ -44,6 +44,8 @@ export const profileInfoTable = pgTable(
     license: varchar("license"),
     availableTime: boolean("availableTime").array(70),
     appointment: varchar("appointment").array(35),
+    totalStar: real("totalStar").default(0),
+    totalReview: real("totalReview").default(0),
   },
   (table) => ({
     userIdIndex: index("display_id_index").on(table.userId),
@@ -111,9 +113,9 @@ export const reviewsTable = pgTable(
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     author: varchar("author").notNull(),
     isAnonymous: boolean("is_anonymous").notNull(),
-    star: integer("star").notNull(),
+    star: real("star").notNull(),
     content: varchar("content").notNull(),
-    createdAt: timestamp("created_at").notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`).notNull(),
   },
   (table) => ({
     toCoachIdIndex: index("to_post_id_index").on(table.toCoachId),
@@ -200,10 +202,10 @@ export const repliesRelations = relations(repliesTable, ({ one }) => ({
 }))
 
 export const reviewsRelations = relations(reviewsTable, ({ one }) => ({
-  author: one(usersTable, {
-    fields: [reviewsTable.authorId],
-    references: [usersTable.displayId]
-  }),
+  // author: one(usersTable, {
+  //   fields: [reviewsTable.authorId],
+  //   references: [usersTable.displayId]
+  // }),
   coach: one(usersTable, {
     fields: [reviewsTable.toCoachId],
     references: [usersTable.displayId]
