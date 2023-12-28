@@ -30,7 +30,6 @@ type UpdateProfileDialogProps = {
     cancelDialogOpen: boolean,
     setCancelDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
     isCoach: boolean,
-    setTest: React.Dispatch<React.SetStateAction<boolean>>,
 }
 export default function Schedule({
     _coach_availableTime,
@@ -44,7 +43,6 @@ export default function Schedule({
     cancelDialogOpen, 
     setCancelDialogOpen,
     isCoach,
-    setTest,
 }: UpdateProfileDialogProps) {
     const [coach_availableTime, setCoach_AvailableTime] = useState<Array<boolean>>(_coach_availableTime);
     const [coach_appointment, setCoach_Appointment] = useState<Array<string>>(_coach_appointment);
@@ -57,7 +55,7 @@ export default function Schedule({
     const handleOpenDialog = (index: number) => {
       setDialogOpen(true);
       setAppointmentIndex(index);
-      if(availableTime[index] === true && appointment[index] === "/")
+      if(_availableTime[index] === true && _appointment[index] === "/")
       {
         const newAvailableTime = availableTime.map((a, i) => {
           if (i === index) {
@@ -109,7 +107,6 @@ export default function Schedule({
       setCancelDialogOpen(false);
     }
     const handleUpdate = async () => {
-      setTest(true);
       try {
           await updateAvailableTime({
               availableTime,
@@ -124,15 +121,16 @@ export default function Schedule({
           alert("Error updating schedule");
       }
 
-      handleCloseDialog();
-      setTest(false);
+      setDialogOpen(false);
+      setCancelDialogOpen(false);
+
     }
 
 
     const handleOpenCancelDialog = (index: number) => {
       setCancelDialogOpen(true);
       setAppointmentIndex(index);
-      if(availableTime[index] === false)
+      if(_availableTime[index] === false)
       {
         const newAvailableTime = availableTime.map((a, i) => {
           if (i === index) {
@@ -185,14 +183,14 @@ export default function Schedule({
             <div className="grid grid-rows-5 grid-flow-col gap-4">
               {_coach_availableTime.map((available, i) => (
                 i <= 34 && (
-                available && appointment[i] =="/" ?(  
+                available && _appointment[i] =="/" ?(  
                   <Button key={i} className="bg-pink-700" onClick={() => handleOpenDialog(i)}>
                     {9+(i%5)*2}:00 ~ {11+(i%5)*2}:00
                   </Button>
                   )
                 :(
-                  <Button key={i} disabled={!available && availableTime[i]} className={availableTime[i]? "bg-inherit border-white": "bg-pink-300" } onClick={() => handleOpenCancelDialog(i)}>
-                    {availableTime[i] || appointment[i] === "/" ?"":"已預約"+appointment[i]}
+                  <Button key={i} disabled={!available && _availableTime[i]} className={_availableTime[i]? "bg-inherit border-white": "bg-pink-300" } onClick={() => handleOpenCancelDialog(i)}>
+                    {_availableTime[i] || _appointment[i] === "/" ?"":"已預約"+_appointment[i]}
                   </Button>
                 )
                 )

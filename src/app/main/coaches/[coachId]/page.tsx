@@ -16,7 +16,6 @@ export default function HomePage() {
   const [ coachInfo, setCoachInfo ] = useState<UserInfo>();
   const [ scheduleDialogOpen, setScheduleDialogOpen ] = useState<boolean>(false);
   const [ cancelDialogOpen, setCancelDialogOpen ] = useState<boolean>(false);
-  const [ test, setTest ] = useState<boolean>(false);
 
   const fetchUserInfo = async () => {
     try {
@@ -42,8 +41,7 @@ export default function HomePage() {
   useEffect(() => {
     fetchUserInfo();
     fetchCoachInfo();
-  }, [scheduleDialogOpen, cancelDialogOpen, test])
-
+  }, [scheduleDialogOpen, cancelDialogOpen])
   return (
     <div>
       <NavBar/>
@@ -62,20 +60,19 @@ export default function HomePage() {
       </div>
 
       {coachInfo?.availableTime && coachInfo.appointment && userInfo?.availableTime && userInfo.appointment && session?.user?.isCoach !== undefined &&
-        <Schedule _coach_availableTime={coachInfo?.availableTime}
-                  _coach_appointment={coachInfo.appointment}
-                  _availableTime={userInfo?.availableTime}
-                  _appointment={userInfo?.appointment}
-                  coachname={coachInfo.displayName}
-                  username={userInfo.displayName}
-                  dialogOpen={scheduleDialogOpen}
-                  setDialogOpen={setScheduleDialogOpen}
-                  cancelDialogOpen={cancelDialogOpen}
-                  setCancelDialogOpen={setCancelDialogOpen}
-                  isCoach={session?.user?.isCoach}
-                  setTest={setTest}
-        />
-      }
+      <Schedule _coach_availableTime={coachInfo?.availableTime} 
+                _coach_appointment={coachInfo.appointment} 
+                _availableTime={userInfo?.availableTime} 
+                _appointment={userInfo?.appointment}
+                coachname={coachInfo.displayName}
+                username={userInfo.displayName}
+                dialogOpen={scheduleDialogOpen}
+                setDialogOpen={setScheduleDialogOpen}
+                cancelDialogOpen={cancelDialogOpen}
+                setCancelDialogOpen={setCancelDialogOpen}
+                isCoach={session?.user?.isCoach}
+      />}
+
     </div>
   );
 }

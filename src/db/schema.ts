@@ -33,6 +33,7 @@ export const profileInfoTable = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
+    isCoach: boolean("isCoach"),
     displayName: varchar("display_name"),
     avatarUrl: varchar("avatar_url").notNull(),
     sportType: varchar("sport_type"),

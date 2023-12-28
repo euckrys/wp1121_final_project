@@ -8,7 +8,23 @@ export type User = {
   hasProfile: boolean;
 };
 
+
 export type UserInfo = {
+  isCoach: boolean,
+  displayName: string,
+  sportType: string,
+  age: string,
+  height: string,
+  weight: string,
+  place?: string,
+  license?: string,
+  availableTime?: Array<boolean>,
+  appointment?: Array<string>,
+};
+
+export type Coach = {
+  userId: string,
+  isCoach: boolean,
   displayName: string,
   avatarUrl: string,
   sportType: string,

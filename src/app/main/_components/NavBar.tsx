@@ -27,7 +27,7 @@ export default function NavBar() {
                             <p>Home</p>
                         </Button>
                     </Link>
-                    <Link href={`/main/coaches`}>
+                    <Link href={`/main/coaches?search=`}>
                         <Button
                             type={"button"}
                             className="flex shadow-none bg-transparent text-3xl text-black font-serif"

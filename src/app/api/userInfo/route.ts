@@ -62,10 +62,12 @@ export async function POST(request: NextRequest) {
         const userId = session?.user?.id ? session.user.id : "";
         const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
 
+        const isCoach = session?.user?.isCoach === undefined ? false: session?.user?.isCoach;
         await db.transaction(async (tx) => {
             const result = await tx
                 .insert(profileInfoTable)
                 .values({
+                    isCoach,
                     userId,
                     displayName,
                     avatarUrl,
