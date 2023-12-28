@@ -74,8 +74,6 @@ export default function HomePage() {
     fetchReview();
   }, [scheduleDialogOpen, cancelDialogOpen, alreadyReview])
 
-
-  
   const sendReview = async () => {
     // console.log(star);
     // console.log(reviewInput);
@@ -111,10 +109,10 @@ export default function HomePage() {
       <NavBar/>
       <div>
         <Image
-          src={coachInfo?.avatarUrl ? coachInfo.avatarUrl : "123"}
+          src={coachInfo?.avatarUrl ? coachInfo.avatarUrl : ""}
           width={20}
           height={20}
-          alt=""
+          alt="123"
         />
         <h1>{coachInfo?.displayName}</h1>
         <h1>{coachInfo?.sportType}</h1>
@@ -124,7 +122,7 @@ export default function HomePage() {
         <h1>avarage star: {totalStar && totalReview && (totalStar/totalReview)} totalReview: {totalReview}</h1>
         <Rating name="half-rating" precision={0.1} readOnly defaultValue={averageStar}/>
       </div>
-      
+
       {coachInfo?.availableTime && coachInfo.appointment && userInfo?.availableTime && userInfo.appointment && session?.user?.isCoach !== undefined &&
       <Schedule _coach_availableTime={coachInfo?.availableTime}
                 _coach_appointment={coachInfo.appointment}
@@ -143,22 +141,23 @@ export default function HomePage() {
           <div>
             留下您的評論
             <div>
-              <Rating name="half-rating" 
-                      defaultValue={0} 
-                      precision={0.1} 
+              <Rating name="half-rating"
+                      defaultValue={0}
+                      precision={0.1}
                       onChange={(event, newValue) => {
                         setStar(newValue);
+                        console.log(event);
                       }}
               />
               <span>{star}</span>
-              <Checkbox checked={isAnonymous} onChange={(event) => {setIsAnonymous(!isAnonymous)}}/>
+              <Checkbox checked={isAnonymous} onChange={() => {setIsAnonymous(!isAnonymous)}}/>
               <span>是否匿名</span>
             </div>
-            <TextField id="outlined-basic" 
-                      label="留下您詳細的評論" 
-                      variant="outlined" 
-                      multiline 
-                      maxRows={5} 
+            <TextField id="outlined-basic"
+                      label="留下您詳細的評論"
+                      variant="outlined"
+                      multiline
+                      maxRows={5}
                       value={reviewInput}
                       onChange = {(event) => {setReviewInput(event.target.value)}}
             />
