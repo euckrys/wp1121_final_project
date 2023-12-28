@@ -1,6 +1,5 @@
 "use client"
 import NavBar from "../_components/NavBar";
-import UserAvatar from "../_components/UserAvatar"
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import useCoach from "@/hooks/useCoach";
@@ -66,7 +65,7 @@ export default function CoachPage({
       </Select>
       <div className="flex flex-col">
         {userInfo && userInfo.map((coach, i) => {
-          if(coach.displayName !== session?.user?.username)
+          if(coach.userId !== session?.user?.id)
           {
             return (
               <Link key={i} href={`/main/coaches/${coach.userId}` }>

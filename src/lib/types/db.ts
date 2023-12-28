@@ -12,6 +12,7 @@ export type User = {
 export type UserInfo = {
   isCoach: boolean,
   displayName: string,
+  avatarUrl: string,
   sportType: string,
   age: string,
   height: string,
