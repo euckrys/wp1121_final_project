@@ -61,7 +61,7 @@ export async function PUT(request: NextRequest) {
             .where(eq(profileInfoTable.userId, userId))
             .returning();
 
-        console.log(result);
+        // console.log(result);
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },

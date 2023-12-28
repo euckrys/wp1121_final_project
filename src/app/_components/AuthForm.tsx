@@ -28,7 +28,7 @@ const handleImg = async (e:React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files[0];
     const image = await resizeFile(file);
     setAvatarUrl(typeof image === 'string' ? image : "");
-    console.log(image);
+    // console.log(image);
   } catch (err) {
     console.log(err);
   }

@@ -31,12 +31,12 @@ export default function CoachPage({
   const fetchCoaches = async () => {
     try {
       const targetUserInfo = await getCoaches({sportType, search});
-      console.log("targetUserInfo: ", targetUserInfo);
+      // console.log("targetUserInfo: ", targetUserInfo);
       setUserInfo(targetUserInfo);
-      console.log("userInfo: ",userInfo);
+      // console.log("userInfo: ",userInfo);
     } catch (error) {
       console.log(error);
-      alert("Error getting userinfo");
+      alert("Error getting coachinfo");
     }
   }
   () => fetchCoaches();

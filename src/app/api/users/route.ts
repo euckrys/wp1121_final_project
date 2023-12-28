@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
         const url = new URL(request.url);
         const sportType = url.searchParams.get("sportType");
         const targetCoachString = url.searchParams.get("targetCoach");
-        console.log(!targetCoachString)
+        // console.log(!targetCoachString)
         // console.log(url)
         const coaches = await db.query.profileInfoTable.findMany({
             where: and(
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
                 id: false,
             }
     });
-    console.log("coaches: " ,coaches)
+    // console.log("coaches: " ,coaches)
 
         return NextResponse.json({ coaches }, { status: 200 });
     } catch (error) {
@@ -54,7 +54,7 @@ export async function PUT() {
             .where(eq(usersTable.displayId, userId))
             .returning();
 
-        console.log(user);
+        // console.log(user);
     } catch (error) {
         return NextResponse.json(
             { error: "Something went wrong" },

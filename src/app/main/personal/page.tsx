@@ -38,7 +38,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchUserInfo();
-    console.log(scheduleDialogOpen)
+    // console.log(scheduleDialogOpen)
   }, [scheduleDialogOpen])
 
   const handleCloseDialog = () => {

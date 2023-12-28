@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 
 export default function NavBar() {
     const { data: session } = useSession();
-    // const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
-    console.log(session);
+
+    const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
+    // console.log(session);
 
     return (
         <div className="bg-pink-300 grid grid-cols-12 h-24">
