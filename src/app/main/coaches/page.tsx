@@ -69,7 +69,7 @@ export default function CoachPage({
           if(coach.displayName !== session?.user?.username)
           {
             return (
-              <Link href={`/main/coaches/${coach.userId}`}>
+              <Link key={i} href={`/main/coaches/${coach.userId}` }>
                 <div className="flex m-3" >
                   <p>{coach.sportType}</p>
                   <p className="m-3 text-2xl">{coach.displayName}</p>

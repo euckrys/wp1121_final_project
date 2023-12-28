@@ -35,14 +35,6 @@ export type Coach = {
   availableTime?: Array<boolean>,
   appointment?: Array<string>,
 };
-export type coach = {
-  displayId: string;
-  email: string;
-  isCoach: boolean;
-  avartarUrl: string;
-  username: string;
-  profileInfo: UserInfo;
-};
 
 export type PostWithReplies = {
   id: string,
