@@ -14,6 +14,13 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import Input from "@/app/_components/AuthInput"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 
 type CreatePostDialogProps = {
     username: string,
@@ -28,6 +35,7 @@ export default function CreatePostDialog({
 }: CreatePostDialogProps) {
     const { createPost, loading } = usePosts();
     const [sportType, setSportType] = useState<string>("");
+    const [expectedTime, setExpectedTime] = useState<string[]>([]);
     const [description, setDescription] = useState<string>("");
 
     const handleCreate = async () => {
@@ -35,6 +43,7 @@ export default function CreatePostDialog({
             await createPost({
                 author: username,
                 sportType,
+                expectedTime,
                 description,
             })
         } catch (error) {
@@ -44,7 +53,6 @@ export default function CreatePostDialog({
 
         onclose();
     }
-
 
     return (
         <>
@@ -63,6 +71,18 @@ export default function CreatePostDialog({
                                 setValue={setSportType}
                             />
                         </div>
+                        <Select>
+                            <SelectTrigger className="w-[180px]" disabled={loading}>
+                                <SelectValue placeholder="SportType" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="0">09:00-11:00</SelectItem>
+                                <SelectItem value="1">11:00-13:00</SelectItem>
+                                <SelectItem value="2">13:00-15:00</SelectItem>
+                                <SelectItem value="3">15:00-17:00</SelectItem>
+                                <SelectItem value="4">17:00-19:00</SelectItem>
+                            </SelectContent>
+                        </Select>
                         <div>
                             <Label>簡介</Label>
                             <Input

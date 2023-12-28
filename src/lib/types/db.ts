@@ -10,6 +10,7 @@ export type User = {
 
 export type UserInfo = {
   displayName: string,
+  avatarUrl: string,
   sportType: string,
   age: string,
   height: string,

@@ -1,4 +1,4 @@
-import { index, pgTable, serial, uuid, varchar, boolean, timestamp, unique } from "drizzle-orm/pg-core";
+import { index, pgTable, serial, uuid, varchar, boolean, timestamp, unique, integer } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
 
 export const usersTable = pgTable(
@@ -34,7 +34,7 @@ export const profileInfoTable = pgTable(
       .notNull()
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     displayName: varchar("display_name"),
-    // avatarUrl: varchar("avatar_url").notNull().references(() => usersTable.avatarUrl, { onDelete: "cascade", onUpdate: "cascade" }),
+    avatarUrl: varchar("avatar_url").notNull(),
     sportType: varchar("sport_type"),
     age: varchar("age"),
     height: varchar("height"),
@@ -62,11 +62,13 @@ export const postsTable = pgTable(
     author: varchar("author").notNull(),
     authorIsCoach: boolean("author_is_coach").notNull(),
     sportType: varchar("sport_type").notNull(),
+    expectedTime: varchar("expected_time").array(6),
     description: varchar("description").notNull(),
-    updatedAt: timestamp("update_at").default(sql`now()`).notNull(),
+    updatedAt: timestamp("updated_at").default(sql`now()`).notNull(),
   },
   (table) => ({
     postIdIndex: index("post_id_index").on(table.postId),
+    authorIdIndex: index("author_id_index").on(table.authorId),
     authorIndex: index("author_index").on(table.author),
     sportTypeIndex: index("sport_type_index").on(table.sportType),
     updatedAtIndex: index("update_at_index").on(table.updatedAt),
@@ -86,12 +88,81 @@ export const repliesTable = pgTable(
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     author: varchar("author").notNull(),
     content: varchar("content").notNull(),
-    createdAt: timestamp("create_at").default(sql`now()`).notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`).notNull(),
   },
   (table) => ({
     toPostIdIndex: index("to_post_id_index").on(table.toPostId),
+    authorIdIndex: index("author_id_index").on(table.authorId),
     authorIndex: index("author_index").on(table.author),
     createdAtIndex: index("created_at_index").on(table.createdAt),
+  })
+)
+
+export const reviewsTable = pgTable(
+  "reviews_table",
+  {
+    id: serial("id").primaryKey(),
+    toCoachId: uuid("to_coach_id")
+      .notNull()
+      .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade"}),
+    authorId: uuid("author_id")
+      .notNull()
+      .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
+    author: varchar("author").notNull(),
+    isAnonymous: boolean("is_anonymous").notNull(),
+    star: integer("star").notNull(),
+    content: varchar("content").notNull(),
+    createdAt: timestamp("created_at").notNull(),
+  },
+  (table) => ({
+    toCoachIdIndex: index("to_post_id_index").on(table.toCoachId),
+    authorIdIndex: index("author_id").on(table.authorId),
+    authorIndex: index("author_index").on(table.author),
+    starIndex: index("star_index").on(table.star),
+    createdAtIndex: index("created_at_index").on(table.createdAt),
+  })
+)
+
+export const chartsTable = pgTable(
+  "charts_table",
+  {
+    id: serial("id").primaryKey(),
+    chartId: uuid("chart_id").defaultRandom().notNull().unique(),
+    ownerId: uuid("owner_id")
+      .notNull()
+      .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
+    month: integer("month").notNull(),
+    totalTime: integer("total_time").array(31),
+  },
+  (table) => ({
+    ownerIdIndex: index("owner_id_index").on(table.ownerId),
+    monthIndex: index("month_index").on(table.month),
+    totalTimeIndex: index("total_time_index").on(table.totalTime),
+    uniqCombination: unique().on(table.ownerId, table.month),
+  })
+)
+
+export const recordsTable = pgTable(
+  "records_table",
+  {
+    id: serial("id").primaryKey(),
+    toChartId: uuid("to_chart_id")
+      .notNull()
+      .references(() => chartsTable.chartId, { onDelete: "cascade", onUpdate: "cascade" }),
+    ownerId: uuid("owner_id")
+      .notNull()
+      .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
+    month: integer("month").notNull(),
+    date: integer("date").notNull(),
+    sportType: varchar("sport_type").notNull(),
+    time: varchar("time").notNull(),
+    description: varchar("description").notNull(),
+  },
+  (table) => ({
+    ownerIdIndex: index("owner_id_index").on(table.ownerId),
+    monthIndex: index("month_index").on(table.month),
+    dateIndex: index("date_index").on(table.date),
+    timeIAndex: index("time_index").on(table.time),
   })
 )
 
@@ -102,6 +173,10 @@ export const userRelations = relations(usersTable, ({ one, many }) => ({
   }),
   posts: many(postsTable),
   replies: many(repliesTable),
+  reviews: many(reviewsTable),
+  receivedReviews: many(reviewsTable),
+  charts: many(chartsTable),
+  records: many(recordsTable),
 }))
 
 export const postRelations = relations(postsTable, ({ one, many }) => ({
@@ -120,5 +195,36 @@ export const repliesRelations = relations(repliesTable, ({ one }) => ({
   post: one(postsTable, {
     fields: [repliesTable.toPostId],
     references: [postsTable.postId],
+  })
+}))
+
+export const reviewsRelations = relations(reviewsTable, ({ one }) => ({
+  author: one(usersTable, {
+    fields: [reviewsTable.authorId],
+    references: [usersTable.displayId]
+  }),
+  coach: one(usersTable, {
+    fields: [reviewsTable.toCoachId],
+    references: [usersTable.displayId]
+  })
+}))
+
+
+export const chartsRelations = relations(chartsTable, ({ one, many }) => ({
+  owner: one(usersTable, {
+    fields: [chartsTable.ownerId],
+    references: [usersTable.displayId],
+  }),
+  records: many(recordsTable),
+}))
+
+export const recordsRelations = relations(recordsTable, ({ one }) => ({
+  owner: one(usersTable, {
+    fields: [recordsTable.ownerId],
+    references: [usersTable.displayId],
+  }),
+  chart: one(chartsTable, {
+    fields: [recordsTable.toChartId],
+    references: [chartsTable.chartId],
   })
 }))

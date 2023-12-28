@@ -5,6 +5,8 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 
 import { cn } from "@/lib/utils/shadcn"
 
+
+
 const Tabs = TabsPrimitive.Root
 
 const TabsList = React.forwardRef<

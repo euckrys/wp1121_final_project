@@ -9,12 +9,14 @@ export default function usePost() {
     const getAllPosts = async ({
         postId,
         sportType,
+        expectedTime,
         isMine,
         isCoach,
         targetCoach,
     }: {
         postId: string,
         sportType: string,
+        expectedTime?: string[],
         isMine: boolean,
         isCoach: boolean,
         targetCoach?: string,
@@ -22,7 +24,7 @@ export default function usePost() {
         if (loading) return;
         setLoading(true);
 
-        const res = await fetch(`/api/posts?postId=${postId}&sportType=${sportType}&isMine=${isMine}&isCoach=${isCoach}&targetCoach=${targetCoach}`,
+        const res = await fetch(`/api/posts?postId=${postId}&sportType=${sportType}&expectedTime=${expectedTime}&isMine=${isMine}&isCoach=${isCoach}&targetCoach=${targetCoach}`,
             {
                 method: "GET",
             }
@@ -65,10 +67,12 @@ export default function usePost() {
     const createPost = async ({
         author,
         sportType,
+        expectedTime,
         description,
     }: {
         author: string,
         sportType: string,
+        expectedTime?: string[],
         description: string,
     }) => {
         if (loading) return;
@@ -79,6 +83,7 @@ export default function usePost() {
             body: JSON.stringify({
                 author,
                 sportType,
+                expectedTime,
                 description,
             }),
         });

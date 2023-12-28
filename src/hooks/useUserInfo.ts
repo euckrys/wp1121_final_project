@@ -93,6 +93,7 @@ export default function useUser() {
 
     const updateUserInfo = async ({
         displayName,
+        avatarUrl,
         sportType,
         age,
         height,
@@ -100,13 +101,14 @@ export default function useUser() {
         place,
         license,
     }: {
-        displayName: string,
-        sportType: string,
-        age: string,
-        height: string,
-        weight: string,
-        place: string,
-        license: string,
+        displayName?: string,
+        avatarUrl?: string,
+        sportType?: string,
+        age?: string,
+        height?: string,
+        weight?: string,
+        place?: string,
+        license?: string,
     }) => {
         if (loading) return;
         setLoading(true);
@@ -115,6 +117,7 @@ export default function useUser() {
             method: "PUT",
             body: JSON.stringify({
                 displayName,
+                avatarUrl,
                 sportType,
                 age,
                 height,

@@ -32,6 +32,7 @@ export async function GET(
             .select({
                 userId: profileInfoTable.userId,
                 displayName: profileInfoTable.displayName,
+                avatarUrl: profileInfoTable.avatarUrl,
                 sportType: profileInfoTable.sportType,
                 age: profileInfoTable.age,
                 height: profileInfoTable.height,

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 import { db } from "@/db";
-import { postsTable, profileInfoTable, repliesTable, usersTable } from "@/db/schema";
+import { chartsTable, postsTable, profileInfoTable, repliesTable, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 import type { z } from "zod";
@@ -23,6 +23,7 @@ export async function GET() {
             .select({
                 userId: profileInfoTable.userId,
                 displayName: profileInfoTable.displayName,
+                avatarUrl: profileInfoTable.avatarUrl,
                 sportType: profileInfoTable.sportType,
                 age: profileInfoTable.age,
                 height: profileInfoTable.height,
@@ -59,6 +60,7 @@ export async function POST(request: NextRequest) {
     try {
         const session = await auth();
         const userId = session?.user?.id ? session.user.id : "";
+        const avatarUrl = session?.user?.avartarUrl ? session.user.avartarUrl : "";
 
         await db.transaction(async (tx) => {
             const result = await tx
@@ -66,6 +68,7 @@ export async function POST(request: NextRequest) {
                 .values({
                     userId,
                     displayName,
+                    avatarUrl,
                     sportType,
                     age,
                     height,
@@ -82,6 +85,17 @@ export async function POST(request: NextRequest) {
                 .set({username: displayName})
                 .where(eq(usersTable.displayId, userId))
                 .execute();
+
+            for (let i = 0; i < 5; i++) {
+                const month = (10+i) > 12 ? (i-2) : (10+i);
+                await tx
+                    .insert(chartsTable)
+                    .values({
+                        ownerId: userId,
+                        month,
+                    })
+                    .execute();
+            }
 
             console.log(result);
         })
@@ -105,7 +119,7 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { displayName, sportType, age, height, weight, place, license} = data as ProfileRequest;
+    const { displayName, avatarUrl, sportType, age, height, weight, place, license} = data as ProfileRequest;
 
     try {
         const session = await auth();
@@ -116,6 +130,7 @@ export async function PUT(request: NextRequest) {
                 .update(profileInfoTable)
                 .set({
                     displayName,
+                    avatarUrl,
                     sportType,
                     age,
                     height,

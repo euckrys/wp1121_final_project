@@ -76,11 +76,11 @@ export default function PostPage({
     return () => {
       channel.unbind();
     };
-  }, [sportType, isMine, isCoach, search])
+  }, [sportType, isMine, isCoach, search, dialogOpen])
 
   useEffect (() => {
     fetchPosts();
-  }, [sportType, isMine, isCoach, search])
+  }, [sportType, isMine, isCoach, search, dialogOpen])
 
   return (
     <div>
@@ -96,8 +96,8 @@ export default function PostPage({
         }
       }>
         <TabsList>
-          <TabsTrigger value="false">Posted by Users</TabsTrigger>
-          <TabsTrigger value="true">Posted by Coaches</TabsTrigger>
+          <TabsTrigger value="false" disabled={loading}>Posted by Users</TabsTrigger>
+          <TabsTrigger value="true" disabled={loading}>Posted by Coaches</TabsTrigger>
         </TabsList>
       </Tabs>
 
