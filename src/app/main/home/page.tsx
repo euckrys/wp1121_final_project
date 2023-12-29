@@ -14,13 +14,15 @@ import { ThreeDots } from 'react-loader-spinner'
 
 export default function HomePage() {
   const [date, setDate] = useState<number>(1);
-  const [month, setMonth] = useState<number>(3);
+  const [month, setMonth] = useState<number>(12);
   const { getCharts } = useCharts();
 
   const [charts, setCharts] = useState<Chart[]>([]);
   const [isLoading, setIsloading] = useState<boolean>(true);
   const [chartId, setChartId] = useState<string>("");
   const [totalTime, setTotalTime] = useState<number[]>([]);
+
+  const [year, setYear] = useState<number>(new Date().getFullYear());
 
   const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 
@@ -35,7 +37,6 @@ export default function HomePage() {
 
         if (!charts) return;
         setCharts(charts);
-
     } catch (error) {
 
         console.log("Error fetching charts: ", error);
@@ -66,40 +67,51 @@ export default function HomePage() {
       {isFirstLoading? (
         <>
           <NavBar/>
-          <div className="w-full h-full flex justify-center">
+          <div className="w-full h-full flex flex-col justify-center items-center">
             <ThreeDots
               visible={true}
-              height="80"
-              width="80"
-              color="#4fa94d"
+              height="100"
+              width="100"
+              color="#FFCBCB"
               radius="9"
               ariaLabel="three-dots-loading"
               wrapperStyle={{}}
               wrapperClass=""
             />
+            <p className="font-bold text-2xl text-gray-800">Loading Charts...</p>
           </div>
         </>
       ) : (
-          <div>
+          <div className="flex flex-col">
             <NavBar/>
-            <div>
-              <MainChart
-                charts={charts}
-                chartId={chartId}
-                setChartId={setChartId}
-                totalTime={totalTime}
-                setTotalTime={setTotalTime}
-                date={date}
-                setDate={setDate}
-                month={month}
-                setMonth={setMonth}
-                isLoading={isLoading}
-              />
-              <SubChart
-                charts={charts}
-              />
-            </div>
+              <div className="flex flex-row">
+                <MainChart
+                  charts={charts}
+                  chartId={chartId}
+                  setChartId={setChartId}
+                  totalTime={totalTime}
+                  setTotalTime={setTotalTime}
+                  date={date}
+                  setDate={setDate}
+                  month={month}
+                  setMonth={setMonth}
+                  year={year}
+                  setYear={setYear}
+                  isLoading={isLoading}
+                />
+              <div className="flex flex-col">
+                <div className="h-64">
+
+                </div>
+                <SubChart
+                  date={date}
+                  month={month}
+                  setMonth={setMonth}
+                  charts={charts}
+                />
+              </div>
           </div>
+        </div>
       )}
     </>
   );
