@@ -70,6 +70,7 @@ export type Chart = {
   chartId: string,
   ownerId: string,
   month: number,
+  year: number,
   totalTime: number[],
   records: {
     id: string,
