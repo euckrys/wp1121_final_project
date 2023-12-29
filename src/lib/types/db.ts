@@ -45,6 +45,7 @@ export type PostWithReplies = {
   authorId: string,
   author: string,
   sportType: string,
+  expectedTime: string[],
   description: string,
   updatedAt: Date,
   replies: {

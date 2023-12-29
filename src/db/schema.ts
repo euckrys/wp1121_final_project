@@ -66,7 +66,7 @@ export const postsTable = pgTable(
     author: varchar("author").notNull(),
     authorIsCoach: boolean("author_is_coach").notNull(),
     sportType: varchar("sport_type").notNull(),
-    expectedTime: varchar("expected_time").array(6),
+    expectedTime: varchar("expected_time").array(),
     description: varchar("description").notNull(),
     updatedAt: timestamp("updated_at").default(sql`now()`).notNull(),
   },

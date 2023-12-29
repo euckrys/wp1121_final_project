@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
 import PostsSearchBar from "./_components/PostsSearchBar";
 import CreatePostDialog from "./_components/CreatePostDialog";
@@ -42,6 +43,7 @@ export default function PostPage({
 
   const { getAllPosts, loading } = usePosts();
   const [posts, setPosts] = useState<PostWithReplies[]>([]);
+  const [expectedTime, setExpectedTime] = useState<string[]>(["0","1","2","3","4"]);
 
   const username = session?.user?.username ? session.user.username : "";
 
@@ -54,6 +56,7 @@ export default function PostPage({
       const posts = await getAllPosts({
         postId: "",
         sportType,
+        expectedTime,
         isMine,
         isCoach,
         targetCoach: search,
@@ -76,11 +79,11 @@ export default function PostPage({
     return () => {
       channel.unbind();
     };
-  }, [sportType, isMine, isCoach, search, dialogOpen])
+  }, [sportType, expectedTime, isMine, isCoach, search, dialogOpen])
 
   useEffect (() => {
     fetchPosts();
-  }, [sportType, isMine, isCoach, search, dialogOpen])
+  }, [sportType, expectedTime, isMine, isCoach, search, dialogOpen])
 
   return (
     <div>
@@ -114,6 +117,11 @@ export default function PostPage({
           <Link href={`/main/posts/${post.postId}`} key={post.postId}>
             <p>{post.author}</p>
             <p>{post.description}</p>
+            {post.expectedTime.find((e) => e==="0") !== undefined && <span>9:00 ~ 11:00 </span>}
+            {post.expectedTime.find((e) => e==="1") !== undefined && <span> 11:00 ~ 13:00 </span>}
+            {post.expectedTime.find((e) => e==="2") !== undefined && <span> 13:00 ~ 15:00 </span>}
+            {post.expectedTime.find((e) => e==="3") !== undefined && <span> 15:00 ~ 17:00 </span>}
+            {post.expectedTime.find((e) => e==="4") !== undefined && <span> 17:00 ~ 19:00 </span>}
             <p>{`reply: ${post.replies[0]?.content}`}</p>
           </Link>
         ))}
@@ -147,7 +155,16 @@ export default function PostPage({
           <SelectItem value="others">其他</SelectItem>
         </SelectContent>
       </Select>
-
+      <ToggleGroup type="multiple"
+                   defaultValue={["0","1","2","3","4"]}
+                   onValueChange={(value) => {setExpectedTime(value)}}
+     >
+        <ToggleGroupItem value="0" aria-label="Toggle 0">09:00-11:00</ToggleGroupItem>
+        <ToggleGroupItem value="1" aria-label="Toggle 1">11:00-13:00</ToggleGroupItem>
+        <ToggleGroupItem value="2" aria-label="Toggle 2">13:00-15:00</ToggleGroupItem>
+        <ToggleGroupItem value="3" aria-label="Toggle 3">15:00-17:00</ToggleGroupItem>
+        <ToggleGroupItem value="4" aria-label="Toggle 4">17:00-19:00</ToggleGroupItem>
+      </ToggleGroup>
       {dialogOpen && (
         <>
           <CreatePostDialog

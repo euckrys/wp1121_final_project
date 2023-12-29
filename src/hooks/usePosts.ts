@@ -37,7 +37,6 @@ export default function usePosts() {
 
         const data = await res.json();
         const posts = data.posts;
-
         router.refresh();
         setLoading(false);
         return posts;
