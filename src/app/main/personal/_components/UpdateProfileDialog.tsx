@@ -24,6 +24,7 @@ type UpdateProfileDialogProps = {
     _weight: string,
     _place: string,
     _license: string,
+    _introduce: string,
     showDialog: boolean;
     onclose: () => void;
 }
@@ -36,6 +37,7 @@ export default function UpdateProfileDialog({
     _weight,
     _place,
     _license,
+    _introduce,
     showDialog,
     onclose,
 }: UpdateProfileDialogProps) {
@@ -49,6 +51,7 @@ export default function UpdateProfileDialog({
     const [weight, setWeight] = useState<string>(_weight);
     const [place, setPlace] = useState<string>(_place);
     const [license, setLicense] = useState<string>(_license);
+    const [introduce, setIntroduce] = useState<string>(_introduce);
 
     const handleUpdate = async () => {
         try {
@@ -60,6 +63,7 @@ export default function UpdateProfileDialog({
                 weight,
                 place,
                 license,
+                introduce
             })
         } catch (error) {
             console.log(error);
@@ -142,6 +146,15 @@ export default function UpdateProfileDialog({
                                         setValue={setLicense}
                                     />
                                 </div>
+                                <div>
+                                <Label>介紹/教學理念</Label>
+                                <Input
+                                    label=""
+                                    type="text"
+                                    value={introduce}
+                                    setValue={setIntroduce}
+                                />
+                            </div>
                             </>
                         )}
                     <DialogFooter>

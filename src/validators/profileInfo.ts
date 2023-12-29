@@ -10,6 +10,7 @@ export const profileInfoSchema = z.object({
     weight: z.string().optional(),
     place: z.string().optional(),
     license: z.string().optional(),
+    introduce: z.string().optional(),
     availableTime: z.boolean().array().optional(),
     appointment: z.string().array().optional()
 });

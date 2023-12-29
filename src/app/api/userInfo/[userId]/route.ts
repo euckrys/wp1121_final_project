@@ -39,6 +39,7 @@ export async function GET(
                 weight: profileInfoTable.weight,
                 place: profileInfoTable.place,
                 license: profileInfoTable.license,
+                introduce: profileInfoTable.introduce,
                 availableTime: profileInfoTable.availableTime,
                 appointment: profileInfoTable.appointment,
             })
@@ -64,7 +65,7 @@ export async function PUT(request: NextRequest, {params}: {params: {userId: stri
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { displayName, sportType, age, height, weight, place, license} = data as ProfileRequest;
+    const { displayName, sportType, age, height, weight, place, license, introduce} = data as ProfileRequest;
 
     try {
         // const session = await auth();
@@ -80,6 +81,7 @@ export async function PUT(request: NextRequest, {params}: {params: {userId: stri
                 weight,
                 place,
                 license,
+                introduce,
             })
             .where(eq(profileInfoTable.userId, params.userId))
             .returning();

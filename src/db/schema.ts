@@ -42,6 +42,7 @@ export const profileInfoTable = pgTable(
     weight: varchar("weight"),
     place: varchar("place"),
     license: varchar("license"),
+    introduce: varchar("introduce"),
     availableTime: boolean("availableTime").array(70),
     appointment: varchar("appointment").array(35),
     totalStar: real("totalStar").default(0),

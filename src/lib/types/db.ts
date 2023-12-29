@@ -19,6 +19,7 @@ export type UserInfo = {
   weight: string,
   place?: string,
   license?: string,
+  introduce?: string,
   availableTime?: Array<boolean>,
   appointment?: Array<string>,
 };

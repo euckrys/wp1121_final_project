@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import * as React from "react"
+import { useRouter } from "next/navigation";
 
 
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,26 @@ export default function HomePage() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+
+  const [testing, setTesting] = useState(false);
+  const router = useRouter();
+  const testCron = async () => {
+
+    if (testing) return;
+        setTesting(true);
+
+        const res = await fetch("/api/cron", {
+            method: "GET",
+        });
+
+        if (!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error);
+        }
+        router.refresh();
+        setTesting(false);
+        return res;
+  }
 
   const fetchUserInfo = async () => {
     try {
@@ -59,6 +80,9 @@ export default function HomePage() {
       >
         修改使用者資料
       </Button>
+      <Button onClick={() => testCron()}>
+        Test Cron
+      </Button>
       {dialogOpen && (
         <UpdateProfileDialog
           _displayName={userInfo?.displayName ? userInfo.displayName : ""}
@@ -68,6 +92,7 @@ export default function HomePage() {
           _weight={userInfo?.weight ? userInfo.weight : ""}
           _place={userInfo?.place ? userInfo.place : ""}
           _license={userInfo?.license ? userInfo?.license : ""}
+          _introduce={userInfo?.introduce ? userInfo?.introduce : ""}
           showDialog={dialogOpen}
           onclose={handleCloseDialog}
         />
