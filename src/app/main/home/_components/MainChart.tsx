@@ -17,8 +17,6 @@ import { Separator } from "@/components/ui/separator"
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
-// import { Button } from "@/components/ui/button"
-
 import CreateRecordDialog from "./CreateRecordDialog"
 import Record from "./Record"
 
@@ -32,8 +30,6 @@ type MainChartProps = {
     setDate: React.Dispatch<React.SetStateAction<number>>,
     month: number,
     setMonth: React.Dispatch<React.SetStateAction<number>>,
-    year: number,
-    setYear: React.Dispatch<React.SetStateAction<number>>,
     isLoading: boolean,
 }
 
@@ -52,8 +48,6 @@ export default function MainChart({
     setDate,
     month,
     setMonth,
-    // year,
-    // setYear,
     isLoading,
 }: MainChartProps) {
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -92,16 +86,7 @@ export default function MainChart({
 
     }, [api, month]);
 
-    const getMonthName = (monthNumber:number) => {
-        const date = new Date();
-        date.setMonth(monthNumber - 1);
-
-        return date.toLocaleString('en-US', {
-          month: 'long',
-        });
-    }
-
-    const sumOfTime = (i:number) => {
+    const getSumOfTime = (i:number) => {
         let sum = 0;
         charts[i].totalTime.forEach((num)=> {
             sum += num;
@@ -117,6 +102,15 @@ export default function MainChart({
     const getDaysInMonth = (year:number, month:number) => {
         const daysInMonth = new Date(year, month, 0).getDate();
         return daysInMonth;
+    }
+
+    const getMonthName = (monthNumber:number) => {
+        const date = new Date();
+        date.setMonth(monthNumber - 1);
+
+        return date.toLocaleString('en-US', {
+          month: 'long',
+        });
     }
 
 
@@ -188,7 +182,7 @@ export default function MainChart({
                                                         </div>
                                                         <div className="mt-4 mb-4">
                                                             <p className="font-sans font-medium text-xl">{`Total time of ${getMonthName(month)} : `}
-                                                                <span className="underline decoration-2">{` ${sumOfTime(index)} hours`}</span>
+                                                                <span className="underline decoration-2">{` ${getSumOfTime(index)} hours`}</span>
                                                             </p>
                                                         </div>
                                                     </div>

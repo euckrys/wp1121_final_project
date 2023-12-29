@@ -29,7 +29,7 @@ type SubChartsProps = {
     setMonth: React.Dispatch<React.SetStateAction<number>>,
 }
 
-const axisDataSet: number[] = Array.from({ length: 31 }, (_, index) => index+1);
+const XaxisDataSet: number[] = Array.from({ length: 31 }, (_, index) => index+1);
 const monthArray: number[] = [];
 
 export default function SubChart({
@@ -43,23 +43,17 @@ export default function SubChart({
     const [startNb, setStartNb] = useState(date);
     const [itemNb] = useState(7);
 
-    const [api, setApi] = useState<CarouselApi>()
+    const [api, setApi] = useState<CarouselApi>();
     const [isChanging, setIschanging] = useState<boolean>(false);
 
     const handleStartNbChange = (event: Event, newValue: number | number[]) => {
-        if (typeof newValue !== 'number' || !event) {
-          return;
-        }
+        if (typeof newValue !== 'number' || !event) return;
         if (newValue > 24)  newValue = 24;
         setStartNb(newValue);
     };
 
-    // const handleAxisChange = (event: Event, newValue: number | number[]) => {
-
-    // };
-
     useEffect(() => {
-        if (monthArray.length > 1)    return;
+        if (monthArray.length > 1) return;
         for ( let i = 0; i < 6; i++ ) {
             monthArray.push(charts[i].month%12 == 0 ? 12 : charts[i].month%12);
         }
@@ -127,7 +121,7 @@ export default function SubChart({
                                                     <BarChart
                                                         height={250}
                                                         width={500}
-                                                        xAxis={[{ scaleType: 'band', data: axisDataSet.slice(startNb, startNb+itemNb)}]}
+                                                        xAxis={[{ scaleType: 'band', data: XaxisDataSet.slice(startNb, startNb+itemNb)}]}
                                                         yAxis={[{ min: 0, max: Math.max(...chart.totalTime), hideTooltip: true}]}
                                                         series={[{ data: chart.totalTime.slice(startNb, startNb+itemNb), color: "#FFCBCB" }]}
                                                         skipAnimation={skipAnimation}
