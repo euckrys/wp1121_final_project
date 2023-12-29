@@ -130,7 +130,7 @@ export default function MainChart({
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious disabled={isLoading}/>
+                    <CarouselPrevious disabled={isLoading} />
                     <CarouselNext disabled={isLoading}/>
                 </Carousel>
             </div>
