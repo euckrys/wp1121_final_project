@@ -24,6 +24,7 @@ export default function ProfileForm() {
     const [weight, setWeight] = useState<string>("");
     const [place, setPlace] = useState<string>("");
     const [license, setLicense] = useState<string>("");
+    const [introduce, setIntroduce] = useState<string>("");
     const [availableTime] = useState<Array<boolean>>(Array(70).fill(true));
     const [coachAvailableTime] = useState<Array<boolean>>(Array(70).fill(false));
     const [appointment] = useState<Array<string>>(Array(35).fill("/"));
@@ -43,6 +44,7 @@ export default function ProfileForm() {
                     weight,
                     place,
                     license,
+                    introduce,
                     availableTime: coachAvailableTime,
                     appointment,
                 });
@@ -57,6 +59,7 @@ export default function ProfileForm() {
                     weight,
                     place,
                     license,
+                    introduce,
                     availableTime,
                     appointment,
                 });
@@ -139,6 +142,15 @@ export default function ProfileForm() {
                                     type="text"
                                     value={license}
                                     setValue={setLicense}
+                                />
+                            </div>
+                            <div>
+                                <Label>介紹/教學理念</Label>
+                                <Input
+                                    label=""
+                                    type="text"
+                                    value={introduce}
+                                    setValue={setIntroduce}
                                 />
                             </div>
                         </>

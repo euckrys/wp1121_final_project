@@ -42,6 +42,7 @@ export const profileInfoTable = pgTable(
     weight: varchar("weight"),
     place: varchar("place"),
     license: varchar("license"),
+    introduce: varchar("introduce"),
     availableTime: boolean("availableTime").array(70),
     appointment: varchar("appointment").array(35),
     totalStar: real("totalStar").default(0),
@@ -65,7 +66,7 @@ export const postsTable = pgTable(
     author: varchar("author").notNull(),
     authorIsCoach: boolean("author_is_coach").notNull(),
     sportType: varchar("sport_type").notNull(),
-    expectedTime: varchar("expected_time").array(6),
+    expectedTime: varchar("expected_time").array(),
     description: varchar("description").notNull(),
     updatedAt: timestamp("updated_at").default(sql`now()`).notNull(),
   },
@@ -135,11 +136,13 @@ export const chartsTable = pgTable(
       .notNull()
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     month: integer("month").notNull(),
+    year: integer("year").notNull(),
     totalTime: integer("total_time").array(31),
   },
   (table) => ({
     ownerIdIndex: index("owner_id_index").on(table.ownerId),
     monthIndex: index("month_index").on(table.month),
+    yearIndex: index("year_index").on(table.year),
     totalTimeIndex: index("total_time_index").on(table.totalTime),
     uniqCombination: unique().on(table.ownerId, table.month),
   })

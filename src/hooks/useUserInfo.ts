@@ -34,6 +34,7 @@ export default function useUserInfo() {
         weight,
         place,
         license,
+        introduce,
         availableTime,
         appointment,
     }: {
@@ -44,6 +45,7 @@ export default function useUserInfo() {
         weight: string,
         place: string,
         license: string,
+        introduce: string,
         availableTime: Array<boolean>,
         appointment: Array<string>
     }) => {
@@ -60,6 +62,7 @@ export default function useUserInfo() {
                 weight,
                 place,
                 license,
+                introduce,
                 availableTime,
                 appointment,
             }),
@@ -100,6 +103,7 @@ export default function useUserInfo() {
         weight,
         place,
         license,
+        introduce,
     }: {
         displayName?: string,
         avatarUrl?: string,
@@ -109,6 +113,7 @@ export default function useUserInfo() {
         weight?: string,
         place?: string,
         license?: string,
+        introduce?: string;
     }) => {
         if (loading) return;
         setLoading(true);
@@ -124,6 +129,7 @@ export default function useUserInfo() {
                 weight,
                 place,
                 license,
+                introduce,
             }),
         });
 
@@ -136,6 +142,27 @@ export default function useUserInfo() {
         setLoading(false);
     }
 
+    const getAvailableTime = async () => {
+        if (loading) return;
+        setLoading(true);
+
+        const res = await fetch("/api/availableTime", {
+            method: "GET",
+        });
+
+        if (!res.ok) {
+            const body = await res.json();
+            throw new Error(body.error);
+        }
+
+        const data = await res.json();
+        const availableTime = data.availableTime;
+
+        router.refresh();
+        setLoading(false);
+        return availableTime;
+    }
+    
     const updateAvailableTime = async({
         availableTime,
         appointment
@@ -167,6 +194,7 @@ export default function useUserInfo() {
         postUserInfo,
         updateUser,
         updateUserInfo,
+        getAvailableTime,
         updateAvailableTime,
         loading,
     }

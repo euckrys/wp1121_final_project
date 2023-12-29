@@ -12,6 +12,9 @@ import { profileInfoSchema } from "@/validators/profileInfo";
 
 type ProfileRequest = z.infer<typeof profileInfoSchema>;
 
+const nowYear = new Date().getFullYear();
+const nowMonth = new Date().getMonth()+1;
+
 export async function GET() {
     try {
         const session = await auth();
@@ -30,6 +33,7 @@ export async function GET() {
                 weight: profileInfoTable.weight,
                 place: profileInfoTable.place,
                 license: profileInfoTable.license,
+                introduce: profileInfoTable.introduce,
                 availableTime: profileInfoTable.availableTime,
                 appointment: profileInfoTable.appointment,
             })
@@ -55,7 +59,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { displayName, sportType, age, height, weight, place, license, availableTime, appointment} = data as ProfileRequest;
+    const { displayName, sportType, age, height, weight, place, license, introduce, availableTime, appointment} = data as ProfileRequest;
 
 
     try {
@@ -78,6 +82,7 @@ export async function POST(request: NextRequest) {
                     weight,
                     place,
                     license,
+                    introduce,
                     availableTime,
                     appointment,
                 })
@@ -90,18 +95,30 @@ export async function POST(request: NextRequest) {
                 .execute();
 
             for (let i = 0; i < 6; i++) {
-                const month = (10+i) > 12 ? (i-2) : (10+i);
+                const month = nowMonth - 3 + i;
+
+                let year = nowYear;
+                if (month > 12) {
+                    year = nowYear + 1
+                }
+                else if (month < 1) {
+                    year = nowYear - 1;
+                } else {
+                    year = nowYear;
+                }
+
                 await tx
                     .insert(chartsTable)
                     .values({
                         ownerId: userId,
                         month,
+                        year,
                         totalTime: Array(31).fill(0),
                     })
                     .execute();
             }
 
-            // console.log(result);
+            console.log(result);
         })
     } catch (error) {
         console.log(error);
@@ -123,7 +140,7 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { displayName, avatarUrl, sportType, age, height, weight, place, license} = data as ProfileRequest;
+    const { displayName, avatarUrl, sportType, age, height, weight, place, license, introduce} = data as ProfileRequest;
 
     try {
         const session = await auth();
@@ -141,6 +158,7 @@ export async function PUT(request: NextRequest) {
                     weight,
                     place,
                     license,
+                    introduce,
                 })
                 .where(eq(profileInfoTable.userId, userId))
                 .returning();
@@ -169,7 +187,7 @@ export async function PUT(request: NextRequest) {
                 .where(eq(reviewsTable.authorId, userId))
                 .execute();
 
-            // console.log(result);
+            console.log(result);
         })
     } catch (error) {
         return NextResponse.json(

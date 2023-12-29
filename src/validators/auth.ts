@@ -13,5 +13,6 @@ export const authSchema = z.object({
   height: z.string().optional(),
   weight: z.string().optional(),
   place: z.string().optional(),
-  license: z.string().optional()
+  license: z.string().optional(),
+  introduce: z.string().optional()
 });

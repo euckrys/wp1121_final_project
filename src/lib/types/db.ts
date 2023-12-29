@@ -19,6 +19,7 @@ export type UserInfo = {
   weight: string,
   place?: string,
   license?: string,
+  introduce?: string,
   availableTime?: Array<boolean>,
   appointment?: Array<string>,
 };
@@ -44,6 +45,7 @@ export type PostWithReplies = {
   authorId: string,
   author: string,
   sportType: string,
+  expectedTime: string[],
   description: string,
   updatedAt: Date,
   replies: {
@@ -68,6 +70,7 @@ export type Chart = {
   chartId: string,
   ownerId: string,
   month: number,
+  year: number,
   totalTime: number[],
   records: {
     id: string,
