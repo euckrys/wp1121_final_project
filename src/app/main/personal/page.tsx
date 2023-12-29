@@ -68,6 +68,9 @@ export default function HomePage() {
   return (
     <div>
       <div className="flex flex-col items-center p-4 ">
+        <div className="flex justify-center p-2">
+          <img src={userInfo?.avatarUrl} alt="usrimg" />
+        </div>
         <div className="flex flex-row justify-between border-2 border-black">
           <div className="flex flex-col p-2 px-10 font-sans font-bold">
             <span>Username</span>
