@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import * as React from "react"
+import * as React from "react";
 
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
-
-import type { UserInfo } from "@/lib/types/db"
 import useUserInfo from "@/hooks/useUserInfo";
+import type { UserInfo } from "@/lib/types/db";
+
+import Schedule from "./_components/Schedule";
 import UpdateProfileDialog from "./_components/UpdateProfileDialog";
-import Schedule from "./_components/Schedule"
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -25,40 +25,58 @@ export default function HomePage() {
       const targetUserInfo = await getUserInfo();
       console.log("targetUserInfo: ", targetUserInfo);
       setUserInfo(targetUserInfo);
-      console.log("userInfo: ",userInfo);
+      console.log("userInfo: ", userInfo);
     } catch (error) {
       console.log(error);
       alert("Error getting userinfo");
     }
-  }
+  };
 
   useEffect(() => {
     fetchUserInfo();
-  }, [dialogOpen])
+  }, [dialogOpen]);
 
   useEffect(() => {
     fetchUserInfo();
     // console.log(scheduleDialogOpen)
-  }, [scheduleDialogOpen])
+  }, [scheduleDialogOpen]);
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
-  }
+  };
 
   return (
     <div>
-      <h1>{userInfo?.displayName}</h1>
-      <h1>{userInfo?.sportType}</h1>
-      <h1>{userInfo?.age}</h1>
-      <h1>{userInfo?.height}</h1>
-      <h1>{userInfo?.weight}</h1>
-      <Button
-        onClick = {() => {setDialogOpen(true)}}
-        disabled={loading}
-        className="font-bold text-base ml-2 rounded-md"
-      >
-        修改使用者資料
-      </Button>
+      <div className="flex flex-col items-center p-4 ">
+        <div className="flex flex-row justify-between border-2 border-black">
+          <div className="flex flex-col p-2 px-10 font-sans font-bold">
+            <span>Username</span>
+            <span>Sport Type</span>
+            <span>Age</span>
+            <span>Height</span>
+            <span>Weight</span>
+          </div>
+          <div className="flex flex-col p-2 px-10 font-sans">
+            <span>{userInfo?.displayName}</span>
+            <span>{userInfo?.sportType}</span>
+            <span>{userInfo?.age}</span>
+            <span>{userInfo?.height}</span>
+            <span>{userInfo?.weight}</span>
+          </div>
+        </div>
+        <div className="p-4">
+          <Button
+            onClick={() => {
+              setDialogOpen(true);
+            }}
+            disabled={loading}
+            className="ml-2 rounded-md p-2 text-base font-bold"
+          >
+            修改使用者資料
+          </Button>
+        </div>
+      </div>
+      <section></section>
       {dialogOpen && (
         <UpdateProfileDialog
           _displayName={userInfo?.displayName ? userInfo.displayName : ""}
@@ -73,7 +91,16 @@ export default function HomePage() {
         />
       )}
 
-      {session?.user?.isCoach && userInfo?.availableTime && userInfo?.appointment && <Schedule _availableTime={userInfo?.availableTime} _appointment={userInfo.appointment} dialogOpen={scheduleDialogOpen} setDialogOpen={setScheduleDialogOpen}/>}
+      {session?.user?.isCoach &&
+        userInfo?.availableTime &&
+        userInfo?.appointment && (
+          <Schedule
+            _availableTime={userInfo?.availableTime}
+            _appointment={userInfo.appointment}
+            dialogOpen={scheduleDialogOpen}
+            setDialogOpen={setScheduleDialogOpen}
+          />
+        )}
     </div>
   );
 }
