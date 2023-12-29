@@ -10,7 +10,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Input from "../_components/AuthInput"
-
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select";
 export default function ProfileForm() {
     const { data: session } = useSession();
     const router = useRouter();
@@ -90,12 +96,25 @@ export default function ProfileForm() {
                     </div>
                     <div>
                         <Label>運動種類</Label>
-                        <Input
-                            label=""
-                            type="text"
-                            value={sportType}
-                            setValue={setSportType}
-                        />
+                        <Select
+                            onValueChange={(value) => {
+                                if (value == "%") setSportType("");
+                                else setSportType(value);
+                            }}
+                        >
+                            <SelectTrigger className="w-[180px]" disabled={loading}>
+                                <SelectValue placeholder="SportType" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="fitness">健身</SelectItem>
+                                <SelectItem value="swimming">游泳</SelectItem>
+                                <SelectItem value="yoga">瑜伽</SelectItem>
+                                <SelectItem value="badminton">羽球</SelectItem>
+                                <SelectItem value="basketball">籃球</SelectItem>
+                                <SelectItem value="soccer">足球</SelectItem>
+                                <SelectItem value="others">其他</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div>
                         <Label>年齡</Label>

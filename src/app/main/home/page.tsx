@@ -116,8 +116,6 @@ const fetchAvailableTime = async () => {
                   setDate={setDate}
                   month={month}
                   setMonth={setMonth}
-                  year={year}
-                  setYear={setYear}
                   isLoading={isLoading}
                 />
               <div className="flex flex-col">

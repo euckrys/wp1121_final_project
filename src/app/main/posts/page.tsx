@@ -157,6 +157,10 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
                     <SelectItem value="%">ALL</SelectItem>
                     <SelectItem value="fitness">健身</SelectItem>
                     <SelectItem value="swimming">游泳</SelectItem>
+                    <SelectItem value="yoga">瑜伽</SelectItem>
+                    <SelectItem value="badminton">羽球</SelectItem>
+                    <SelectItem value="basketball">籃球</SelectItem>
+                    <SelectItem value="soccer">足球</SelectItem>
                     <SelectItem value="others">其他</SelectItem>
                   </SelectContent>
                 </Select>

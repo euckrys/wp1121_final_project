@@ -15,7 +15,14 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  
+  } from "@/components/ui/select";
 
 type CreateRecordDialog = {
     toChartId: string,
@@ -76,12 +83,25 @@ export default function CreateRecordDialog({
                     </DialogHeader>
                         <div>
                             <Label>種類</Label>
-                            <Input
-                                label=""
-                                type="text"
-                                value={sportType}
-                                setValue={setSportType}
-                            />
+                            <Select
+                                onValueChange={(value) => {
+                                    if (value == "%") setSportType("");
+                                    else setSportType(value);
+                                }}
+                            >
+                                <SelectTrigger className="w-[180px]" disabled={loading}>
+                                    <SelectValue placeholder="SportType" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="fitness">健身</SelectItem>
+                                    <SelectItem value="swimming">游泳</SelectItem>
+                                    <SelectItem value="yoga">瑜伽</SelectItem>
+                                    <SelectItem value="badminton">羽球</SelectItem>
+                                    <SelectItem value="basketball">籃球</SelectItem>
+                                    <SelectItem value="soccer">足球</SelectItem>
+                                    <SelectItem value="others">其他</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                         <div>
                             <Label>時間</Label>

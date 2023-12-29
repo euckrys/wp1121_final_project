@@ -59,10 +59,14 @@ export default function CoachPage({ searchParams: { search } }: PostPageProps) {
             <SelectValue placeholder="SportType" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="%">ALL</SelectItem>
-            <SelectItem value="fitness">健身</SelectItem>
-            <SelectItem value="swimming">游泳</SelectItem>
-            <SelectItem value="others">其他</SelectItem>
+          <SelectItem value="%">ALL</SelectItem>
+          <SelectItem value="fitness">健身</SelectItem>
+          <SelectItem value="swimming">游泳</SelectItem>
+          <SelectItem value="yoga">瑜伽</SelectItem>
+          <SelectItem value="badminton">羽球</SelectItem>
+          <SelectItem value="basketball">籃球</SelectItem>
+          <SelectItem value="soccer">足球</SelectItem>
+          <SelectItem value="others">其他</SelectItem>
           </SelectContent>
         </Select>
       </div>
