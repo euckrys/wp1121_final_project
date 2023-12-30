@@ -53,9 +53,7 @@ export default function PostDetailsPage({
 
   return (
     <>
-      {/* <h1>{`Post Details: ${postId}`}</h1> */}
       <NavBar />
-
       <div className="flex items-center justify-center">
         <div className="flex  flex-col items-center border-2 shadow-lg">
           <div className="flex flex-col p-2">
@@ -104,78 +102,6 @@ export default function PostDetailsPage({
           </div>
         </div>
       </div>
-
-      {/* <div className="flex w-screen flex-row">
-        <div className="flex h-[90%] flex-col justify-start overflow-y-auto p-8 pr-16">
-          {post?.replies.map((reply, i) => (
-            <Reply
-              key={i}
-              author={reply.author}
-              content={reply.content}
-            ></Reply>
-          ))}
-        </div>
-        <div className="flex w-full flex-row justify-end p-4">
-          <section className="flex flex-col">
-            <div className="font-lg flex flex-col p-2  font-bold">
-              <p>Reply to {post?.author}</p>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex  justify-between rounded-md p-4 shadow-lg">
-                <div className="flex flex-col">
-                  <div className="flex flex-row py-2 pl-12">
-                    <div className="flex justify-between">
-                      <div className="flex px-2">
-                        <span>Sport</span>
-                      </div>
-                      <div className="flex pl-12">
-                        <div className="rounded-full bg-red-100">
-                          <p className="px-4">Sports name</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex flex-row py-2 pl-12">
-                      <div className="flex justify-between">
-                        <div className="flex px-2">
-                          <span>Time</span>
-                        </div>
-                        <div className="flex pl-12">
-                          <div className="rounded-full bg-gray-300">
-                            <p className="px-4">time</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex flex-row py-2 pl-12">
-                      <div className="flex justify-between">
-                        <div className="flex px-2">
-                          <span>Description</span>
-                        </div>
-                        <div className="flex pl-12">
-                          <div className="rounded-full bg-gray-300">
-                            {/* <p className="px-4">{`reply: ${post.replies[0]?.content}`}</p> */}
-      {/*<p className="px-4">{post?.description}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex p-2">
-              <ReplyInput postId={postId}></ReplyInput>
-            </div>
-          </section>
-        </div>
-
-        {/* <h1>{post?.postId}</h1>
-        <h1>{post?.description}</h1> */}
-      {/*</></div> */}
     </>
   );
 }

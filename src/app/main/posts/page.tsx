@@ -347,84 +347,13 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
                           </div>
                         </div>
                       </div>
-
-
                     </Link>
-
-
-
-
-
-                    {/* <div className="flex w-full flex-col">
-                      <Link href={`/main/posts/${post.postId}`} key={post.postId}>
-                        <></>
-
-                        <div className="flex p-2 text-xl font-bold">
-                          <p className="font-bold text-xl p-2">{post.author}</p>
-                        </div>
-
-                        <div className="flex flex-row px-8">
-
-                          <div className="flex flex-col px-8">
-                            <span className="font-bold text-xl p-2">Sport</span>
-                            <span className="font-bold text-xl p-2">Time</span>
-                            <span className="font-bold text-xl p-2">Description</span>
-                          </div>
-
-                          <div className="flex flex-col px-8">
-                            <span className="flex flex-row rounded-full  bg-red-100 p-2 py-1">
-                            {post.sportType}
-                            </span>
-                            {post.expectedTime.find((e) => e === "0") !==
-                              undefined && (
-                              <span className="rounded-full bg-gray-300 p-2 py-1">
-                                9:00 ~ 11:00
-                              </span>
-                            )}
-                            {post.expectedTime.find((e) => e === "1") !==
-                              undefined && (
-                              <span className="rounded-full bg-gray-300 p-2 py-1 ">
-                                11:00 ~ 13:00
-                              </span>
-                            )}
-                            {post.expectedTime.find((e) => e === "2") !==
-                              undefined && (
-                              <span className="rounded-full bg-gray-300 p-2 py-1">
-                                13:00 ~ 15:00
-                              </span>
-                            )}
-                            {post.expectedTime.find((e) => e === "3") !==
-                              undefined && (
-                              <span className="rounded-full bg-gray-300 p-2 py-1">
-                                15:00 ~ 17:00
-                              </span>
-                            )}
-                            {post.expectedTime.find((e) => e === "4") !==
-                              undefined && (
-                              <span className="rounded-full bg-gray-300 p-2 py-1">
-                                17:00 ~ 19:00
-                              </span>
-                            )}
-                            {post.expectedTime.find((e) => e === "5") !==
-                              undefined && (
-                              <span className="rounded-full bg-gray-300 p-2 py-1">
-                                All
-                              </span>
-                            )}
-                            <span className="flex flex-row py-1">
-                              {post?.description}
-                            </span>
-                          </div>
-                        </div>
-                      </Link> */}
                     </CardContent>
                   </Card>
                 </div>
               )}
             </div>
-
           </div>
-
         </div>
       </div>
 
