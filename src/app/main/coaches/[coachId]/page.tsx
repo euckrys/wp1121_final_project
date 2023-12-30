@@ -33,7 +33,7 @@ export default function HomePage() {
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [totalStar, setTotalStar] = useState<number>();
   const [totalReview, setTotalReview] = useState<number>();
-  const [averageStar, setAverageStar] = useState<number>();
+  const [averageStar, setAverageStar] = useState<number | null>();
 
   const userId = session?.user?.id ? session.user.id : "";
   const username = session?.user?.username ? session.user.username : "";
@@ -66,7 +66,9 @@ export default function HomePage() {
       setReviews(targetReview?.review);
       setTotalStar(targetReview?.totalStar);
       setTotalReview(targetReview?.totalReview);
-      totalStar && totalReview && setAverageStar(totalStar / totalReview);
+      targetReview?.totalStar &&
+        targetReview?.totalReview &&
+        setAverageStar(targetReview?.totalStar / targetReview?.totalReview);
     } catch (error) {
       console.log(error);
       alert("Error geting Review");
@@ -281,7 +283,7 @@ export default function HomePage() {
                     name="half-rating"
                     precision={0.1}
                     readOnly
-                    defaultValue={averageStar}
+                    value={averageStar}
                   />
                 </div>
                 <div className="flex justify-between">

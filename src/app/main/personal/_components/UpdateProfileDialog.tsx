@@ -119,10 +119,6 @@ export default function UpdateProfileDialog({
     <>
       <Dialog open={showDialog} onOpenChange={onclose}>
         <DialogContent className="flex">
-          <DialogHeader>
-            <DialogTitle></DialogTitle>
-            <DialogDescription></DialogDescription>
-          </DialogHeader>
           <div>
             <Label>Avatar</Label>
             <Image
@@ -145,82 +141,82 @@ export default function UpdateProfileDialog({
                   "
             />
           </div>
-          <div>
-          <div>
-            <Label>暱稱</Label>
-            <Input
-              label=""
-              type="text"
-              value={displayName}
-              setValue={setDisplayName}
-            />
-          </div>
-          <div>
-            <Label>運動種類</Label>
-            <Select
-              onValueChange={(value) => {
-                if (value == "%") setSportType("");
-                else setSportType(value);
-              }}
-            >
-              <SelectTrigger className="w-[180px]" disabled={loading}>
-                <SelectValue placeholder="SportType" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fitness">健身</SelectItem>
-                <SelectItem value="swimming">游泳</SelectItem>
-                <SelectItem value="yoga">瑜伽</SelectItem>
-                <SelectItem value="badminton">羽球</SelectItem>
-                <SelectItem value="basketball">籃球</SelectItem>
-                <SelectItem value="soccer">足球</SelectItem>
-                <SelectItem value="others">其他</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label>年齡</Label>
-            <Input label="" type="text" value={age} setValue={setAge} />
-          </div>
-          <div>
-            <Label>體重</Label>
-            <Input label="" type="text" value={weight} setValue={setWeight} />
-          </div>
-          <div>
-            <Label>身高</Label>
-            <Input label="" type="text" value={height} setValue={setHeight} />
-          </div>
-          {session?.user?.isCoach && (
-            <>
-              <div>
-                <Label>場館</Label>
-                <Input label="" type="text" value={place} setValue={setPlace} />
-              </div>
-              <div>
-                <Label>證照資訊</Label>
-                <Input
-                  label=""
-                  type="text"
-                  value={license}
-                  setValue={setLicense}
-                />
-              </div>
-              <div>
-                <Label>介紹/教學理念</Label>
-                <Input
-                  label=""
-                  type="text"
-                  value={introduce}
-                  setValue={setIntroduce}
-                />
-              </div>
-            </>
-          )}
-          <DialogFooter>
-            <Button onClick={handleUpdate} disabled={loading}>
-              更新使用者資料
-            </Button>
-            <Button onClick={onclose}>取消</Button>
-          </DialogFooter>
+          <div className="">
+            <div>
+              <Label>暱稱</Label>
+              <Input
+                label=""
+                type="text"
+                value={displayName}
+                setValue={setDisplayName}
+              />
+            </div>
+            <div>
+              <Label>運動種類</Label>
+              <Select
+                onValueChange={(value) => {
+                  if (value == "%") setSportType("");
+                  else setSportType(value);
+                }}
+              >
+                <SelectTrigger className="w-[180px]" disabled={loading}>
+                  <SelectValue placeholder="SportType" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="fitness">健身</SelectItem>
+                  <SelectItem value="swimming">游泳</SelectItem>
+                  <SelectItem value="yoga">瑜伽</SelectItem>
+                  <SelectItem value="badminton">羽球</SelectItem>
+                  <SelectItem value="basketball">籃球</SelectItem>
+                  <SelectItem value="soccer">足球</SelectItem>
+                  <SelectItem value="others">其他</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>年齡</Label>
+              <Input label="" type="text" value={age} setValue={setAge} />
+            </div>
+            <div>
+              <Label>體重</Label>
+              <Input label="" type="text" value={weight} setValue={setWeight} />
+            </div>
+            <div>
+              <Label>身高</Label>
+              <Input label="" type="text" value={height} setValue={setHeight} />
+            </div>
+            {session?.user?.isCoach && (
+              <>
+                <div>
+                  <Label>場館</Label>
+                  <Input label="" type="text" value={place} setValue={setPlace} />
+                </div>
+                <div>
+                  <Label>證照資訊</Label>
+                  <Input
+                    label=""
+                    type="text"
+                    value={license}
+                    setValue={setLicense}
+                  />
+                </div>
+                <div>
+                  <Label>介紹/教學理念</Label>
+                  <Input
+                    label=""
+                    type="text"
+                    value={introduce}
+                    setValue={setIntroduce}
+                  />
+                </div>
+              </>
+            )}
+            <DialogFooter>
+              <Button onClick={handleUpdate} disabled={loading}>
+                更新使用者資料
+              </Button>
+              <Button onClick={onclose}>取消</Button>
+            </DialogFooter>
           </div>
         </DialogContent>
       </Dialog>

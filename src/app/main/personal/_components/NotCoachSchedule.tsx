@@ -20,6 +20,7 @@ export default function Schedule({
         thisWeek.push(today);
     }
     return (
+    <div className="grid justify-items-center">
         <Card className={cn("w-5/6 ml-20 mr-20 shadow border-1 rounded-none items-center justify-center")}>
             <CardContent className="flex items-center justify-center">
                 <div className="grid grid-rows-6 grid-flow-col gap-4">
@@ -38,5 +39,6 @@ export default function Schedule({
                 </div>
             </CardContent>
         </Card>
+    </div>
     )
 }

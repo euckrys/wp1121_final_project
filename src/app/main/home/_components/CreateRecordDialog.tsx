@@ -72,11 +72,25 @@ export default function CreateRecordDialog({
         }
 
         const timeInterval = 60*Number(endHour) + Number(endMinute) - 60*Number(startHour) - Number(startMinute)  ;
-
+        
+        if (sportType === "") {
+            toast({
+                title: "Uh oh!",
+                description: "請選擇運動種類",
+            })
+            return;
+        }
         if (timeInterval <= 0) {
             toast({
                 title: "Wrong input of time",
                 description: "The StartTime should be earlier than the EndTime"
+            })
+            return;
+        }
+        if (description.length > 5) {
+            toast({
+                title: "Wrong input of description",
+                description: "敘述最多只能5個字"
             })
             return;
         }
