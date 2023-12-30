@@ -78,7 +78,7 @@ export default function CoachPage({ searchParams: { search } }: PostPageProps) {
           userInfo.map((coach, i) => {
             if (coach.userId !== session?.user?.id) {
               return (
-                <div key={i}className="grid">
+                <div key={i} className="grid">
                   <form className="grid gap-4">
                     <div className="rounded-lg bg-white p-2 shadow-md">
                       <Link href={`/main/coaches/${coach.userId}`}>
