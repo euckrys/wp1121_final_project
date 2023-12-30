@@ -1,10 +1,10 @@
 "use client";
 
-// import { useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils/shadcn";
+import { Search } from 'lucide-react';
 
 type PostsSearchBarProps = {
   isCoach: boolean;
@@ -23,16 +23,17 @@ export default function PostsSearchBar({ isCoach }: PostsSearchBarProps) {
   };
 
   return (
-    <div className="flex px-2 py-4">
+    <div className="flex px-2 py-2 w-full justify-center items-center">
       <Input
         disabled={!isCoach}
         onChange={handleSearch}
         placeholder="搜尋教練"
         className={cn(
-          "ml-4 w-64 rounded-xl p-2 placeholder:font-semibold placeholder:text-gray-700",
+          "mr-4 w-full text-xl rounded-xl py-4 placeholder:font-semibold placeholder:text-black",
         )}
         style={{ border: "1px solid gray" }}
       />
+      <Search />
     </div>
   );
 }

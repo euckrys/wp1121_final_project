@@ -75,7 +75,7 @@ export default function HomePage() {
   }, [totalTime])
 
   useEffect(() => {
-    setIsFirstLoading(true)
+    setIsFirstLoading(true);
     fetchCharts();
     fetchAvailableTime();
   }, [])

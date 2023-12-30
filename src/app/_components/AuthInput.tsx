@@ -9,13 +9,15 @@ type Props = {
   type: React.HTMLInputTypeAttribute;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  defaultValue: string;
 };
 
-function AuthInput({ label, type, value, setValue }: Props) {
+function AuthInput({ label, type, value, setValue , defaultValue}: Props) {
   return (
     <div className="w-full">
       <Label>{label}</Label>
       <Input
+        placeholder={defaultValue}
         type={type}
         value={value}
         onChange={(e) => {

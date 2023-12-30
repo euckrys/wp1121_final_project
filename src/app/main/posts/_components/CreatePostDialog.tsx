@@ -58,12 +58,15 @@ export default function CreatePostDialog({
     return (
         <>
             <Dialog open={showDialog} onOpenChange={onclose}>
-                <DialogContent>
+                <DialogContent className="p-10">
                     <DialogHeader>
-                        <DialogTitle>新增貼文</DialogTitle>
-                        <DialogDescription>輸入內容</DialogDescription>
+                        <DialogTitle className="text-xl">要新增貼文嗎？</DialogTitle>
+                        <DialogDescription className="text-lg">請輸入您的內容！</DialogDescription>
                     </DialogHeader>
-                        <div>
+                        <div className="w-full flex flex-col items-center">
+                            <p>ji</p>
+                        </div>
+                        <div className="w-full">
                             <Label>種類</Label>
                             <Select
                                 onValueChange={(value) => {
@@ -71,7 +74,7 @@ export default function CreatePostDialog({
                                     else setSportType(value);
                                 }}
                             >
-                                <SelectTrigger className="w-[180px]" disabled={loading}>
+                                <SelectTrigger className="w-full" disabled={loading}>
                                     <SelectValue placeholder="SportType" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -112,6 +115,7 @@ export default function CreatePostDialog({
                                 label=""
                                 type="text"
                                 value={description}
+                                defaultValue="請輸入貼文簡述"
                                 setValue={setDescription}
                             />
                         </div>

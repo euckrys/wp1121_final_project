@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 import useRecords from "@/hooks/useRecords";
 
@@ -50,6 +51,8 @@ export default function CreateRecordDialog({
     showDialog,
     onclose
 }: CreateRecordDialog) {
+    const { data : session } = useSession();
+
     const { createRecord, loading } = useRecords();
 
     const [sportType, setSportType] = useState<string>("");
@@ -110,50 +113,57 @@ export default function CreateRecordDialog({
     return (
         <>
             <Dialog open={showDialog} onOpenChange={onclose}>
-                <DialogContent>
+                <DialogContent className="p-10">
                     <DialogHeader>
-                        <DialogTitle>新增紀錄</DialogTitle>
-                        <DialogDescription>輸入內容</DialogDescription>
+                        <DialogTitle>{`新增${session?.user?.isCoach? "教學" : "運動" }紀錄`}</DialogTitle>
+                        <DialogDescription>請輸入運動種類、時間、及簡述</DialogDescription>
                     </DialogHeader>
-                        <div>
-                            <Label>種類</Label>
-                            <Select
-                                onValueChange={(value) => {
-                                    if (value == "%") setSportType("");
-                                    else setSportType(value);
-                                }}
-                            >
-                                <SelectTrigger className="w-[180px]" disabled={loading}>
-                                    <SelectValue placeholder="SportType" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="fitness">健身</SelectItem>
-                                    <SelectItem value="swimming">游泳</SelectItem>
-                                    <SelectItem value="yoga">瑜伽</SelectItem>
-                                    <SelectItem value="badminton">羽球</SelectItem>
-                                    <SelectItem value="basketball">籃球</SelectItem>
-                                    <SelectItem value="soccer">足球</SelectItem>
-                                    <SelectItem value="others">其他</SelectItem>
-                                </SelectContent>
-                            </Select>
+                        <div className="grid grid-cols-10 justify-center items-center">
+                            <Label className="col-span-2 font-semibold text-lg">種類</Label>
+                            <div className="col-span-8">
+                                <Select
+                                    onValueChange={(value) => {
+                                        if (value == "%") setSportType("");
+                                        else setSportType(value);
+                                    }}
+                                >
+                                    <SelectTrigger className="w-full    " disabled={loading}>
+                                        <SelectValue placeholder="請選擇運動種類" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="fitness">健身</SelectItem>
+                                        <SelectItem value="swimming">游泳</SelectItem>
+                                        <SelectItem value="yoga">瑜伽</SelectItem>
+                                        <SelectItem value="badminton">羽球</SelectItem>
+                                        <SelectItem value="basketball">籃球</SelectItem>
+                                        <SelectItem value="soccer">足球</SelectItem>
+                                        <SelectItem value="others">其他</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
-                        <div>
-                            <Label>時間</Label>
-                            <MyTimePicker
-                                setStartHour={setStartHour}
-                                setStartMinute={setStartMinute}
-                                setEndHour={setEndHour}
-                                setEndMinute={setEndMinute}
-                            />
+                        <div className="grid grid-cols-10 justify-center items-center">
+                            <Label className="col-span-2 font-semibold text-lg">時間</Label>
+                            <div className="col-span-8">
+                                <MyTimePicker
+                                    setStartHour={setStartHour}
+                                    setStartMinute={setStartMinute}
+                                    setEndHour={setEndHour}
+                                    setEndMinute={setEndMinute}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <Label>敘述</Label>
-                            <Input
-                                label=""
-                                type="text"
-                                value={description}
-                                setValue={setDescription}
-                            />
+                        <div className="grid grid-cols-10 justify-center items-center">
+                            <Label className="col-span-2 font-semibold text-lg">簡述</Label>
+                            <div className="col-span-8">
+                                <Input
+                                    label=""
+                                    type="text"
+                                    value={description}
+                                    setValue={setDescription}
+                                    defaultValue="請輸入五個字內的訊息"
+                                />
+                            </div>
                         </div>
                     <DialogFooter>
                         <Button
@@ -161,7 +171,7 @@ export default function CreateRecordDialog({
                             onClick={handelCreate}
                             disabled={loading}
                         >
-                            新增
+                            新增紀錄
                         </Button>
                         <Button onClick={onclose}>取消</Button>
                     </DialogFooter>

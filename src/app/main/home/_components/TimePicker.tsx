@@ -23,106 +23,117 @@ export default function MyTimePicker ({
 }: MyTimePickerProps) {
 
     return (
-        <div>
-            <Select
-            onValueChange={(value) => {
-                setStartHour(value);
-            }}
-            >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="開始時間(HH)" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="00">00</SelectItem>
-                    <SelectItem value="01">01</SelectItem>
-                    <SelectItem value="02">02</SelectItem>
-                    <SelectItem value="03">03</SelectItem>
-                    <SelectItem value="04">04</SelectItem>
-                    <SelectItem value="05">05</SelectItem>
-                    <SelectItem value="06">06</SelectItem>
-                    <SelectItem value="07">07</SelectItem>
-                    <SelectItem value="08">08</SelectItem>
-                    <SelectItem value="09">09</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="11">11</SelectItem>
-                    <SelectItem value="12">12</SelectItem>
-                    <SelectItem value="13">13</SelectItem>
-                    <SelectItem value="14">14</SelectItem>
-                    <SelectItem value="15">15</SelectItem>
-                    <SelectItem value="16">16</SelectItem>
-                    <SelectItem value="17">17</SelectItem>
-                    <SelectItem value="18">18</SelectItem>
-                    <SelectItem value="19">19</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="21">21</SelectItem>
-                    <SelectItem value="22">22</SelectItem>
-                    <SelectItem value="23">23</SelectItem>
-                </SelectContent>
-            </Select>
+        <div className="w-full">
+            <div className="flex justify-center items-center w-full">
+                <div className="mr-5 w-full">
+                    <Select
+                        onValueChange={(value) => {
+                            setStartHour(value);
+                        }}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="開始時間(HH)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="00">00</SelectItem>
+                            <SelectItem value="01">01</SelectItem>
+                            <SelectItem value="02">02</SelectItem>
+                            <SelectItem value="03">03</SelectItem>
+                            <SelectItem value="04">04</SelectItem>
+                            <SelectItem value="05">05</SelectItem>
+                            <SelectItem value="06">06</SelectItem>
+                            <SelectItem value="07">07</SelectItem>
+                            <SelectItem value="08">08</SelectItem>
+                            <SelectItem value="09">09</SelectItem>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="11">11</SelectItem>
+                            <SelectItem value="12">12</SelectItem>
+                            <SelectItem value="13">13</SelectItem>
+                            <SelectItem value="14">14</SelectItem>
+                            <SelectItem value="15">15</SelectItem>
+                            <SelectItem value="16">16</SelectItem>
+                            <SelectItem value="17">17</SelectItem>
+                            <SelectItem value="18">18</SelectItem>
+                            <SelectItem value="19">19</SelectItem>
+                            <SelectItem value="20">20</SelectItem>
+                            <SelectItem value="21">21</SelectItem>
+                            <SelectItem value="22">22</SelectItem>
+                            <SelectItem value="23">23</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Select
+                        onValueChange={(value) => {
+                            setStartMinute(value);
+                        }}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="開始時間(mm)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="00">00</SelectItem>
+                            <SelectItem value="30">30</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-            <Select
-                onValueChange={(value) => {
-                    setStartMinute(value);
-                }}
-                >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="開始時間(mm)" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="00">00</SelectItem>
-                    <SelectItem value="30">30</SelectItem>
-                </SelectContent>
-            </Select>
+            </div>
 
-            <Select
-                onValueChange={(value) => {
-                    setEndHour(value);
-                }}
-            >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="結束時間(HH)" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="00">00</SelectItem>
-                    <SelectItem value="01">01</SelectItem>
-                    <SelectItem value="02">02</SelectItem>
-                    <SelectItem value="03">03</SelectItem>
-                    <SelectItem value="04">04</SelectItem>
-                    <SelectItem value="05">05</SelectItem>
-                    <SelectItem value="06">06</SelectItem>
-                    <SelectItem value="07">07</SelectItem>
-                    <SelectItem value="08">08</SelectItem>
-                    <SelectItem value="09">09</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="11">11</SelectItem>
-                    <SelectItem value="12">12</SelectItem>
-                    <SelectItem value="13">13</SelectItem>
-                    <SelectItem value="14">14</SelectItem>
-                    <SelectItem value="15">15</SelectItem>
-                    <SelectItem value="16">16</SelectItem>
-                    <SelectItem value="17">17</SelectItem>
-                    <SelectItem value="18">18</SelectItem>
-                    <SelectItem value="19">19</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="21">21</SelectItem>
-                    <SelectItem value="22">22</SelectItem>
-                    <SelectItem value="23">23</SelectItem>
-                </SelectContent>
-            </Select>
-
-            <Select
-                onValueChange={(value) => {
-                    setEndMinute(value);
-                }}
-                >
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="結束時間(mm)" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="00">00</SelectItem>
-                    <SelectItem value="30">30</SelectItem>
-                </SelectContent>
-            </Select>
+            <div className="flex justify-center items-center w-full mt-3">
+                <div className="mr-5 w-full">
+                    <Select
+                        onValueChange={(value) => {
+                            setEndHour(value);
+                        }}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="結束時間(HH)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="00">00</SelectItem>
+                            <SelectItem value="01">01</SelectItem>
+                            <SelectItem value="02">02</SelectItem>
+                            <SelectItem value="03">03</SelectItem>
+                            <SelectItem value="04">04</SelectItem>
+                            <SelectItem value="05">05</SelectItem>
+                            <SelectItem value="06">06</SelectItem>
+                            <SelectItem value="07">07</SelectItem>
+                            <SelectItem value="08">08</SelectItem>
+                            <SelectItem value="09">09</SelectItem>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="11">11</SelectItem>
+                            <SelectItem value="12">12</SelectItem>
+                            <SelectItem value="13">13</SelectItem>
+                            <SelectItem value="14">14</SelectItem>
+                            <SelectItem value="15">15</SelectItem>
+                            <SelectItem value="16">16</SelectItem>
+                            <SelectItem value="17">17</SelectItem>
+                            <SelectItem value="18">18</SelectItem>
+                            <SelectItem value="19">19</SelectItem>
+                            <SelectItem value="20">20</SelectItem>
+                            <SelectItem value="21">21</SelectItem>
+                            <SelectItem value="22">22</SelectItem>
+                            <SelectItem value="23">23</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Select
+                        onValueChange={(value) => {
+                            setEndMinute(value);
+                        }}
+                        >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="結束時間(mm)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="00">00</SelectItem>
+                            <SelectItem value="30">30</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
         </div>
     )
 }
