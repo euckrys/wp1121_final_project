@@ -10,8 +10,10 @@ import { Button } from "@/components/ui/button";
 import useUserInfo from "@/hooks/useUserInfo";
 import type { UserInfo } from "@/lib/types/db";
 
+import NotCoachSchedule from "./_components/NotCoachSchedule"
 import Schedule from "./_components/Schedule";
 import UpdateProfileDialog from "./_components/UpdateProfileDialog";
+import Divider from '@mui/material/Divider';
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -111,16 +113,29 @@ export default function HomePage() {
           onclose={handleCloseDialog}
         />
       )}
+      <Divider className="text-black">My Schedule</Divider>
 
       {session?.user?.isCoach &&
         userInfo?.availableTime &&
         userInfo?.appointment && (
+          <div className="mt-5">
           <Schedule
             _availableTime={userInfo?.availableTime}
             _appointment={userInfo.appointment}
             dialogOpen={scheduleDialogOpen}
             setDialogOpen={setScheduleDialogOpen}
           />
+          </div>
+        )}
+       {!session?.user?.isCoach &&
+        userInfo?.availableTime &&
+        userInfo?.appointment && (
+          <div className="mt-10">
+          <NotCoachSchedule 
+            _availableTime={userInfo?.availableTime}
+            _appointment={userInfo.appointment}
+          />
+          </div>
         )}
     </div>
   );
