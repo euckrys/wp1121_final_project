@@ -10,6 +10,7 @@ import Input from "../_components/AuthInput";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -36,10 +37,47 @@ export default function ProfileForm() {
   const [availableTime] = useState<Array<boolean>>(Array(70).fill(true));
   const [coachAvailableTime] = useState<Array<boolean>>(Array(70).fill(false));
   const [appointment] = useState<Array<string>>(Array(35).fill("/"));
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!sportType || !age || !height || !weight) return;
+    if (displayName===""){
+        toast({
+            title: "Uh oh!",
+            description: "請輸入暱稱",
+        })
+        return;
+    }
+    else if(sportType===""){
+        toast({
+            title: "Uh oh!",
+            description: "請選擇運動種類",
+        })
+        return;
+    }
+    else if(age===""){
+        toast({
+            title: "Uh oh!",
+            description: "請輸入年齡",
+        })
+        return;
+    }
+    else if(weight===""){
+        toast({
+            title: "Uh oh!",
+            description: "請輸入體重",
+        })
+        return;
+    }
+    else if(height==="")
+    {
+        toast({
+            title: "Uh oh!",
+            description:  "請輸入身高",
+        })
+        return;
+    }
+    
     try {
       await updateUser();
       if (session?.user?.isCoach) {
@@ -85,8 +123,9 @@ export default function ProfileForm() {
             <CardTitle>請填寫使用者資訊</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="flex flex-row">
-              <div>
+            <form onSubmit={handleSubmit} className="flex flex-col">
+            <div className="flex flex-row">
+              <div className="flex flex-col">
                 <div className="p-2">
                   <Label>暱稱</Label>
                   <Input
@@ -170,12 +209,13 @@ export default function ProfileForm() {
                   />
                 </div>
               </div>
-            </form>
+            </div>
             <div className="flex justify-center py-4">
               <Button type="submit" className="w-52" disabled={loading}>
                 Continue
               </Button>
             </div>
+            </form>
           </CardContent>
         </Card>
       ) : (
@@ -238,12 +278,12 @@ export default function ProfileForm() {
                   setValue={setHeight}
                 />
               </div>
-            </form>
             <div className="flex justify-center py-4">
               <Button type="submit" className="w-52" disabled={loading}>
                 Continue
               </Button>
             </div>
+            </form>
           </CardContent>
         </Card>
       )}

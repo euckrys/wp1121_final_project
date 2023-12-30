@@ -152,41 +152,47 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
                   <ToggleGroup
                     type="multiple"
                     defaultValue={["0", "1", "2", "3", "4", "5"]}
+                    value={expectedTime}
                     onValueChange={(value: string[]) => {
-                      setExpectedTime(value);
+                      if((value.find((e) => e==="5"))!==undefined){ 
+                        if((expectedTime.find((e) => e==="5"))===undefined){setExpectedTime(["0", "1", "2", "3", "4", "5"])}
+                        else{const newValue: string[]=[];for(let v of value){if(v!=="5"){newValue.push(v)}};setExpectedTime(newValue)}
+                      }
+                      else if((expectedTime.find((e) => e==="5"))!==undefined) {setExpectedTime([])}
+                      else{setExpectedTime(value)}
                     }}
                   >
                     <div className="grid grid-rows-3 p-2">
                       <div className="p-2">
-                        <ToggleGroupItem value="0" aria-label="Toggle 0">
+                        <ToggleGroupItem className="w-28" value="0" aria-label="Toggle 0">
                           09:00-11:00
                         </ToggleGroupItem>
                       </div>
                       <div className="p-2">
-                        <ToggleGroupItem value="1" aria-label="Toggle 1">
+                        <ToggleGroupItem className="w-28" value="1" aria-label="Toggle 1">
                           11:00-13:00
                         </ToggleGroupItem>
                       </div>
                       <div className="p-2">
-                        <ToggleGroupItem value="2" aria-label="Toggle 2">
+                        <ToggleGroupItem className="w-28" value="2" aria-label="Toggle 2">
                           13:00-15:00
                         </ToggleGroupItem>
                       </div>
                     </div>
                     <div className="grid grid-rows-3 p-2">
                       <div className="p-2">
-                        <ToggleGroupItem value="3" aria-label="Toggle 3">
+                        <ToggleGroupItem className="w-28" value="3" aria-label="Toggle 3">
                           15:00-17:00
                         </ToggleGroupItem>
                       </div>
                       <div className="p-2">
-                        <ToggleGroupItem value="4" aria-label="Toggle 4">
+                        <ToggleGroupItem className="w-28" value="4" aria-label="Toggle 4">
                           17:00-19:00
                         </ToggleGroupItem>
                       </div>
                       <div className="p-2">
-                        <ToggleGroupItem value="5" aria-label="Toggle 5">
-                          Remove All
+                        <ToggleGroupItem className="w-28" value="5" aria-label="Toggle 5">
+                          All
                         </ToggleGroupItem>
                       </div>
                     </div>
