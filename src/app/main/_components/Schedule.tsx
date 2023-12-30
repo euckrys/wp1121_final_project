@@ -50,7 +50,13 @@ export default function Schedule({
     const [appointmentIndex, setAppointmentIndex] = useState<number>(0);
     const { updateAvailableTime, loading } = useUserInfo();
     const { updateOtherAvailableTime, loading:loading2 } = useOtherUserInfo();
-
+    const thisWeek: Date[] = [];    
+    const SuntoMon: string[] = ["日", "一", "二", "三", "四", "五", "六"];
+    for (let i = 0; i < 7; i++) {
+        const today = new Date();
+        today.setDate(today.getDate() + i);
+        thisWeek.push(today);
+    }
     const handleOpenDialog = (index: number) => {
       setDialogOpen(true);
       setAppointmentIndex(index);
@@ -179,18 +185,28 @@ export default function Schedule({
         {!isCoach && (
         <Card>
           <CardContent className="flex items-center justify-center">
-            <div className="grid grid-rows-5 grid-flow-col gap-4">
+            <div className="grid grid-rows-6 grid-flow-col gap-4">
               {_coach_availableTime.map((available, i) => (
                 i <= 34 && (
                 available && _appointment[i] =="/" ?(
-                  <Button key={i} className="bg-pink-700" onClick={() => handleOpenDialog(i)}>
+                  <>
+                  {i%5==0 &&(
+                      <div className="ml-7">{(thisWeek[i/5].getMonth()+1).toString() +"/"+(thisWeek[i/5].getDate()).toString() +"("+SuntoMon[(thisWeek[i/5].getDay())] +")"}</div>
+                  )}
+                  <Button key={i} className="bg-pink-700 w-32" onClick={() => handleOpenDialog(i)}>
                     {9+(i%5)*2}:00 ~ {11+(i%5)*2}:00
                   </Button>
+                  </>
                   )
                 :(
-                  <Button key={i} disabled={!available && _availableTime[i]} className={_availableTime[i]? "bg-inherit border-white": "bg-pink-300" } onClick={() => handleOpenCancelDialog(i)}>
+                  <>
+                  {i%5==0 &&(
+                      <div className="ml-7">{(thisWeek[i/5].getMonth()+1).toString() +"/"+(thisWeek[i/5].getDate()).toString() +"("+SuntoMon[(thisWeek[i/5].getDay())] +")"}</div>
+                  )}
+                  <Button key={i} disabled={!available && _availableTime[i]} className={(_availableTime[i]? "bg-inherit border-white": "bg-pink-300") + " w-32" } onClick={() => handleOpenCancelDialog(i)}>
                     {_availableTime[i] || _appointment[i] === "/" ?"":"已預約"+_appointment[i]}
                   </Button>
+                  </>
                 )
                 )
               ))}
@@ -200,18 +216,28 @@ export default function Schedule({
         {isCoach && (
         <Card>
           <CardContent className="flex items-center justify-center">
-            <div className="grid grid-rows-5 grid-flow-col gap-4">
+            <div className="grid grid-rows-6 grid-flow-col gap-4">
               {_coach_availableTime.map((available, i) => (
                 i <= 34 && (
                 available?(
-                  <Button disabled key={i} className="bg-pink-700">
+                  <>
+                  {i%5==0 &&(
+                      <div className="ml-7">{(thisWeek[i/5].getMonth()+1).toString() +"/"+(thisWeek[i/5].getDate()).toString() +"("+SuntoMon[(thisWeek[i/5].getDay())] +")"}</div>
+                  )}
+                  <Button disabled key={i} className="bg-pink-700 w-32">
                     {9+(i%5)*2}:00 ~ {11+(i%5)*2}:00
                   </Button>
+                  </>
                   )
                 :(
-                  <Button key={i} disabled className={_coach_appointment[i]==="/"?"bg-inherit border-white":"bg-pink-700"}>
+                  <>
+                  {i%5==0 &&(
+                      <div className="ml-7">{(thisWeek[i/5].getMonth()+1).toString() +"/"+(thisWeek[i/5].getDate()).toString() +"("+SuntoMon[(thisWeek[i/5].getDay())] +")"}</div>
+                  )}
+                  <Button key={i} disabled className={(_coach_appointment[i]==="/"?"bg-inherit border-white":"bg-pink-700") + " w-32"}>
                     {_coach_appointment[i]==="/" ? "":"已預約"}
                   </Button>
+                  </>
                 )
                 )
               ))}
