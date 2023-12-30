@@ -14,7 +14,7 @@ import {
     Dialog,
     DialogContent,
     DialogFooter,
-} from "@/components/ui/dialogNoCross";
+} from "@/components/ui/dialogInProfile";
 import { useState } from "react";
 import useUserInfo from "@/hooks/useUserInfo"
 import { cn } from "@/lib/utils/shadcn";
@@ -35,7 +35,7 @@ export default function Schedule({
     const [availableTime, setAvailableTime] = useState<Array<boolean>>(_availableTime);
     const [appointment] = useState<Array<string>>(_appointment);
     const { updateAvailableTime, loading } = useUserInfo();
-    const thisWeek: Date[] = [];    
+    const thisWeek: Date[] = [];
     const nextWeek: Date[] = [];
     const SuntoMon: string[] = ["日", "一", "二", "三", "四", "五", "六"];
     for (let i = 0; i < 7; i++) {
@@ -141,9 +141,9 @@ export default function Schedule({
         </div>
       </Carousel>
       {dialogOpen &&(
-        <div className="static">
+        <div className="flex justify-center items-center">
           <Dialog open={dialogOpen} onOpenChange={handleCloseDialog}>
-            <DialogContent className="left-96 bg-transparent border-0">
+            <DialogContent className="bg-transparent border-0">
                 <Carousel className="w-full max-w-5xl">
                     <CarouselContent>
                     {Array.from({ length: 2 }).map((_, index) => (

@@ -24,7 +24,7 @@ import useUserInfo from "@/hooks/useUserInfo";
 import useUsers from "@/hooks/useUsers";
 type UniqueUser = {
   displayId: true,
-  email:string, 
+  email:string,
   username: string,
 }
 export default function ProfileForm() {
@@ -140,8 +140,9 @@ export default function ProfileForm() {
     } catch (error) {
       console.log(error);
       alert("Error update user profile");
+    } finally {
+      router.push("/main");
     }
-    router.push("/main");
   };
 
   return (
