@@ -9,7 +9,7 @@ type Props = {
   type: React.HTMLInputTypeAttribute;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
-  defaultValue: string;
+  defaultValue?: string;
 };
 
 function AuthInput({ label, type, value, setValue , defaultValue}: Props) {

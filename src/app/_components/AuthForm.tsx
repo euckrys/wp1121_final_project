@@ -124,7 +124,7 @@ function AuthForm() {
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'controlled' }}
               />
-              <span>是否是教練</span>
+              <span>以教練身份登入</span>
             </div>
             <div className="flex">
               <picture>
@@ -210,26 +210,6 @@ function AuthForm() {
             Sign {isSignUp ? "Up" : "In"}
           </Button>
         </form>
-        {/* <div className="flex w-full items-center gap-1 py-2">
-          <div className="h-[1px] grow border-t"></div>
-          <p className="text-xs text-gray-400">or</p>
-          <div className="h-[1px] grow border-t"></div>
-        </div> */}
-
-        {/* <Button
-          onClick={async () => {
-            // TODO: sign in with github
-            signIn("github", {
-              callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
-            });
-          }}
-          className="flex w-full"
-          variant={"outline"}
-        >
-          Remember to copy "github.png" to ./public folder
-          <Image src="/github.png" alt="github icon" width={20} height={20} />
-          <span className="grow">Sign In with Github</span>
-        </Button> */}
       </CardContent>
     </Card>
   );

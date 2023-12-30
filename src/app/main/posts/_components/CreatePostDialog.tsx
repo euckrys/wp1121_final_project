@@ -63,61 +63,67 @@ export default function CreatePostDialog({
                         <DialogTitle className="text-xl">要新增貼文嗎？</DialogTitle>
                         <DialogDescription className="text-lg">請輸入您的內容！</DialogDescription>
                     </DialogHeader>
-                        <div className="w-full flex flex-col items-center">
-                            <p>ji</p>
+                        <div className="w-full grid grid-cols-5">
+                                <div className="col-span-1 items-center">
+                                    <Label className="font-bold text-xl">種類</Label>
+                                </div>
+                                <div className="col-span-4">
+                                    <Select
+                                        onValueChange={(value) => {
+                                            if (value == "%") setSportType("");
+                                            else setSportType(value);
+                                        }}
+                                    >
+                                        <SelectTrigger className="w-full" disabled={loading}>
+                                            <SelectValue placeholder="SportType" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="fitness">健身</SelectItem>
+                                            <SelectItem value="swimming">游泳</SelectItem>
+                                            <SelectItem value="yoga">瑜伽</SelectItem>
+                                            <SelectItem value="badminton">羽球</SelectItem>
+                                            <SelectItem value="basketball">籃球</SelectItem>
+                                            <SelectItem value="soccer">足球</SelectItem>
+                                            <SelectItem value="others">其他</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                         </div>
-                        <div className="w-full">
-                            <Label>種類</Label>
-                            <Select
-                                onValueChange={(value) => {
-                                    if (value == "%") setSportType("");
-                                    else setSportType(value);
-                                }}
-                            >
-                                <SelectTrigger className="w-full" disabled={loading}>
-                                    <SelectValue placeholder="SportType" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="fitness">健身</SelectItem>
-                                    <SelectItem value="swimming">游泳</SelectItem>
-                                    <SelectItem value="yoga">瑜伽</SelectItem>
-                                    <SelectItem value="badminton">羽球</SelectItem>
-                                    <SelectItem value="basketball">籃球</SelectItem>
-                                    <SelectItem value="soccer">足球</SelectItem>
-                                    <SelectItem value="others">其他</SelectItem>
-                                </SelectContent>
-                            </Select>
+                        <div className="grid grid-cols-5 justify-center items-center">
+                            <div className="col-span-1">
+                                <Label className="font-bold text-xl">種類</Label>
+                            </div>
+                            <div className="col-span-4">
+                                <ToggleGroup type="multiple"
+                                        onValueChange={(value) => {setExpectedTime(value)}}
+                                >
+                                    <div className="grid-cols-3 grid-rows-2 w-full border-solid">
+                                        <div className="row-span-1">
+                                            <ToggleGroupItem value="0" aria-label="Toggle 0">09:00-11:00</ToggleGroupItem>
+                                            <ToggleGroupItem value="1" aria-label="Toggle 1">11:00-13:00</ToggleGroupItem>
+                                            <ToggleGroupItem value="2" aria-label="Toggle 2">13:00-15:00</ToggleGroupItem>
+                                        </div>
+                                        <div className="row-span-1">
+                                            <ToggleGroupItem value="3" aria-label="Toggle 3">15:00-17:00</ToggleGroupItem>
+                                            <ToggleGroupItem value="4" aria-label="Toggle 4">17:00-19:00</ToggleGroupItem>
+                                        </div>
+                                    </div>
+                                </ToggleGroup>
+                            </div>
                         </div>
-                        {/* <Select>
-                            <SelectTrigger className="w-[180px]" disabled={loading}>
-                                <SelectValue placeholder="SportType" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="0">09:00-11:00</SelectItem>
-                                <SelectItem value="1">11:00-13:00</SelectItem>
-                                <SelectItem value="2">13:00-15:00</SelectItem>
-                                <SelectItem value="3">15:00-17:00</SelectItem>
-                                <SelectItem value="4">17:00-19:00</SelectItem>
-                            </SelectContent>
-                        </Select> */}
-                        <ToggleGroup type="multiple"
-                                     onValueChange={(value) => {setExpectedTime(value)}}
-                        >
-                            <ToggleGroupItem value="0" aria-label="Toggle 0">09:00-11:00</ToggleGroupItem>
-                            <ToggleGroupItem value="1" aria-label="Toggle 1">11:00-13:00</ToggleGroupItem>
-                            <ToggleGroupItem value="2" aria-label="Toggle 2">13:00-15:00</ToggleGroupItem>
-                            <ToggleGroupItem value="3" aria-label="Toggle 3">15:00-17:00</ToggleGroupItem>
-                            <ToggleGroupItem value="4" aria-label="Toggle 4">17:00-19:00</ToggleGroupItem>
-                         </ToggleGroup>
-                        <div>
-                            <Label>簡介</Label>
-                            <Input
-                                label=""
-                                type="text"
-                                value={description}
-                                defaultValue="請輸入貼文簡述"
-                                setValue={setDescription}
-                            />
+                        <div className="w-full grid grid-cols-5">
+                            <div className="col-span-1 items-center">
+                                <Label className="font-bold text-xl">簡介</Label>
+                            </div>
+                            <div className="col-span-4">
+                                <Input
+                                    label=""
+                                    type="text"
+                                    value={description}
+                                    defaultValue="請輸入貼文簡述"
+                                    setValue={setDescription}
+                                />
+                            </div>
                         </div>
                     <DialogFooter>
                         <Button

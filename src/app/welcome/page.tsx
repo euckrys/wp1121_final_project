@@ -18,6 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ThreeDots } from "react-loader-spinner";
+
 import useUserInfo from "@/hooks/useUserInfo";
 
 export default function ProfileForm() {
@@ -115,178 +117,203 @@ export default function ProfileForm() {
   };
 
   return (
+    (!session?.user?.id ? (
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <ThreeDots
+          visible={true}
+          height="100"
+          width="100"
+          color="#FFCBCB"
+          radius="9"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+        <p className="font-bold text-2xl text-gray-800">Intialization...</p>
+      </div>
+    ): (
     <div className="flex justify-center p-12">
-      {session?.user?.isCoach ? (
-        <Card className="min-w-[300px] self-center">
-          <CardHeader>
-            <CardTitle>請填寫使用者資訊</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="flex flex-col">
-            <div className="flex flex-row">
-              <div className="flex flex-col">
-                <div className="p-2">
-                  <Label>暱稱</Label>
-                  <Input
-                    label=""
-                    type="text"
-                    value={displayName}
-                    setValue={setDisplayName}
-                  />
+          {session?.user?.isCoach ? (
+            <Card className="min-w-[300px] self-center">
+              <CardHeader>
+                <CardTitle>請填寫使用者資訊</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="flex flex-col">
+                <div className="flex flex-row">
+                  <div className="flex flex-col">
+                    <div className="p-2">
+                      <Label>暱稱</Label>
+                      <Input
+                        label=""
+                        type="text"
+                        value={displayName}
+                        setValue={setDisplayName}
+                        defaultValue="Age"
+                      />
+                    </div>
+                    <div className="p-2">
+                      <Label>運動種類</Label>
+                      <Select
+                        onValueChange={(value) => {
+                          if (value == "%") setSportType("");
+                          else setSportType(value);
+                        }}
+                      >
+                        <SelectTrigger className="w-[180px]" disabled={loading}>
+                          <SelectValue placeholder="SportType" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="fitness">健身</SelectItem>
+                          <SelectItem value="swimming">游泳</SelectItem>
+                          <SelectItem value="yoga">瑜伽</SelectItem>
+                          <SelectItem value="badminton">羽球</SelectItem>
+                          <SelectItem value="basketball">籃球</SelectItem>
+                          <SelectItem value="soccer">足球</SelectItem>
+                          <SelectItem value="others">其他</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="p-2">
+                      <Label>年齡</Label>
+                      <Input label="" type="text" value={age} setValue={setAge} defaultValue="Age"/>
+                    </div>
+                    <div className="p-2">
+                      <Label>體重</Label>
+                      <Input
+                        label=""
+                        type="text"
+                        value={weight}
+                        setValue={setWeight}
+                        defaultValue="Weight"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="p-2">
+                      <Label>身高</Label>
+                      <Input
+                        label=""
+                        type="text"
+                        value={height}
+                        setValue={setHeight}
+                        defaultValue="Height"
+                      />
+                    </div>
+                    <div className="p-2">
+                      <Label>場館</Label>
+                      <Input
+                        label=""
+                        type="text"
+                        value={place}
+                        setValue={setPlace}
+                        defaultValue="Input"
+                      />
+                    </div>
+                    <div className="p-2">
+                      <Label>證照資訊</Label>
+                      <Input
+                        label=""
+                        type="text"
+                        value={license}
+                        setValue={setLicense}
+                        defaultValue="License"
+                      />
+                    </div>
+                    <div className="p-2">
+                      <Label>介紹/教學理念</Label>
+                      <Input
+                        label=""
+                        type="text"
+                        value={introduce}
+                        setValue={setIntroduce}
+                        defaultValue="Introduce"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="p-2">
-                  <Label>運動種類</Label>
-                  <Select
-                    onValueChange={(value) => {
-                      if (value == "%") setSportType("");
-                      else setSportType(value);
-                    }}
-                  >
-                    <SelectTrigger className="w-[180px]" disabled={loading}>
-                      <SelectValue placeholder="SportType" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="fitness">健身</SelectItem>
-                      <SelectItem value="swimming">游泳</SelectItem>
-                      <SelectItem value="yoga">瑜伽</SelectItem>
-                      <SelectItem value="badminton">羽球</SelectItem>
-                      <SelectItem value="basketball">籃球</SelectItem>
-                      <SelectItem value="soccer">足球</SelectItem>
-                      <SelectItem value="others">其他</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="flex justify-center py-4">
+                  <Button type="submit" className="w-52" disabled={loading}>
+                    Continue
+                  </Button>
                 </div>
-                <div className="p-2">
-                  <Label>年齡</Label>
-                  <Input label="" type="text" value={age} setValue={setAge} />
+                </form>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="min-w-[300px] self-center">
+              <CardHeader>
+                <CardTitle>請填寫使用者資訊</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="flex flex-col">
+                  <div className="p-2">
+                    <Label>暱稱</Label>
+                    <Input
+                      label=""
+                      type="text"
+                      value={displayName}
+                      setValue={setDisplayName}
+                      defaultValue="NickName"
+                    />
+                  </div>
+                  <div className="p-2">
+                    <Label>運動種類</Label>
+                    <Select
+                      onValueChange={(value) => {
+                        if (value == "%") setSportType("");
+                        else setSportType(value);
+                      }}
+                    >
+                      <SelectTrigger className="w-[180px]" disabled={loading}>
+                        <SelectValue placeholder="SportType" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fitness">健身</SelectItem>
+                        <SelectItem value="swimming">游泳</SelectItem>
+                        <SelectItem value="yoga">瑜伽</SelectItem>
+                        <SelectItem value="badminton">羽球</SelectItem>
+                        <SelectItem value="basketball">籃球</SelectItem>
+                        <SelectItem value="soccer">足球</SelectItem>
+                        <SelectItem value="others">其他</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="p-2">
+                    <Label>年齡</Label>
+                    <Input label="" type="text" value={age} setValue={setAge} defaultValue="Age"/>
+                  </div>
+                  <div className="p-2">
+                    <Label>體重</Label>
+                    <Input
+                      label=""
+                      type="text"
+                      value={weight}
+                      setValue={setWeight}
+                      defaultValue="Weight"
+                    />
+                  </div>
+                  <div className="p-2">
+                    <Label>身高</Label>
+                    <Input
+                      label=""
+                      type="text"
+                      value={height}
+                      setValue={setHeight}
+                      defaultValue="Height"
+                    />
+                  </div>
+                <div className="flex justify-center py-4">
+                  <Button type="submit" className="w-52" disabled={loading}>
+                    Continue
+                  </Button>
                 </div>
-                <div className="p-2">
-                  <Label>體重</Label>
-                  <Input
-                    label=""
-                    type="text"
-                    value={weight}
-                    setValue={setWeight}
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="p-2">
-                  <Label>身高</Label>
-                  <Input
-                    label=""
-                    type="text"
-                    value={height}
-                    setValue={setHeight}
-                  />
-                </div>
-                <div className="p-2">
-                  <Label>場館</Label>
-                  <Input
-                    label=""
-                    type="text"
-                    value={place}
-                    setValue={setPlace}
-                  />
-                </div>
-                <div className="p-2">
-                  <Label>證照資訊</Label>
-                  <Input
-                    label=""
-                    type="text"
-                    value={license}
-                    setValue={setLicense}
-                  />
-                </div>
-                <div className="p-2">
-                  <Label>介紹/教學理念</Label>
-                  <Input
-                    label=""
-                    type="text"
-                    value={introduce}
-                    setValue={setIntroduce}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center py-4">
-              <Button type="submit" className="w-52" disabled={loading}>
-                Continue
-              </Button>
-            </div>
-            </form>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="min-w-[300px] self-center">
-          <CardHeader>
-            <CardTitle>請填寫使用者資訊</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="flex flex-col">
-              <div className="p-2">
-                <Label>暱稱</Label>
-                <Input
-                  label=""
-                  type="text"
-                  value={displayName}
-                  setValue={setDisplayName}
-                />
-              </div>
-              <div className="p-2">
-                <Label>運動種類</Label>
-                <Select
-                  onValueChange={(value) => {
-                    if (value == "%") setSportType("");
-                    else setSportType(value);
-                  }}
-                >
-                  <SelectTrigger className="w-[180px]" disabled={loading}>
-                    <SelectValue placeholder="SportType" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="fitness">健身</SelectItem>
-                    <SelectItem value="swimming">游泳</SelectItem>
-                    <SelectItem value="yoga">瑜伽</SelectItem>
-                    <SelectItem value="badminton">羽球</SelectItem>
-                    <SelectItem value="basketball">籃球</SelectItem>
-                    <SelectItem value="soccer">足球</SelectItem>
-                    <SelectItem value="others">其他</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="p-2">
-                <Label>年齡</Label>
-                <Input label="" type="text" value={age} setValue={setAge} />
-              </div>
-              <div className="p-2">
-                <Label>體重</Label>
-                <Input
-                  label=""
-                  type="text"
-                  value={weight}
-                  setValue={setWeight}
-                />
-              </div>
-              <div className="p-2">
-                <Label>身高</Label>
-                <Input
-                  label=""
-                  type="text"
-                  value={height}
-                  setValue={setHeight}
-                />
-              </div>
-            <div className="flex justify-center py-4">
-              <Button type="submit" className="w-52" disabled={loading}>
-                Continue
-              </Button>
-            </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+                </form>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+    ))
   );
 }
 

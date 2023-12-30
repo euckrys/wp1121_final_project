@@ -14,16 +14,16 @@ export default function NavBar() {
   return (
     <div className="grid h-24 grid-cols-12 bg-red-100">
       <div className="col-span-3 grid items-center justify-center">
-        <p className="font-mono text-2xl font-bold italic tracking-[.25em]">
+        <p className="font-mono text-5xl font-bold italic tracking-[.25em]">
           SPORTS
         </p>
       </div>
-      <div className="col-span-7 grid h-full">
+      <div className="col-start-5 col-end-10 grid h-full">
         <div className="flex items-center justify-between">
           <Link href={`/main/home`}>
             <Button
               type={"button"}
-              className="flex bg-transparent font-serif text-3xl text-black shadow-none"
+              className="flex bg-transparent font-serif text-3xl text-black shadow-none hover:bg-white p-5"
             >
               <p>Home</p>
             </Button>
@@ -31,7 +31,7 @@ export default function NavBar() {
           <Link href={`/main/coaches?search=`}>
             <Button
               type={"button"}
-              className="flex bg-transparent font-serif text-3xl text-black shadow-none"
+              className="flex bg-transparent font-serif text-3xl text-black shadow-none hover:bg-white p-5"
             >
               <p>Coach</p>
             </Button>
@@ -39,22 +39,14 @@ export default function NavBar() {
           <Link href={`/main/posts?search=`}>
             <Button
               type={"button"}
-              className="hover: flex border-black bg-transparent font-serif text-3xl text-black shadow-none hover:border-b-4 hover:bg-transparent"
+              className="flex bg-transparent font-serif text-3xl text-black shadow-none hover:bg-white p-5"
             >
               <p>Post</p>
             </Button>
           </Link>
-          <Link href={`/main/appointments`}>
-            <Button
-              type={"button"}
-              className="flex bg-transparent font-serif text-3xl text-black shadow-none"
-            >
-              <p>Appointment</p>
-            </Button>
-          </Link>
         </div>
       </div>
-      <div className="col-span-2 grid">
+      <div className="col-start-11   col-end-13 grid">
         <div className="flex items-center justify-center">
           <Link href={"/main/personal"}>
             <Button
