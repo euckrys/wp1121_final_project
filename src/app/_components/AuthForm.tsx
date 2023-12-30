@@ -13,6 +13,7 @@ import useUsers from "@/hooks/useUsers";
 import AuthInput from "./AuthInput";
 
 type UniqueUser = {
+  displayId: true,
   email: string,
   username: string,
 }

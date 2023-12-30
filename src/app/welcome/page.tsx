@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,12 @@ import {
 import { ThreeDots } from "react-loader-spinner";
 
 import useUserInfo from "@/hooks/useUserInfo";
-
+import useUsers from "@/hooks/useUsers";
+type UniqueUser = {
+  displayId: true,
+  email:string, 
+  username: string,
+}
 export default function ProfileForm() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -40,7 +45,21 @@ export default function ProfileForm() {
   const [coachAvailableTime] = useState<Array<boolean>>(Array(70).fill(false));
   const [appointment] = useState<Array<string>>(Array(35).fill("/"));
   const { toast } = useToast();
-
+  const { getAllUsers } = useUsers();
+  const [users, setUsers] = useState<UniqueUser[]>([]);
+  const fetchUsers = async () => {
+    try {
+      const targetUsers = await getAllUsers();
+      console.log(targetUsers);
+      setUsers(targetUsers);
+    } catch (error) {
+      console.log(error);
+      alert("Error getting coachinfo");
+    }
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (displayName===""){
@@ -49,6 +68,15 @@ export default function ProfileForm() {
             description: "請輸入暱稱",
         })
         return;
+    }
+    else if((users.find(e => e.username===displayName))!==undefined){
+      if((users.find(e => e.username===displayName))?.displayId !== session?.user?.id){
+        toast({
+            title: "Uh oh!",
+            description: "暱稱已被使用",
+        })
+        return;
+      }
     }
     else if(sportType===""){
         toast({
