@@ -118,7 +118,7 @@ export default function UpdateProfileDialog({
   return (
     <>
       <Dialog open={showDialog} onOpenChange={onclose}>
-        <DialogContent>
+        <DialogContent className="flex">
           <DialogHeader>
             <DialogTitle></DialogTitle>
             <DialogDescription></DialogDescription>
@@ -145,6 +145,7 @@ export default function UpdateProfileDialog({
                   "
             />
           </div>
+          <div>
           <div>
             <Label>暱稱</Label>
             <Input
@@ -220,6 +221,7 @@ export default function UpdateProfileDialog({
             </Button>
             <Button onClick={onclose}>取消</Button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </>
