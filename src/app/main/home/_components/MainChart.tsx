@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
 
 import type { Chart } from "@/lib/types/db"
 
@@ -30,6 +31,8 @@ type MainChartProps = {
     setDate: React.Dispatch<React.SetStateAction<number>>,
     month: number,
     setMonth: React.Dispatch<React.SetStateAction<number>>,
+    year: number,
+    setYear: React.Dispatch<React.SetStateAction<number>>,
     isLoading: boolean,
 }
 
@@ -48,11 +51,15 @@ export default function MainChart({
     setDate,
     month,
     setMonth,
+    year,
+    setYear,
     isLoading,
 }: MainChartProps) {
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [api, setApi] = useState<CarouselApi>();
     const [isChanging, setIschanging] = useState<boolean>(false);
+
+    const { data: session } = useSession();
 
 
     const handleCloseDialog = () => {
@@ -77,9 +84,23 @@ export default function MainChart({
             setIschanging(true);
 
             if (api.selectedScrollSnap() > api.previousScrollSnap())
-                setMonth((month + 1) > 12 ? month-11 : month+1);
+                if (month + 1 > 12) {
+                    setMonth(month-11);
+                    setYear(year+1);
+                }
+                else {
+                    setMonth(month+1)
+                    setYear(year);
+                }
             else if(api.selectedScrollSnap() < api.previousScrollSnap())
-                setMonth((month - 1) < 1 ? month+11 : month-1);
+                if (month - 1 < 1) {
+                    setMonth(month+11);
+                    setYear(year-1);
+                }
+                else {
+                    setMonth(month-1)
+                    setYear(year);
+                }
 
             setIschanging(false);
         })
@@ -91,7 +112,9 @@ export default function MainChart({
         charts[i].totalTime.forEach((num)=> {
             sum += num;
         })
-        return sum;
+        console.log(sum);
+        const result: number = sum/2;
+        return result;
     }
 
     const getFirstDay = (year:number, month:number) => {
@@ -113,22 +136,21 @@ export default function MainChart({
         });
     }
 
-
     return (
         <>
-            <div>
+            <div className="w-full h-full">
                 <Carousel
-                    className="ml-20 mt-20 max-w-5xl"
+                    className="ml-20 mt-20 w-full h-3/6"
                     opts={{
                         startIndex: 3,
                         watchDrag: false,
                     }}
                     setApi={setApi}
                 >
-                    <CarouselContent>
+                    <CarouselContent className="h-3/6">
                         {charts.map((chart, index) => (
                             <CarouselItem key={index}>
-                                <div className="p-1 h-fit">
+                                <div className="p-1 h-2/6" style={{height: '50%'}}>
                                     <Card className="shadow-xl">
                                         <CardContent className="">
                                             <div className="flex flex-col m-4 mt-8 justify-center items-center">
@@ -137,8 +159,7 @@ export default function MainChart({
                                                 </p>
                                                 <Separator className="mt-5 mb-16"/>
                                                 <div className="grid grid-cols-5 gap-x-0 w-full mb-8">
-                                                    <div className="w-[448px] mt-0 col-span-3 self-center justify-self-center flex flex-col justify-center items-center">
-
+                                                    <div className="2xl:w-[448px] xl:w-[336px] lg:w-[224px] w-[168px] mt-0 col-span-3 self-center justify-self-center flex flex-col justify-center items-center">
                                                         <div className="w-full items-center justify-center grid grid-rows-1 grid-cols-7 gap-x-0 gao-y-0 mb-2">
                                                             <div className="self-center justify-self-center font-bold">S</div>
                                                             <div className="self-center justify-self-center font-bold">M</div>
@@ -157,7 +178,7 @@ export default function MainChart({
                                                                         <div
                                                                             key={index+1}
                                                                             className={
-                                                                            `border h-16 w-16
+                                                                            `border 2xl:h-16 2xl:w-16 xl:h-12 xl:w-12 lg:h-8 lg:w-8 h-6 w-6
                                                                                 ${ Date == date ? "border-black border-4" : "" }
                                                                                 ${ time > 10 ? typeArray[9] : typeArray[time] }`
                                                                             }
@@ -165,6 +186,7 @@ export default function MainChart({
                                                                                 if (isLoading || isChanging) return;
                                                                                 setDate(Date);
                                                                                 setMonth(chart.month%12 == 0 ? 12 : chart.month%12);
+                                                                                setYear(chart.year);
                                                                                 setChartId(chart.chartId);
                                                                                 setTotalTime(chart.totalTime);
                                                                             }}
@@ -174,14 +196,14 @@ export default function MainChart({
                                                                     return(
                                                                         <div
                                                                             key={index+1}
-                                                                            className={"border h-16 w-16 bg-gray-100"}
+                                                                            className={"border 2xl:h-16 2xl:w-16 xl:h-12 xl:w-12 lg:h-8 lg:w-8 h-6 w-6 bg-gray-100"}
                                                                         />
                                                                     )
                                                                 }
                                                             })}
                                                         </div>
                                                         <div className="mt-4 mb-4">
-                                                            <p className="font-sans font-medium text-xl">{`Total time of ${getMonthName(month)} : `}
+                                                            <p className="font-sans font-medium lg:text-xl md:text-base text-xs">{`Total time of ${getMonthName(month)} : `}
                                                                 <span className="underline decoration-2">{` ${getSumOfTime(index)} hours`}</span>
                                                             </p>
                                                         </div>
@@ -193,7 +215,7 @@ export default function MainChart({
                                                         <div className="flex flex-col h-full justify-self-start items-center mt-6">
                                                             {!chart.totalTime[date-1] ? (
                                                                 <div className="h-full flex flex-col justify-center items-center">
-                                                                    <div className="text-lg font-medium">{`今天沒有運動紀錄 :)`}</div>
+                                                                    <div className="text-lg font-medium">{`這天沒有${session?.user?.isCoach ? "教學" : "運動"}紀錄 :)`}</div>
                                                                 </div>
                                                             ) : (chart.records
                                                                     .filter((record) => record.date === date)
@@ -214,6 +236,7 @@ export default function MainChart({
                                                                 onClick={() => {
                                                                     setDialogOpen(true)
                                                                     setMonth(chart.month%12 == 0 ? 12 : chart.month%12);
+                                                                    setYear(chart.year);
                                                                     setChartId(chart.chartId);
                                                                     setTotalTime(chart.totalTime);
                                                                 }}
@@ -237,6 +260,7 @@ export default function MainChart({
                                     <>
                                         <CreateRecordDialog
                                             toChartId={chartId}
+                                            year={year}
                                             month={month}
                                             date={date}
                                             totalTime={totalTime}

@@ -20,8 +20,8 @@ export default function Record({
             <div className="col-span-1 flex items-center justify-center">
                 <p className="font-semibold text-xl px-5 py-1">{time}</p>
             </div>
-            <div className="col-span-1 flex items-center justify-center">
-                <p className="font-semibold text-xl px-5 py-1">{description}</p>
+            <div className="col-span-1 flex flex-col items-center justify-center">
+                <p className="font-semibold text-xl px-5 py-1 text-center">{description}</p>
             </div>
         </div>
     )

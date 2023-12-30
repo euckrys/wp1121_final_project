@@ -160,6 +160,7 @@ export const recordsTable = pgTable(
       .references(() => usersTable.displayId, { onDelete: "cascade", onUpdate: "cascade" }),
     month: integer("month").notNull(),
     date: integer("date").notNull(),
+    year: integer("year").notNull(),
     sportType: varchar("sport_type").notNull(),
     time: varchar("time").notNull(),
     description: varchar("description").notNull(),

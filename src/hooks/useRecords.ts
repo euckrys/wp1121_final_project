@@ -7,6 +7,7 @@ export default function useRecords() {
 
     const createRecord = async ({
         toChartId,
+        year,
         month,
         date,
         sportType,
@@ -15,6 +16,7 @@ export default function useRecords() {
         totalTime,
     }: {
         toChartId: string,
+        year: number,
         month: number,
         date: number,
         sportType: string,
@@ -29,6 +31,7 @@ export default function useRecords() {
             method: "POST",
             body: JSON.stringify({
                 toChartId,
+                year,
                 month,
                 date,
                 sportType,

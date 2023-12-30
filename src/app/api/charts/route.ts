@@ -22,6 +22,7 @@ export async function GET() {
                 records: {
                     columns: {
                         id: true,
+                        year: true,
                         month: true,
                         date: true,
                         sportType: true,

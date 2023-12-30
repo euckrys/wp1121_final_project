@@ -42,6 +42,8 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
   const [isMine, setIsMine] = useState<boolean>(false);
   const [isCoach, setIsCoach] = useState<boolean>(false);
 
+  const [hasEvent, setHasEvent] = useState<boolean>(false);
+
   const { getAllPosts, loading } = usePosts();
   const [posts, setPosts] = useState<PostWithReplies[]>([]);
   const [expectedTime, setExpectedTime] = useState<string[]>(["0","1","2","3","4"]);
@@ -75,17 +77,15 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
     channel.bind("post:update", async () => {
       console.log("Post update event received");
       fetchPosts();
+      setHasEvent(true);
     });
+
+    if (!hasEvent)  fetchPosts();
 
     return () => {
       channel.unbind();
+      setHasEvent(false);
     };
-
-  }, [sportType, expectedTime, isMine, isCoach, search, dialogOpen])
-
-
-  useEffect(() => {
-    fetchPosts();
 
   }, [sportType, expectedTime, isMine, isCoach, search, dialogOpen])
 
@@ -176,7 +176,7 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
           <section className="flex max-h-[80vh] min-h-[300px] flex-col justify-between overflow-y-auto pr-32">
             <div className="flex flex-col">
               {posts.map((post) => (
-                <div className="flex w-[600px] justify-between rounded-md p-4 shadow-lg">
+                <div key={post.id} className="flex w-[600px] justify-between rounded-md p-4 shadow-lg">
                   <div className="flex w-full flex-col">
                     <Link href={`/main/posts/${post.postId}`} key={post.postId}>
                       <div className="flex p-2">
@@ -234,8 +234,8 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
         <ToggleGroupItem value="4" aria-label="Toggle 4">17:00-19:00</ToggleGroupItem>
       </ToggleGroup>
       </div>
-      
-      
+
+
     </div>
   );
 }

@@ -15,24 +15,24 @@ export const GET = async () => {
         }
     })
 
-    const newDatas = yesterdayDatas.map((yesterdayData,i) =>{
+    const newDatas = yesterdayDatas.map((yesterdayData) =>{
         return (
             {
                 userId: yesterdayData.userId,
-                availableTime: yesterdayData.availableTime?.map((a,i) => { 
+                availableTime: yesterdayData.availableTime?.map((_,i) => {
                     if(i>64) {
                         return !yesterdayData.isCoach
-                    } 
+                    }
                     else{
-                        if(yesterdayData.availableTime) {return yesterdayData.availableTime[i+5]} 
+                        if(yesterdayData.availableTime) {return yesterdayData.availableTime[i+5]}
                         else {return false}
                     }}),
-                appointment: yesterdayData.appointment?.map((a,i) => {
+                appointment: yesterdayData.appointment?.map((_,i) => {
                     if(i>29) {
                         return "/"
-                    } 
+                    }
                     else{
-                        if(yesterdayData.appointment) {return yesterdayData.appointment[i+5]} 
+                        if(yesterdayData.appointment) {return yesterdayData.appointment[i+5]}
                         else {return "/"}
                     }})
             }
@@ -49,7 +49,7 @@ export const GET = async () => {
               .where(eq(profileInfoTable.userId, newData.userId))
               .returning()
     ]
-    
+
     console.log("update success")
     return NextResponse.json(
       { message: "Update successfully."},

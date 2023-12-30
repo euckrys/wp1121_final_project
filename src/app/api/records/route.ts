@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { toChartId, month, date, sportType, time, description, totalTime } = data as RecordRequest;
+    const { toChartId, year, month, date, sportType, time, description, totalTime } = data as RecordRequest;
 
     try {
         const session = await auth();
@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
                 .values({
                     toChartId,
                     ownerId: userId,
+                    year,
                     month,
                     date,
                     sportType,
