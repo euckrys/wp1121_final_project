@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import useUserInfo from "@/hooks/useUserInfo"
+import { cn } from "@/lib/utils/shadcn";
 
 
 type UpdateProfileDialogProps = {
@@ -132,7 +133,7 @@ export default function Schedule({
                         <CarouselItem key={index}>
                         {index===0 &&(
                             <div className="p-1 h-72">
-                            <Card>
+                            <Card className={cn("shadow-none border-0")}>
                             <CardContent className="flex items-center justify-center">
                                 <div className="grid grid-rows-5 grid-flow-col gap-4">
                                 {availableTime.map((available, i) => (

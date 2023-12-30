@@ -164,6 +164,12 @@ export async function PUT(request: NextRequest) {
                 .returning();
 
             await tx
+            .update(usersTable)
+            .set({avatarUrl})
+            .where(eq(usersTable.displayId, userId))
+            .execute();
+
+            await tx
                 .update(usersTable)
                 .set({username: displayName})
                 .where(eq(usersTable.displayId, userId))

@@ -14,7 +14,7 @@ export default function NavBar() {
   return (
     <div className="grid h-24 grid-cols-12 bg-red-100">
       <div className="col-span-3 grid items-center justify-center">
-        <p className="font-mono text-2xl font-bold italic tracking-[.25em] ">
+        <p className="font-mono text-2xl font-bold italic tracking-[.25em]">
           SPORTS
         </p>
       </div>

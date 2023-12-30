@@ -15,13 +15,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-
 } from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import usePosts from "@/hooks/usePosts";
-
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-
 import { pusherClient } from "@/lib/pusher/client";
 import type { PostWithReplies } from "@/lib/types/db";
 
@@ -46,7 +43,14 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
 
   const { getAllPosts, loading } = usePosts();
   const [posts, setPosts] = useState<PostWithReplies[]>([]);
-  const [expectedTime, setExpectedTime] = useState<string[]>(["0","1","2","3","4"]);
+  const [expectedTime, setExpectedTime] = useState<string[]>([
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+  ]);
 
   const username = session?.user?.username ? session.user.username : "";
 
@@ -86,9 +90,7 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
       channel.unbind();
       setHasEvent(false);
     };
-
-  }, [sportType, expectedTime, isMine, isCoach, search, dialogOpen])
-
+  }, [sportType, expectedTime, isMine, isCoach, search, dialogOpen]);
 
   return (
     <div>
@@ -96,41 +98,23 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
         <NavBar />
       </div>
       <div>
-
-        <div className="flex justify-between p-2">
-          <div className="flex p-2">
-            <Button
-              onClick={() => {
-                setDialogOpen(true);
-              }}
-              disabled={loading}
-              className="rounded-md px-2 py-4 text-base font-bold"
-            >
-              新增貼文
-            </Button>
-          </div>
-          <Tabs
-            defaultValue="false"
-            className="w-[800px]"
-            onValueChange={(value) => {
-              if (value == "true") setIsCoach(true);
-              else if (value == "false") setIsCoach(false);
-            }}
-          >
-            <TabsList>
-              <TabsTrigger value="false" disabled={loading}>
-                Posted by Users
-              </TabsTrigger>
-              <TabsTrigger value="true" disabled={loading}>
-                Posted by Coaches
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-        <div className="flex flex-row justify-between">
-          <section className="flex flex-col items-center p-4 ">
-            <PostsSearchBar isCoach={isCoach} />
+        <div className="flex justify-center">
+          <section className="grid grid-cols-1 justify-between">
             <div>
+              <div className="grid grid-cols-1 p-2">
+                <div className="flex p-2">
+                  <Button
+                    onClick={() => {
+                      setDialogOpen(true);
+                    }}
+                    disabled={loading}
+                    className="rounded-md px-2 py-4 text-base font-bold"
+                  >
+                    新增貼文
+                  </Button>
+                </div>
+              </div>
+              <PostsSearchBar isCoach={isCoach} />
               <div className="flex items-center p-4">
                 <Checkbox
                   id="isMine"
@@ -157,9 +141,65 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
                     <SelectItem value="%">ALL</SelectItem>
                     <SelectItem value="fitness">健身</SelectItem>
                     <SelectItem value="swimming">游泳</SelectItem>
+                    <SelectItem value="yoga">瑜伽</SelectItem>
+                    <SelectItem value="badminton">羽球</SelectItem>
+                    <SelectItem value="basketball">籃球</SelectItem>
+                    <SelectItem value="soccer">足球</SelectItem>
                     <SelectItem value="others">其他</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="flex px-4">
+                <div className="flex flex-row border-4 border-double border-black">
+                  <ToggleGroup
+                    type="multiple"
+                    defaultValue={["0", "1", "2", "3", "4", "5"]}
+                    value={expectedTime}
+                    onValueChange={(value: string[]) => {
+                      if((value.find((e) => e==="5"))!==undefined){
+                        if((expectedTime.find((e) => e==="5"))===undefined){setExpectedTime(["0", "1", "2", "3", "4", "5"])}
+                        else{const newValue: string[]=[];for(const v of value){if(v!=="5"){newValue.push(v)}};setExpectedTime(newValue)}
+                      }
+                      else if((expectedTime.find((e) => e==="5"))!==undefined) {setExpectedTime([])}
+                      else{setExpectedTime(value)}
+                    }}
+                  >
+                    <div className="grid grid-rows-3 p-2">
+                      <div className="p-2">
+                        <ToggleGroupItem className="w-28" value="0" aria-label="Toggle 0">
+                          09:00-11:00
+                        </ToggleGroupItem>
+                      </div>
+                      <div className="p-2">
+                        <ToggleGroupItem className="w-28" value="1" aria-label="Toggle 1">
+                          11:00-13:00
+                        </ToggleGroupItem>
+                      </div>
+                      <div className="p-2">
+                        <ToggleGroupItem className="w-28" value="2" aria-label="Toggle 2">
+                          13:00-15:00
+                        </ToggleGroupItem>
+                      </div>
+                    </div>
+                    <div className="grid grid-rows-3 p-2">
+                      <div className="p-2">
+                        <ToggleGroupItem className="w-28" value="3" aria-label="Toggle 3">
+                          15:00-17:00
+                        </ToggleGroupItem>
+                      </div>
+                      <div className="p-2">
+                        <ToggleGroupItem className="w-28" value="4" aria-label="Toggle 4">
+                          17:00-19:00
+                        </ToggleGroupItem>
+                      </div>
+                      <div className="p-2">
+                        <ToggleGroupItem className="w-28" value="5" aria-label="Toggle 5">
+                          All
+                        </ToggleGroupItem>
+                      </div>
+                    </div>
+                  </ToggleGroup>
+                </div>
               </div>
               {dialogOpen && (
                 <>
@@ -173,13 +213,30 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
             </div>
           </section>
 
-          <section className="flex max-h-[80vh] min-h-[300px] flex-col justify-between overflow-y-auto pr-32">
-            <div className="flex flex-col">
+          <section className="grid grid-cols-1 justify-between overflow-y-auto">
+            <div className="grid grid-rows-1">
+              <Tabs
+                defaultValue="false"
+                className="w-full"
+                onValueChange={(value) => {
+                  if (value == "true") setIsCoach(true);
+                  else if (value == "false") setIsCoach(false);
+                }}
+              >
+                <TabsList>
+                  <TabsTrigger value="false" disabled={loading}>
+                    Posted by Users
+                  </TabsTrigger>
+                  <TabsTrigger value="true" disabled={loading}>
+                    Posted by Coaches
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
               {posts.map((post) => (
                 <div key={post.id} className="flex w-[600px] justify-between rounded-md p-4 shadow-lg">
                   <div className="flex w-full flex-col">
                     <Link href={`/main/posts/${post.postId}`} key={post.postId}>
-                      <div className="flex p-2">
+                      <div className="flex p-2 text-xl font-bold">
                         <p>{post.author}</p>
                       </div>
                       <div className="flex flex-row px-8">
@@ -189,20 +246,55 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
                           <span className="py-1">Description</span>
                         </div>
                         <div className="flex flex-col px-8">
-                          <span className="rounded-full bg-red-100 p-2 py-1">
-                            Sports name
+                          <span className="flex flex-row rounded-full  bg-red-100 p-2 py-1">
+                            {post.sportType}
                           </span>
-                          <span className="rounded-full bg-gray-300 p-2 py-1">
-                            time
+                          {post.expectedTime.find((e) => e === "0") !==
+                            undefined && (
+                            <span className="rounded-full bg-gray-300 p-2 py-1">
+                              9:00 ~ 11:00
+                            </span>
+                          )}
+                          {post.expectedTime.find((e) => e === "1") !==
+                            undefined && (
+                            <span className="rounded-full bg-gray-300 p-2 py-1 ">
+                              11:00 ~ 13:00
+                            </span>
+                          )}
+                          {post.expectedTime.find((e) => e === "2") !==
+                            undefined && (
+                            <span className="rounded-full bg-gray-300 p-2 py-1">
+                              13:00 ~ 15:00
+                            </span>
+                          )}
+                          {post.expectedTime.find((e) => e === "3") !==
+                            undefined && (
+                            <span className="rounded-full bg-gray-300 p-2 py-1">
+                              15:00 ~ 17:00
+                            </span>
+                          )}
+                          {post.expectedTime.find((e) => e === "4") !==
+                            undefined && (
+                            <span className="rounded-full bg-gray-300 p-2 py-1">
+                              17:00 ~ 19:00
+                            </span>
+                          )}
+                          {post.expectedTime.find((e) => e === "5") !==
+                            undefined && (
+                            <span className="rounded-full bg-gray-300 p-2 py-1">
+                              All
+                            </span>
+                          )}
+                          <span className="flex flex-row py-1">
+                            {post?.description}
                           </span>
-                          <span className="py-1">{post?.description}</span>
                         </div>
                       </div>
                     </Link>
                     <div className="flex w-full rounded-md bg-gray-300">
-                      <div className="p-4">Reply Icon </div>
+                      <div className="p-4">Latest Reply:</div>
                       <p className="flex justify-between p-4">
-                        {/* {post.replies[0].content} */}Reply info here
+                        {post.replies[0]?.content}
                       </p>
                     </div>
                   </div>
@@ -211,31 +303,7 @@ export default function PostPage({ searchParams: { search } }: PostPageProps) {
             </div>
           </section>
         </div>
-        {posts.map((post) => (
-          <Link href={`/main/posts/${post.postId}`} key={post.postId}>
-            <p>{post.author}</p>
-            <p>{post.description}</p>
-            {post.expectedTime.find((e) => e==="0") !== undefined && <span>9:00 ~ 11:00 </span>}
-            {post.expectedTime.find((e) => e==="1") !== undefined && <span> 11:00 ~ 13:00 </span>}
-            {post.expectedTime.find((e) => e==="2") !== undefined && <span> 13:00 ~ 15:00 </span>}
-            {post.expectedTime.find((e) => e==="3") !== undefined && <span> 15:00 ~ 17:00 </span>}
-            {post.expectedTime.find((e) => e==="4") !== undefined && <span> 17:00 ~ 19:00 </span>}
-            <p>{`reply: ${post.replies[0]?.content}`}</p>
-          </Link>
-        ))}
-        <ToggleGroup type="multiple"
-                   defaultValue={["0","1","2","3","4"]}
-                   onValueChange={(value:string[]) => {setExpectedTime(value)}}
-     >
-        <ToggleGroupItem value="0" aria-label="Toggle 0">09:00-11:00</ToggleGroupItem>
-        <ToggleGroupItem value="1" aria-label="Toggle 1">11:00-13:00</ToggleGroupItem>
-        <ToggleGroupItem value="2" aria-label="Toggle 2">13:00-15:00</ToggleGroupItem>
-        <ToggleGroupItem value="3" aria-label="Toggle 3">15:00-17:00</ToggleGroupItem>
-        <ToggleGroupItem value="4" aria-label="Toggle 4">17:00-19:00</ToggleGroupItem>
-      </ToggleGroup>
       </div>
-
-
     </div>
   );
 }
