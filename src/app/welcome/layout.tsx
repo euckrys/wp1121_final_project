@@ -1,13 +1,11 @@
 type Props = {
-    children: React.ReactNode;
-  };
+  children: React.ReactNode;
+};
 
-  function Layout({ children }: Props) {
-    return (
-      <div className="flex h-screen w-2/6 flex-col items-center">
-        {children}
-      </div>
-    );
-  }
+function Layout({ children }: Props) {
+  return (
+    <div className="flex h-screen w-full flex-col items-center">{children}</div>
+  );
+}
 
-  export default Layout;
+export default Layout;
