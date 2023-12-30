@@ -5,7 +5,6 @@ import * as React from "react";
 
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import useUserInfo from "@/hooks/useUserInfo";
@@ -23,25 +22,6 @@ export default function HomePage() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
-
-  const [testing, setTesting] = useState(false);
-  const router = useRouter();
-  const testCron = async () => {
-    if (testing) return;
-    setTesting(true);
-
-    const res = await fetch("/api/cron", {
-      method: "GET",
-    });
-
-    if (!res.ok) {
-      const body = await res.json();
-      throw new Error(body.error);
-    }
-    router.refresh();
-    setTesting(false);
-    return res;
-  };
 
   const fetchUserInfo = async () => {
     try {
@@ -144,7 +124,7 @@ export default function HomePage() {
         userInfo?.availableTime &&
         userInfo?.appointment && (
           <div className="mt-10">
-          <NotCoachSchedule 
+          <NotCoachSchedule
             _availableTime={userInfo?.availableTime}
             _appointment={userInfo.appointment}
           />

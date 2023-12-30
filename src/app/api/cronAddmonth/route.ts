@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 
 import { db } from "@/db";
-import { usersTable, chartsTable } from "@/db/schema";
+import { chartsTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 export const revalidate = 0
 export const GET = async () => {
   try {
     const nowMonth = new Date().getMonth()+1;
     const nowYear = new Date().getFullYear();
-    let month = nowMonth+2;
+    const month = nowMonth+2;
     let year = nowYear;
     if (month > 12) {
         year = nowYear + 1

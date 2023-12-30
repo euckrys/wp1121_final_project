@@ -60,12 +60,12 @@ function AuthForm() {
         150,
         150,
         "JPEG",
-        75,
+        150,
         0,
         (uri) => {
           resolve(uri);
         },
-        "base64",
+        "base128",
       );
     });
 

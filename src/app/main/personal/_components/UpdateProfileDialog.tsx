@@ -106,7 +106,7 @@ export default function UpdateProfileDialog({
         150,
         150,
         "JPEG",
-        75,
+        250,
         0,
         (uri) => {
           resolve(uri);
